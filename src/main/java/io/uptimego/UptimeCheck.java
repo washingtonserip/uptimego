@@ -1,58 +1,39 @@
 package io.uptimego;
 
-import io.uptimego.domain.Target;
+import io.uptimego.domain.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class UptimeCheck {
+
     private static final Logger logger = LoggerFactory.getLogger(UptimeCheck.class);
+    private WebClient webClient;
 
-    private final WebClient webClient;
+    private List<String> unavailableKeywords = Arrays.asList("Service is unavailable", "Service not available", "Error occurred");
 
-    public UptimeCheck(WebClient webClient) {
-        this.webClient = webClient;
+    public UptimeCheck(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.build();
     }
 
-    public Mono<CheckResult> checkTarget(Target target) {
-        return webClient.get()
-                .uri(target.getDomain())
-                .exchangeToMono(response -> {
-                    HttpStatus status = response.statusCode();
-                    if (status.is2xxSuccessful()) {
-                        logger.info("Target {} is up", target.getDomain());
-                        return response.bodyToMono(String.class)
-                                .map(body -> new CheckResult(target.getId(), status.value(), body));
-                    } else {
-                        logger.warn("Target {} is down", target.getDomain());
-                        return Mono.just(new CheckResult(target.getId(), status.value(), "Service is down"));
-                    }
-                });
-    }
+    public Status checkTarget(int targetId, String targetUrl) {
+        logger.info("Checking target: " + targetUrl);
 
-    public static class CheckResult {
-        private final Long targetId;
-        private final int status;
-        private final String body;
+        Mono<String> responseMono = webClient.get().uri(targetUrl).retrieve().bodyToMono(String.class);
 
-        public CheckResult(Long targetId, int status, String body) {
-            this.targetId = targetId;
-            this.status = status;
-            this.body = body;
-        }
+        String responseBody = responseMono.block();
 
-        public Long getTargetId() {
-            return targetId;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public String getBody() {
-            return body;
+        if (responseBody != null && unavailableKeywords.stream().anyMatch(responseBody::contains)) {
+            logger.info("Target " + targetUrl + " is not available.");
+            return new Status(targetId, false);
+        } else {
+            logger.info("Target " + targetUrl + " is available.");
+            return new Status(targetId, true);
         }
     }
 }

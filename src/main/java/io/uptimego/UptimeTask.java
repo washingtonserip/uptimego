@@ -1,38 +1,43 @@
 package io.uptimego;
 
 import io.uptimego.domain.Status;
-import io.uptimego.domain.Target;
-import io.uptimego.service.UptimeService;
+import io.uptimego.domain.Target
+import io.uptimego.repository.StatusRepository;
+import io.uptimego.repository.TargetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-
 import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 public class UptimeTask {
 
-    private final UptimeService uptimeService;
-    private final UptimeCheck uptimeCheck;
+    private static final Logger LOGGER = Logger.getLogger(UptimeTask.class.getName());
 
     @Autowired
-    public UptimeTask(UptimeService uptimeService, UptimeCheck uptimeCheck) {
-        this.uptimeService = uptimeService;
-        this.uptimeCheck = uptimeCheck;
-    }
+    private TargetRepository targetRepository;
 
-    @Scheduled(fixedRate = 600000)
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private UptimeCheck uptimeCheck;
+
+    @Scheduled(fixedRate = 600000) // 10 minutes
     public void checkUptime() {
-        List<Target> targets = uptimeService.getAllTargets();
-        Flux.fromIterable(targets)
-                .flatMap(uptimeCheck::checkTarget)
-                .subscribe(result -> {
-                    Status status = new Status();
-                    status.setTargetId(result.getTargetId());
-                    status.setUp(result.getStatus() == 200);
-                    status.setResponse(result.getBody());
-                    uptimeService.saveStatus(status);
-                });
+        try {
+            List<Target> targets = targetRepository.getTargetsBatch(100);
+            for(Target target : targets) {
+                try {
+                    Status status = uptimeCheck.checkTarget(target.getId(), target.getUrl());
+                    statusRepository.saveStatus(status);
+                } catch (Exception e) {
+                    LOGGER.severe("Failed to save status for target " + target.getUrl() + " due to: " + e.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.severe("Failed to get targets from database due to: " + e.getMessage());
+        }
     }
 }
