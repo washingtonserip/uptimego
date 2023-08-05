@@ -1,5 +1,7 @@
 package io.uptimego.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import javax.crypto.Cipher;
@@ -16,12 +18,14 @@ public class CryptoConverter implements AttributeConverter<String, String> {
     private static final String ALGORITHM = "AES/GCM/NoPadding";
     private static final int TAG_LENGTH_BIT = 128;
     private static final int IV_LENGTH_BYTE = 12;
-    private static final byte[] KEY = System.getenv("CRYPTO_KEY").getBytes();
+
+    @Value("${CRYPTO_KEY}")
+    private static String cryptoKey;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
-        Key key = new SecretKeySpec(KEY, "AES");
+        Key key = new SecretKeySpec(cryptoKey.getBytes(), "AES");
         byte[] iv = new byte[IV_LENGTH_BYTE];
         SECURE_RANDOM.nextBytes(iv);
         try {
@@ -40,7 +44,7 @@ public class CryptoConverter implements AttributeConverter<String, String> {
 
     @Override
     public String convertToEntityAttribute(String dbData) {
-        Key key = new SecretKeySpec(KEY, "AES");
+        Key key = new SecretKeySpec(cryptoKey.getBytes(), "AES");
         byte[] combined = Base64.getDecoder().decode(dbData);
         byte[] iv = new byte[IV_LENGTH_BYTE];
         System.arraycopy(combined, 0, iv, 0, iv.length);
