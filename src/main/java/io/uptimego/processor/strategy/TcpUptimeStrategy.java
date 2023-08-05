@@ -1,8 +1,7 @@
 package io.uptimego.processor.strategy;
 
-import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
-import io.uptimego.model.HeartbeatType;
+import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.SocketService;
 import lombok.AllArgsConstructor;

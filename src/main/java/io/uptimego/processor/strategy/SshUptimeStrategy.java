@@ -1,10 +1,7 @@
 package io.uptimego.processor.strategy;
 
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
-import io.uptimego.model.HeartbeatType;
+import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.SshService;
 import lombok.AllArgsConstructor;

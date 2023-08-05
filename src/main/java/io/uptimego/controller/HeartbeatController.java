@@ -1,8 +1,7 @@
 package io.uptimego.controller;
 
-import io.uptimego.model.Heartbeat;
-import io.uptimego.repository.HeartbeatRepository;
 import io.uptimego.service.HeartbeatService;
+import io.uptimego.model.Heartbeat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

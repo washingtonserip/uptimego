@@ -1,8 +1,8 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
-import io.uptimego.model.HeartbeatType;
 import io.uptimego.model.Uptime;
+import io.uptimego.model.HeartbeatType;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
 import okhttp3.Request;

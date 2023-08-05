@@ -1,8 +1,8 @@
 package io.uptimego.processor;
 
+import io.uptimego.service.HeartbeatService;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
-import io.uptimego.service.HeartbeatService;
 import io.uptimego.service.UptimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

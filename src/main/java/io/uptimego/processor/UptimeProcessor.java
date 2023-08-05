@@ -2,7 +2,7 @@ package io.uptimego.processor;
 
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
-import io.uptimego.processor.strategy.*;
+import io.uptimego.processor.strategy.UptimeStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

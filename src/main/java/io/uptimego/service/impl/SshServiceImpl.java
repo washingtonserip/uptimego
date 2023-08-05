@@ -1,7 +1,8 @@
-package io.uptimego.service;
+package io.uptimego.service.impl;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+import io.uptimego.service.SshService;
 import org.springframework.stereotype.Service;
 
 @Service

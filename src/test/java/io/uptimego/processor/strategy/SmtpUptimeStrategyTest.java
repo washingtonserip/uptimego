@@ -7,7 +7,6 @@ import io.uptimego.service.EmailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static io.uptimego.processor.strategy.SmtpUptimeStrategy.EMAIL_FROM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -34,7 +33,7 @@ class SmtpUptimeStrategyTest {
         Uptime uptime = smtpUptimeStrategy.checkUptime(heartbeat);
 
         assertEquals("up", uptime.getStatus());
-        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, EMAIL_FROM, "test@test.com");
+        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpUptimeStrategy.EMAIL_FROM, "test@test.com");
     }
 
     @Test
@@ -46,11 +45,11 @@ class SmtpUptimeStrategyTest {
         heartbeat.getOptions().setPort(25);
         heartbeat.getOptions().setEmailTo("test@test.com");
 
-        doThrow(new Exception()).when(emailService).sendEmail("smtp.example.com", 25, EMAIL_FROM, "test@test.com");
+        doThrow(new Exception()).when(emailService).sendEmail("smtp.example.com", 25, SmtpUptimeStrategy.EMAIL_FROM, "test@test.com");
 
         Uptime uptime = smtpUptimeStrategy.checkUptime(heartbeat);
 
         assertEquals("down", uptime.getStatus());
-        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, EMAIL_FROM, "test@test.com");
+        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpUptimeStrategy.EMAIL_FROM, "test@test.com");
     }
 }

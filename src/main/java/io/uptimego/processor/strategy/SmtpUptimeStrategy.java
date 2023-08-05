@@ -1,19 +1,11 @@
 package io.uptimego.processor.strategy;
 
-import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
-import io.uptimego.model.HeartbeatType;
+import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.EmailService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
 
 @AllArgsConstructor
 @NoArgsConstructor
