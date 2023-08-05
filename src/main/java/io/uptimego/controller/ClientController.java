@@ -1,22 +1,18 @@
 package io.uptimego.controller;
 
-import io.uptimego.model.Heartbeat;
-import io.uptimego.service.HeartbeatService;
-import io.uptimego.service.UserService;
+import io.uptimego.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-    private final UserService userService;
+@RequestMapping("/client")
+public class ClientController {
+    private final ClientService clientService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     // Repeat for other CRUD operations

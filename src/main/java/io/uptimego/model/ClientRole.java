@@ -1,5 +1,5 @@
 package io.uptimego.model;
 
-public enum UserRole {
+public enum ClientRole {
     ADMIN, USER
 }

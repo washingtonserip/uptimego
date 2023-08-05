@@ -1,7 +1,7 @@
 package io.uptimego.service;
 
 import io.uptimego.repository.HeartbeatRepository;
-import io.uptimego.repository.UserRepository;
+import io.uptimego.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 public class AdminService {
     private final HeartbeatRepository heartbeatRepository;
 
-    private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public AdminService(HeartbeatRepository heartbeatRepository, UserRepository userRepository) {
+    public AdminService(HeartbeatRepository heartbeatRepository, ClientRepository clientRepository) {
         this.heartbeatRepository = heartbeatRepository;
-        this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
 //    public Heartbeat createHeartbeat(Heartbeat heartbeat) {

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class User {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +22,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private ClientRole clientRole;
 
     // Other necessary fields
 }
