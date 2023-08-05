@@ -3,28 +3,27 @@ package io.uptimego.processor;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
 import io.uptimego.processor.strategy.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class UptimeProcessor {
 
-    private Map<String, UptimeStrategy> uptimeStrategyMap = new HashMap<>();
+    private final Map<String, UptimeStrategy> uptimeStrategyMap;
 
-    public UptimeProcessor() {
-        uptimeStrategyMap.put("HTTP", new HttpUptimeStrategy());
-        uptimeStrategyMap.put("HEAD", new HeadUptimeStrategy());
-        uptimeStrategyMap.put("TCP", new TcpUptimeStrategy());
-        uptimeStrategyMap.put("DNS", new DnsUptimeStrategy());
-        uptimeStrategyMap.put("SMTP", new SmtpUptimeStrategy());
-        uptimeStrategyMap.put("SSH", new SshUptimeStrategy());
-        uptimeStrategyMap.put("PING", new PingUptimeStrategy());
+    @Autowired
+    public UptimeProcessor(List<UptimeStrategy> uptimeStrategies) {
+        this.uptimeStrategyMap = uptimeStrategies.stream()
+                .collect(Collectors.toMap(UptimeStrategy::getType, Function.identity()));
     }
 
     public Uptime processUptime(Heartbeat heartbeat) {
-        UptimeStrategy uptimeStrategy = uptimeStrategyMap.get(heartbeat.getType());
+        UptimeStrategy uptimeStrategy = uptimeStrategyMap.get(heartbeat.getType().name());
         if (uptimeStrategy == null) {
             throw new IllegalArgumentException("Unsupported heartbeat type: " + heartbeat.getType());
         }

@@ -1,6 +1,7 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
+import io.uptimego.model.HeartbeatType;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.HttpClientService;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,11 @@ import okhttp3.Response;
 public class HeadUptimeStrategy implements UptimeStrategy {
 
     private HttpClientService httpClientService;
+
+    @Override
+    public String getType() {
+        return "HEAD";
+    }
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {

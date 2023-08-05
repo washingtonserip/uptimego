@@ -2,6 +2,7 @@ package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
+import io.uptimego.model.HeartbeatType;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.EmailService;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,11 @@ public class SmtpUptimeStrategy implements UptimeStrategy {
     static final String EMAIL_FROM = "teste@uptimego.io";
 
     private EmailService emailService;
+
+    @Override
+    public String getType() {
+        return "SMTP";
+    }
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {

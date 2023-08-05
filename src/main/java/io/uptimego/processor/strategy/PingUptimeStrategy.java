@@ -1,6 +1,7 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
+import io.uptimego.model.HeartbeatType;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.NetworkService;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,11 @@ import java.net.InetAddress;
 @NoArgsConstructor
 public class PingUptimeStrategy implements UptimeStrategy {
     private NetworkService networkService;
+
+    @Override
+    public String getType() {
+        return "PING";
+    }
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {

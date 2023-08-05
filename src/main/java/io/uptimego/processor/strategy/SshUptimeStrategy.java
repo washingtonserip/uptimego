@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
+import io.uptimego.model.HeartbeatType;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.SshService;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,11 @@ import lombok.NoArgsConstructor;
 public class SshUptimeStrategy implements UptimeStrategy {
 
     private SshService sshService;
+
+    @Override
+    public String getType() {
+        return "SSH";
+    }
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {
