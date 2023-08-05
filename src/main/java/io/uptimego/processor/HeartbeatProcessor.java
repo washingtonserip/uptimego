@@ -4,50 +4,70 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
 import io.uptimego.service.HeartbeatService;
 import io.uptimego.service.UptimeService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class HeartbeatProcessor {
 
+    private static final Logger log = LoggerFactory.getLogger(HeartbeatProcessor.class);
+    public static final int PAGE_SIZE = 100;
+
     private final HeartbeatService heartbeatService;
-    private final UptimeProcessor uptimeProcessor;
-    private final ScheduledExecutorService executorService;
     private final UptimeService uptimeService;
+    private final UptimeProcessor uptimeProcessor;
 
-    @Autowired
-    public HeartbeatProcessor(HeartbeatService heartbeatService, UptimeProcessor uptimeProcessor, UptimeService uptimeService) {
+    public HeartbeatProcessor(HeartbeatService heartbeatService, UptimeService uptimeService, UptimeProcessor uptimeProcessor) {
         this.heartbeatService = heartbeatService;
-        this.uptimeProcessor = uptimeProcessor;
         this.uptimeService = uptimeService;
-        this.executorService = Executors.newScheduledThreadPool(1);
+        this.uptimeProcessor = uptimeProcessor;
     }
 
-    @EventListener(ApplicationReadyEvent.class)
-    public void startProcessing() {
-        executorService.scheduleAtFixedRate(this::processHeartbeats, 0, 10, TimeUnit.MINUTES);
+    @Scheduled(fixedRate = 600000)  // every 10 minutes
+    public void processHeartbeats() {
+        log.info("Heartbeat processing started");
+
+        int pageNumber = 0;
+        Pageable pageable;
+        Page<Heartbeat> heartbeatPage;
+
+        do {
+            pageable = PageRequest.of(pageNumber, PAGE_SIZE);
+            heartbeatPage = getPageOfHeartbeats(pageable);
+
+            log.info("Processing page number: {}", pageNumber);
+            processHeartbeatsInPage(heartbeatPage);
+
+            pageNumber++;
+        } while (heartbeatPage.hasNext());
+
+        log.info("Heartbeat processing completed");
     }
 
-    private void processHeartbeats() {
-        List<Heartbeat> heartbeats = heartbeatService.getAllHeartbeats();
-        for (int i = 0; i < heartbeats.size(); i += 100) {
-            List<Heartbeat> batch = heartbeats.subList(i, Math.min(i + 100, heartbeats.size()));
-            processBatch(batch);
-        }
+    private Page<Heartbeat> getPageOfHeartbeats(Pageable pageable) {
+        return heartbeatService.findAll(pageable);
     }
 
-    private void processBatch(List<Heartbeat> batch) {
-        for (Heartbeat heartbeat : batch) {
+    private void processHeartbeatsInPage(Page<Heartbeat> heartbeatPage) {
+        heartbeatPage.getContent().forEach(this::processSingleHeartbeat);
+    }
+
+    private void processSingleHeartbeat(Heartbeat heartbeat) {
+        try {
             Uptime uptime = uptimeProcessor.processUptime(heartbeat);
-            this.uptimeService.createUptime(uptime);
+            uptimeService.save(uptime);
+            log.info("Successfully processed heartbeat: {}", heartbeat.getId());
+        } catch (Exception e) {
+            handleProcessingError(heartbeat, e);
         }
+    }
+
+    private void handleProcessingError(Heartbeat heartbeat, Exception e) {
+        log.error("Error processing heartbeat: {}", heartbeat.getId(), e);
     }
 }

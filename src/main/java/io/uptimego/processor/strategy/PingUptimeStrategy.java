@@ -2,10 +2,16 @@ package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
+import io.uptimego.service.NetworkService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.net.InetAddress;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class PingUptimeStrategy implements UptimeStrategy {
+    private NetworkService networkService;
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {
@@ -13,8 +19,8 @@ public class PingUptimeStrategy implements UptimeStrategy {
         uptime.setHeartbeatId(heartbeat.getId());
 
         try {
-            InetAddress address = InetAddress.getByName(heartbeat.getOptions().getHost());
-            if (address.isReachable(2000)) {
+            InetAddress address = networkService.getByName(heartbeat.getOptions().getHost());
+            if (networkService.isReachable(address, 2000)) {
                 uptime.setStatus("up");
             } else {
                 uptime.setStatus("down");

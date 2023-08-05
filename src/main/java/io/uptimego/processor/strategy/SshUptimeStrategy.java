@@ -5,9 +5,15 @@ import com.jcraft.jsch.Session;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatOptions;
 import io.uptimego.model.Uptime;
+import io.uptimego.service.SshService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class SshUptimeStrategy implements UptimeStrategy {
+
+    private SshService sshService;
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {
@@ -16,12 +22,7 @@ public class SshUptimeStrategy implements UptimeStrategy {
 
         try {
             HeartbeatOptions options = heartbeat.getOptions();
-            JSch jsch = new JSch();
-            Session session = jsch.getSession(options.getUsername(), options.getHost(), 22);
-            session.setPassword(options.getPassword());
-            session.setConfig("StrictHostKeyChecking", "no");
-            session.connect();
-            session.disconnect();
+            sshService.establishSshSession(options.getUsername(), options.getHost(), options.getPassword());
             uptime.setStatus("up");
         } catch (Exception e) {
             uptime.setStatus("down");

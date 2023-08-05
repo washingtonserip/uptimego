@@ -4,6 +4,8 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.repository.HeartbeatRepository;
 import org.apache.commons.collections4.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,13 +19,7 @@ public class HeartbeatService {
         this.heartbeatRepository = heartbeatRepository;
     }
 
-    public List<Heartbeat> getAllHeartbeats() {
-        return IteratorUtils.toList(heartbeatRepository.findAll().iterator());
+    public Page<Heartbeat> findAll(Pageable pageable) {
+        return heartbeatRepository.findAll(pageable);
     }
-
-//    public Heartbeat createHeartbeat(Heartbeat heartbeat) {
-//        // Your business logic here
-//    }
-
-    // Repeat for other CRUD operations
 }

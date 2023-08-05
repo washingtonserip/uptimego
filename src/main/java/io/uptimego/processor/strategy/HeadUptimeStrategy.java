@@ -2,25 +2,24 @@ package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.Uptime;
-import io.uptimego.processor.UptimeProcessor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import io.uptimego.service.HttpClientService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import okhttp3.Response;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class HeadUptimeStrategy implements UptimeStrategy {
-    private final OkHttpClient httpClient = new OkHttpClient();
+
+    private HttpClientService httpClientService;
 
     @Override
     public Uptime checkUptime(Heartbeat heartbeat) {
         Uptime uptime = new Uptime();
         uptime.setHeartbeatId(heartbeat.getId());
 
-        Request request = new Request.Builder()
-                .url(heartbeat.getUrl())
-                .head()
-                .build();
-
-        try (Response response = httpClient.newCall(request).execute()) {
+        try {
+            Response response = httpClientService.executeHeadRequest(heartbeat.getUrl());
             if (response.isSuccessful()) {
                 uptime.setStatus("up");
             } else {

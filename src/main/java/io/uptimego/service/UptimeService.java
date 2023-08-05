@@ -2,7 +2,6 @@ package io.uptimego.service;
 
 import io.uptimego.model.Uptime;
 import io.uptimego.repository.UptimeRepository;
-import io.uptimego.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class UptimeService {
         this.uptimeRepository = uptimeRepository;
     }
 
-    public Uptime createUptime(Uptime uptime) {
+    public Uptime save(Uptime uptime) {
         return uptimeRepository.save(uptime);
     }
 

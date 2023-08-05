@@ -11,7 +11,7 @@ import java.util.Map;
 @Component
 public class UptimeProcessor {
 
-    private final Map<String, UptimeStrategy> uptimeStrategyMap = new HashMap<>();
+    private Map<String, UptimeStrategy> uptimeStrategyMap = new HashMap<>();
 
     public UptimeProcessor() {
         uptimeStrategyMap.put("HTTP", new HttpUptimeStrategy());
