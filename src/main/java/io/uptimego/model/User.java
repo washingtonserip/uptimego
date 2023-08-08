@@ -1,6 +1,9 @@
 package io.uptimego.model;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +22,7 @@ import java.util.UUID;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID id;
 
     private String nome;
@@ -32,10 +31,6 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    public enum Role {
-        USER_ROLE, ADMIN_ROLE
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,5 +60,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public enum Role {
+        USER_ROLE, ADMIN_ROLE
     }
 }

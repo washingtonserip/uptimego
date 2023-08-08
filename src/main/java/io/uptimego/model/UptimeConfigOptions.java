@@ -10,7 +10,7 @@ import javax.persistence.Convert;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HeartbeatOptions {
+public class UptimeConfigOptions {
     private String host;
     private int port;
     private String username;

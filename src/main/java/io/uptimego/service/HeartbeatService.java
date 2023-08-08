@@ -1,36 +1,22 @@
 package io.uptimego.service;
 
 import io.uptimego.model.Heartbeat;
+import io.uptimego.model.UptimeConfig;
 import io.uptimego.repository.HeartbeatRepository;
+import io.uptimego.repository.UptimeConfigRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class HeartbeatService {
-    private final HeartbeatRepository heartbeatRepository;
-
-    @Autowired
-    public HeartbeatService(HeartbeatRepository heartbeatRepository) {
-        this.heartbeatRepository = heartbeatRepository;
-    }
-
-    public Page<Heartbeat> findAll(Pageable pageable) {
-        return heartbeatRepository.findAll(pageable);
-    }
+    private HeartbeatRepository heartbeatRepository;
 
     public Heartbeat save(Heartbeat heartbeat) {
         return heartbeatRepository.save(heartbeat);
     }
 
-    public Optional<Heartbeat> findById(Long id) {
-        return heartbeatRepository.findById(id);
-    }
-
-    public void delete(Heartbeat existingHeartbeat) {
-        heartbeatRepository.delete(existingHeartbeat);
-    }
 }

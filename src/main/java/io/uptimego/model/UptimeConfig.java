@@ -6,29 +6,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Table(name = "uptime_config")
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Heartbeat {
+public class UptimeConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID id;
 
-    private UUID uptimeId;
-
     private UUID userId;
 
-    private String status;
+    private String url;
 
-    private double responseTime;
+    @Enumerated(EnumType.STRING)
+    private UptimeConfigType type;
 
     @Convert(converter = JsonbConverter.class)
-    private HeartbeatDetails details;
-
-    private LocalDateTime timestamp;
+    private UptimeConfigOptions options;
 }
-

@@ -1,88 +1,127 @@
 package io.uptimego.processor;
 
 import io.uptimego.model.Heartbeat;
-import io.uptimego.model.Uptime;
-import io.uptimego.service.HeartbeatService;
-import io.uptimego.service.UptimeService;
+import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.UptimeConfigType;
+import io.uptimego.processor.strategy.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class HeartbeatProcessorTest {
+@ExtendWith(MockitoExtension.class)
+class HeartbeatProcessorTest {
 
     @Mock
-    private HeartbeatService heartbeatService;
+    private HttpHeartbeatStrategy httpUptimeStrategy;
 
     @Mock
-    private UptimeService uptimeService;
+    private HeadHeartbeatStrategy headUptimeStrategy;
 
     @Mock
-    private UptimeProcessor uptimeProcessor;
+    private TcpHeartbeatStrategy tcpUptimeStrategy;
 
-    @InjectMocks
+    @Mock
+    private DnsHeartbeatStrategy dnsUptimeStrategy;
+
+    @Mock
+    private SmtpHeartbeatStrategy smtpUptimeStrategy;
+
+    @Mock
+    private SshHeartbeatStrategy sshUptimeStrategy;
+
+    @Mock
+    private PingHeartbeatStrategy pingUptimeStrategy;
+
     private HeartbeatProcessor heartbeatProcessor;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
+        when(httpUptimeStrategy.getType()).thenReturn("HTTP");
+        when(headUptimeStrategy.getType()).thenReturn("HEAD");
+        when(tcpUptimeStrategy.getType()).thenReturn("TCP");
+        when(dnsUptimeStrategy.getType()).thenReturn("DNS");
+        when(smtpUptimeStrategy.getType()).thenReturn("SMTP");
+        when(sshUptimeStrategy.getType()).thenReturn("SSH");
+        when(pingUptimeStrategy.getType()).thenReturn("PING");
+
+        List<HeartbeatStrategy> uptimeStrategies = Arrays.asList(
+                httpUptimeStrategy,
+                headUptimeStrategy,
+                tcpUptimeStrategy,
+                dnsUptimeStrategy,
+                smtpUptimeStrategy,
+                sshUptimeStrategy,
+                pingUptimeStrategy
+        );
+        heartbeatProcessor = new HeartbeatProcessor(uptimeStrategies);
     }
 
     @Test
-    public void processHeartbeats_noHeartbeatsPageAvailable() {
-        // Given
-        Pageable pageable = PageRequest.of(0, HeartbeatProcessor.PAGE_SIZE);
-        when(heartbeatService.findAll(pageable)).thenReturn(Page.empty());
-
-        // When
-        heartbeatProcessor.processHeartbeats();
-
-        // Then
-        verify(heartbeatService, times(1)).findAll(pageable);
-        verifyNoMoreInteractions(heartbeatService, uptimeService, uptimeProcessor);
+    void heartbeatProcessor_httpStrategy() {
+        heartbeatProcessor_genericTest("HTTP", httpUptimeStrategy);
     }
 
     @Test
-    public void processHeartbeats_singleHeartbeatSuccessfullyProcessed() {
-        // Given
-        Heartbeat heartbeat = new Heartbeat();
-        Uptime uptime = new Uptime();
-        Page<Heartbeat> page = new PageImpl<>(Collections.singletonList(heartbeat));
-
-        when(heartbeatService.findAll(any(Pageable.class))).thenReturn(page);
-        when(uptimeProcessor.processUptime(heartbeat)).thenReturn(uptime);
-
-        // When
-        heartbeatProcessor.processHeartbeats();
-
-        // Then
-        verify(uptimeProcessor, times(1)).processUptime(heartbeat);
-        verify(uptimeService, times(1)).save(uptime);
+    void heartbeatProcessor_headStrategy() {
+        heartbeatProcessor_genericTest("HEAD", headUptimeStrategy);
     }
 
     @Test
-    public void processHeartbeats_singleHeartbeatProcessingFails() {
-        // Given
-        Heartbeat heartbeat = new Heartbeat();
-        Page<Heartbeat> page = new PageImpl<>(Collections.singletonList(heartbeat));
+    void heartbeatProcessor_tcpStrategy() {
+        heartbeatProcessor_genericTest("TCP", tcpUptimeStrategy);
+    }
 
-        when(heartbeatService.findAll(any(Pageable.class))).thenReturn(page);
-        when(uptimeProcessor.processUptime(heartbeat)).thenThrow(new RuntimeException());
+    @Test
+    void heartbeatProcessor_dnsStrategy() {
+        heartbeatProcessor_genericTest("DNS", dnsUptimeStrategy);
+    }
 
-        // When
-        heartbeatProcessor.processHeartbeats();
+    @Test
+    void heartbeatProcessor_smtpStrategy() {
+        heartbeatProcessor_genericTest("SMTP", smtpUptimeStrategy);
+    }
 
-        // Then
-        verify(uptimeProcessor, times(1)).processUptime(heartbeat);
-        verifyNoInteractions(uptimeService);
+    @Test
+    void heartbeatProcessor_sshStrategy() {
+        heartbeatProcessor_genericTest("SSH", sshUptimeStrategy);
+    }
+
+    @Test
+    void heartbeatProcessor_pingStrategy() {
+        heartbeatProcessor_genericTest("PING", pingUptimeStrategy);
+    }
+
+    private void heartbeatProcessor_genericTest(String heartbeatType, HeartbeatStrategy strategy) {
+        // Setup
+        UptimeConfig uptimeConfig = new UptimeConfig();
+        uptimeConfig.setType(UptimeConfigType.valueOf(heartbeatType));
+        Heartbeat expectedHeartbeat = new Heartbeat();
+        when(strategy.getHeartbeat(uptimeConfig)).thenReturn(expectedHeartbeat);
+
+        // Execute
+        Heartbeat actualHeartbeat = heartbeatProcessor.execute(uptimeConfig);
+
+        // Verify
+        assertEquals(expectedHeartbeat, actualHeartbeat);
+        verify(strategy, times(1)).getHeartbeat(uptimeConfig);
+    }
+
+    @Test
+    void heartbeatProcessor_unsupportedStrategy() {
+        // Setup
+        UptimeConfig uptimeConfig = new UptimeConfig();
+        uptimeConfig.setType(UptimeConfigType.UNKNOWN);
+
+        // Execute and Verify
+        assertThrows(IllegalArgumentException.class, () -> heartbeatProcessor.execute(uptimeConfig));
     }
 }

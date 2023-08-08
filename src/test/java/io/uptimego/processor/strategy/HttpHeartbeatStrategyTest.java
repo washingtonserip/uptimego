@@ -1,8 +1,8 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
-import io.uptimego.model.Uptime;
-import io.uptimego.model.HeartbeatType;
+import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.UptimeConfigType;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -15,31 +15,34 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HttpUptimeStrategyTest {
+public class HttpHeartbeatStrategyTest {
 
     @Mock
     private HttpClientService httpClientService;
 
     @InjectMocks
-    private HttpUptimeStrategy httpUptimeStrategy;
+    private HttpHeartbeatStrategy httpUptimeStrategy;
+
+    private UptimeConfig uptimeConfig;
 
     @BeforeEach
     public void setUp() {
-        httpUptimeStrategy = new HttpUptimeStrategy(httpClientService);
+        uptimeConfig = new UptimeConfig();
+        uptimeConfig.setId(UUID.randomUUID());
+        uptimeConfig.setUserId(UUID.randomUUID());
+        uptimeConfig.setType(UptimeConfigType.HTTP);
     }
 
     @Test
     public void shouldReturnUptimeAsUpWhenResponseIsSuccessful() throws IOException {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setId(1L);
-        heartbeat.setUrl("http://example.com");
-        heartbeat.setType(HeartbeatType.HTTP);
+        uptimeConfig.setUrl("http://example.com");
 
         Response response = new Response.Builder()
                 .code(200)
@@ -50,18 +53,16 @@ public class HttpUptimeStrategyTest {
 
         when(httpClientService.executeGetRequest(anyString())).thenReturn(response);
 
-        Uptime uptime = httpUptimeStrategy.checkUptime(heartbeat);
+        Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", uptime.getStatus());
-        assertEquals(1L, uptime.getHeartbeatId());
+        assertEquals("up", heartbeat.getStatus());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(200, heartbeat.getDetails().getResponseCode());
     }
 
     @Test
     public void shouldReturnUptimeAsDownWhenResponseIsNotSuccessful() throws IOException {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setId(1L);
-        heartbeat.setUrl("http://example.com");
-        heartbeat.setType(HeartbeatType.HTTP);
+        uptimeConfig.setUrl("http://example.com");
 
         Response response = new Response.Builder()
                 .code(404)
@@ -72,24 +73,23 @@ public class HttpUptimeStrategyTest {
 
         when(httpClientService.executeGetRequest(anyString())).thenReturn(response);
 
-        Uptime uptime = httpUptimeStrategy.checkUptime(heartbeat);
+        Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", uptime.getStatus());
-        assertEquals(1L, uptime.getHeartbeatId());
+        assertEquals("down", heartbeat.getStatus());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(404, heartbeat.getDetails().getResponseCode());
     }
 
     @Test
     public void shouldReturnUptimeAsDownWhenExceptionOccurs() throws IOException {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setId(1L);
-        heartbeat.setUrl("http://invalidurl.com");
-        heartbeat.setType(HeartbeatType.HTTP);
+        uptimeConfig.setUrl("http://invalidurl.com");
+        Exception error = new IOException();
+        when(httpClientService.executeGetRequest(anyString())).thenThrow(error);
 
-        when(httpClientService.executeGetRequest(anyString())).thenThrow(IOException.class);
+        Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        Uptime uptime = httpUptimeStrategy.checkUptime(heartbeat);
-
-        assertEquals("down", uptime.getStatus());
-        assertEquals(1L, uptime.getHeartbeatId());
+        assertEquals("down", heartbeat.getStatus());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
     }
 }
