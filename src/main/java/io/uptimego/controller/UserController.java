@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,7 +21,6 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        user.setRole(User.Role.USER_ROLE);
         return userService.createUser(user);
     }
 

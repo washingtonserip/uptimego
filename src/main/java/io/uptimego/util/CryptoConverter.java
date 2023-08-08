@@ -19,7 +19,7 @@ public class CryptoConverter implements AttributeConverter<String, String> {
     private static final int TAG_LENGTH_BIT = 128;
     private static final int IV_LENGTH_BYTE = 12;
 
-    @Value("${CRYPTO_KEY}")
+    @Value("${crypto.key}")
     private static String cryptoKey;
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 

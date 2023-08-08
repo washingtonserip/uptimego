@@ -24,8 +24,8 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID id;
+    private String name;
     private String email;
-    private String nome;
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;

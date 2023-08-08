@@ -1,6 +1,5 @@
 package io.uptimego.util;
 
-import com.sun.security.auth.UserPrincipal;
 import io.jsonwebtoken.*;
 import io.uptimego.model.User;
 import org.springframework.beans.factory.annotation.Value;

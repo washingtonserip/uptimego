@@ -1,6 +1,7 @@
 package io.uptimego.security;
 
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,7 +18,9 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private final UserDetailsService userDetailsService;
-    private static final String SECRET = "MySecretKey"; // Deve ser a mesma chave do JwtAuthenticationFilter
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
         super(authenticationManager);
@@ -42,7 +45,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader("Authorization");
         if (token != null) {
             String user = Jwts.parser()
-                    .setSigningKey(SECRET)
+                    .setSigningKey(jwtSecret)
                     .parseClaimsJws(token.replace("Bearer ", ""))
                     .getBody()
                     .getSubject();
