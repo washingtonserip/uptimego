@@ -18,9 +18,9 @@ public class Heartbeat {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID id;
 
-    private UUID uptimeId;
-
-    private UUID userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uptime_config_id")
+    private UptimeConfig uptimeConfig;
 
     private String status;
 
@@ -31,4 +31,3 @@ public class Heartbeat {
 
     private LocalDateTime timestamp;
 }
-

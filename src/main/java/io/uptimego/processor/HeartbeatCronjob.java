@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,10 @@ public class HeartbeatCronjob {
 
     public static final int PAGE_SIZE = 100;
     private static final Logger log = LoggerFactory.getLogger(HeartbeatCronjob.class);
-    private UptimeConfigService uptimeConfigService;
-    private HeartbeatService heartbeatService;
-    private HeartbeatProcessor heartbeatProcessor;
+
+    @Autowired private UptimeConfigService uptimeConfigService;
+    @Autowired private HeartbeatService heartbeatService;
+    @Autowired private HeartbeatProcessor heartbeatProcessor;
 
     @Scheduled(fixedRate = 600000)
     public void processHeartbeats() {

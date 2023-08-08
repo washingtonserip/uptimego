@@ -23,7 +23,7 @@ public class HeadHeartbeatStrategy implements HeartbeatStrategy {
     public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
         HeartbeatDetails details = new HeartbeatDetails();
         Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setUptimeId(uptimeConfig.getId());
+        heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
             Response response = httpClientService.executeHeadRequest(uptimeConfig.getUrl());

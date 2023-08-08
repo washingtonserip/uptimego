@@ -24,7 +24,7 @@ public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
     public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
         HeartbeatDetails details = new HeartbeatDetails();
         Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setUptimeId(uptimeConfig.getId());
+        heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
             UptimeConfigOptions options = uptimeConfig.getOptions();

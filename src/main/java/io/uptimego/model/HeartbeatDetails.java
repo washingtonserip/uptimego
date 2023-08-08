@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HeartbeatDetails {
+    private double responseTime;
     private int responseCode;
     private String ipAddress;
     private String statusReason;

@@ -56,7 +56,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("up", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
         assertEquals(200, heartbeat.getDetails().getResponseCode());
     }
 
@@ -76,7 +76,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
         assertEquals(404, heartbeat.getDetails().getResponseCode());
     }
 
@@ -89,7 +89,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
         assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
     }
 }

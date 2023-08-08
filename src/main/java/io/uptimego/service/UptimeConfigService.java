@@ -15,10 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class UptimeConfigService {
-    private UptimeConfigRepository uptimeConfigRepository;
+    @Autowired private UptimeConfigRepository uptimeConfigRepository;
 
     public Page<UptimeConfig> findAll(Pageable pageable) {
         return uptimeConfigRepository.findAll(pageable);
