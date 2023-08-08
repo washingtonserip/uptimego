@@ -11,12 +11,7 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired private UserRepository userRepository;
 
     public User createUser(User user) {
         return userRepository.save(user);

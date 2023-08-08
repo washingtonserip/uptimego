@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        user.setRole(User.Role.USER_ROLE);
         return userService.createUser(user);
     }
 
