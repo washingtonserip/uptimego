@@ -1,12 +1,10 @@
 package io.uptimego.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class HeartbeatDetails {
     private double responseTime;
     private int responseCode;

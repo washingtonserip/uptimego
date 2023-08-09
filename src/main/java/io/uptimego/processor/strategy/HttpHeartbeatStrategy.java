@@ -4,13 +4,9 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.HttpClientService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class HttpHeartbeatStrategy implements HeartbeatStrategy {
 
     @Autowired

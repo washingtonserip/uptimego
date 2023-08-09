@@ -36,9 +36,6 @@ class HeartbeatProcessorTest {
     private SmtpHeartbeatStrategy smtpUptimeStrategy;
 
     @Mock
-    private SshHeartbeatStrategy sshUptimeStrategy;
-
-    @Mock
     private PingHeartbeatStrategy pingUptimeStrategy;
 
     private HeartbeatProcessor heartbeatProcessor;
@@ -50,7 +47,6 @@ class HeartbeatProcessorTest {
         when(tcpUptimeStrategy.getType()).thenReturn("TCP");
         when(dnsUptimeStrategy.getType()).thenReturn("DNS");
         when(smtpUptimeStrategy.getType()).thenReturn("SMTP");
-        when(sshUptimeStrategy.getType()).thenReturn("SSH");
         when(pingUptimeStrategy.getType()).thenReturn("PING");
 
         List<HeartbeatStrategy> uptimeStrategies = Arrays.asList(
@@ -59,7 +55,6 @@ class HeartbeatProcessorTest {
                 tcpUptimeStrategy,
                 dnsUptimeStrategy,
                 smtpUptimeStrategy,
-                sshUptimeStrategy,
                 pingUptimeStrategy
         );
         heartbeatProcessor = new HeartbeatProcessor(uptimeStrategies);
@@ -88,11 +83,6 @@ class HeartbeatProcessorTest {
     @Test
     void heartbeatProcessor_smtpStrategy() {
         heartbeatProcessor_genericTest("SMTP", smtpUptimeStrategy);
-    }
-
-    @Test
-    void heartbeatProcessor_sshStrategy() {
-        heartbeatProcessor_genericTest("SSH", sshUptimeStrategy);
     }
 
     @Test

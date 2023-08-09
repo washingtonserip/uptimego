@@ -1,70 +1,50 @@
 package io.uptimego.controller;
 
 import io.uptimego.model.User;
-import io.uptimego.service.UserService;
-import io.uptimego.util.JwtTokenProvider;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.uptimego.model.UserRole;
+import io.uptimego.repository.UserRepository;
+import io.uptimego.security.dto.LoginRequest;
+import io.uptimego.security.dto.LoginResponse;
+import io.uptimego.security.dto.RegistrationRequest;
+import io.uptimego.security.dto.RegistrationResponse;
+import io.uptimego.security.jwt.JwtTokenService;
+import io.uptimego.security.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+@CrossOrigin
 @RestController
-@RequestMapping("/api/auth")
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired private AuthenticationManager authenticationManager;
-    @Autowired private JwtTokenProvider jwtTokenProvider;
-    @Autowired private UserService userService;
+
+    private final JwtTokenService jwtTokenService;
+    private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody @Validated LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password())
-        );
+    public ResponseEntity<LoginResponse> loginRequest(@Valid @RequestBody LoginRequest loginRequest) {
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtTokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtResponse(jwt));
+        final LoginResponse loginResponse = jwtTokenService.getLoginResponse(loginRequest);
+
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest request) {
-        if(this.userService.findByLogin(request.email())) return ResponseEntity.badRequest().build();
+    public ResponseEntity<RegistrationResponse> registrationRequest(@Valid @RequestBody RegistrationRequest registrationRequest) {
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(request.password());
-        User user = new User();
-        user.setName(request.name());
-        user.setEmail(request.email());
-        user.setPassword(encryptedPassword);
-        user.setRole(User.Role.USER_ROLE);
+        final RegistrationResponse registrationResponse = userService.registration(registrationRequest);
 
-        try {
-            this.userService.createUser(user);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
     }
-
-    public record LoginRequest(String email, String password) {}
-
-    public record JwtResponse(String token) {}
-
-    public record UserRegistrationRequest(String name, String email, String password) {}
 
 }

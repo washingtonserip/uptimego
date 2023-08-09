@@ -1,17 +1,16 @@
 package io.uptimego.model;
 
-import io.uptimego.util.JsonbConverter;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import io.uptimego.utils.JsonbConverter;
 
 import javax.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class UptimeConfig {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")

@@ -4,8 +4,6 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.HeartbeatService;
 import io.uptimego.service.UptimeConfigService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +14,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class HeartbeatCronjob {
 
     public static final int PAGE_SIZE = 100;
     private static final Logger log = LoggerFactory.getLogger(HeartbeatCronjob.class);
 
-    @Autowired private UptimeConfigService uptimeConfigService;
-    @Autowired private HeartbeatService heartbeatService;
-    @Autowired private HeartbeatProcessor heartbeatProcessor;
+    @Autowired
+    private UptimeConfigService uptimeConfigService;
+    @Autowired
+    private HeartbeatService heartbeatService;
+    @Autowired
+    private HeartbeatProcessor heartbeatProcessor;
 
     @Scheduled(fixedRate = 600000)
     public void processHeartbeats() {

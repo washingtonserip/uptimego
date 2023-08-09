@@ -1,9 +1,6 @@
 package io.uptimego.processor.strategy;
 
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigOptions;
-import io.uptimego.model.UptimeConfigType;
+import io.uptimego.model.*;
 import io.uptimego.service.SocketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +28,11 @@ class TcpHeartbeatStrategyTestConfig {
 
     @BeforeEach
     public void setUp() {
+        User user = new User();
+        user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(UUID.randomUUID());
-        uptimeConfig.setUserId(UUID.randomUUID());
+        uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.TCP);
         uptimeConfig.setOptions(new UptimeConfigOptions());
         uptimeConfig.getOptions().setPort(80);

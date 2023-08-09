@@ -4,14 +4,12 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.NetworkService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class PingHeartbeatStrategy implements HeartbeatStrategy {
+    @Autowired
     private NetworkService networkService;
 
     @Override
