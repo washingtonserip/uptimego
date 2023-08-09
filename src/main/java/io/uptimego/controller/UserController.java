@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("users")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     @Autowired

@@ -3,6 +3,7 @@ package io.uptimego.processor.strategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigType;
+import io.uptimego.model.User;
 import io.uptimego.service.NetworkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,11 @@ public class DnsHeartbeatStrategyTest {
 
     @BeforeEach
     public void setUp() {
+        User user = new User();
+        user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(UUID.randomUUID());
-        uptimeConfig.setUserId(UUID.randomUUID());
+        uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.DNS);
     }
 

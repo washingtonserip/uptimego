@@ -11,7 +11,8 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public User createUser(User user) {
         return userRepository.save(user);
@@ -35,9 +36,5 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
-    }
-
-    public boolean findByLogin(String email) {
-        return userRepository.existsByEmail(email);
     }
 }

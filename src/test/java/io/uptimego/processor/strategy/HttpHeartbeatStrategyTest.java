@@ -3,6 +3,7 @@ package io.uptimego.processor.strategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigType;
+import io.uptimego.model.User;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -34,9 +35,11 @@ public class HttpHeartbeatStrategyTest {
 
     @BeforeEach
     public void setUp() {
+        User user = new User();
+        user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(UUID.randomUUID());
-        uptimeConfig.setUserId(UUID.randomUUID());
+        uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.HTTP);
     }
 
@@ -56,7 +59,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("up", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
         assertEquals(200, heartbeat.getDetails().getResponseCode());
     }
 
@@ -76,7 +79,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
         assertEquals(404, heartbeat.getDetails().getResponseCode());
     }
 
@@ -89,7 +92,7 @@ public class HttpHeartbeatStrategyTest {
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfigId());
+        assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
         assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
     }
 }

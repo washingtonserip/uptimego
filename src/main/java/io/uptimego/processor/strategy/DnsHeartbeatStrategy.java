@@ -4,15 +4,13 @@ import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.NetworkService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class DnsHeartbeatStrategy implements HeartbeatStrategy {
 
+    @Autowired
     private NetworkService networkService;
 
     @Override

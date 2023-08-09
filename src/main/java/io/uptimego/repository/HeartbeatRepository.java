@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface HeartbeatRepository extends PagingAndSortingRepository<Heartbeat, UUID> {
+    Heartbeat save(Heartbeat heartbeat);
 }

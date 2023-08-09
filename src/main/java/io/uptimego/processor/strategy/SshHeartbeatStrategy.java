@@ -5,13 +5,11 @@ import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
 import io.uptimego.service.SshService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class SshHeartbeatStrategy implements HeartbeatStrategy {
 
+    @Autowired
     private SshService sshService;
 
     @Override

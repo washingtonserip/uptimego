@@ -1,9 +1,9 @@
 package io.uptimego.util;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;

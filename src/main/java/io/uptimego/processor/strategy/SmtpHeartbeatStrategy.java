@@ -5,14 +5,12 @@ import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
 import io.uptimego.service.EmailService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@AllArgsConstructor
-@NoArgsConstructor
 public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
     static final String EMAIL_FROM = "teste@uptimego.io";
 
+    @Autowired
     private EmailService emailService;
 
     @Override
