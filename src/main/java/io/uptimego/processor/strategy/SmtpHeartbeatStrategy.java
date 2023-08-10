@@ -1,7 +1,7 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
-import io.uptimego.model.HeartbeatDetails;
+import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
 import io.uptimego.service.EmailService;
@@ -22,7 +22,6 @@ public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
 
     @Override
     public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
-        HeartbeatDetails details = new HeartbeatDetails();
         Heartbeat heartbeat = new Heartbeat();
         heartbeat.setUptimeConfig(uptimeConfig);
 
@@ -30,12 +29,10 @@ public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
             UptimeConfigOptions options = uptimeConfig.getOptions();
             String emailTo = options.getEmailTo() != null ? options.getEmailTo() : "test@test.com";
             emailService.sendEmail(options.getHost(), options.getPort(), EMAIL_FROM, emailTo);
-            heartbeat.setStatus("up");
+            heartbeat.setStatus(HeartbeatStatus.UP);
         } catch (Exception e) {
-            details.setStatusReason(e.getMessage());
-            heartbeat.setStatus("down");
+            heartbeat.setStatus(HeartbeatStatus.DOWN);
         }
-        heartbeat.setDetails(details);
 
         return heartbeat;
     }

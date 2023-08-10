@@ -1,7 +1,7 @@
 package io.uptimego.processor.strategy;
 
 import io.uptimego.model.Heartbeat;
-import io.uptimego.model.HeartbeatDetails;
+import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Response;
@@ -21,24 +21,19 @@ public class HeadHeartbeatStrategy implements HeartbeatStrategy {
 
     @Override
     public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
-        HeartbeatDetails details = new HeartbeatDetails();
         Heartbeat heartbeat = new Heartbeat();
         heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
             Response response = httpClientService.executeHeadRequest(uptimeConfig.getUrl());
-            details.setResponseCode(response.code());
             if (response.isSuccessful()) {
-                heartbeat.setStatus("up");
+                heartbeat.setStatus(HeartbeatStatus.UP);
             } else {
-                details.setStatusReason("Response code is not 2xx");
-                heartbeat.setStatus("down");
+                heartbeat.setStatus(HeartbeatStatus.DOWN);
             }
         } catch (Exception e) {
-            details.setStatusReason(e.getMessage());
-            heartbeat.setStatus("down");
+            heartbeat.setStatus(HeartbeatStatus.DOWN);
         }
-        heartbeat.setDetails(details);
 
         return heartbeat;
     }

@@ -55,7 +55,6 @@ class TcpHeartbeatStrategyTest {
         Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
         verify(socketService, times(1)).connectSocket(null, 80);
     }
 }
