@@ -6,6 +6,7 @@ import io.uptimego.service.EntityChangesListener;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import java.util.UUID;
@@ -15,9 +16,14 @@ import java.util.UUID;
 @Getter
 @Setter
 public class UptimeConfig {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
-    private UUID id;
+    @GeneratedValue(generator = "tsid")
+    @GenericGenerator(
+            name = "tsid",
+            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
+    )
+    private Long id;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

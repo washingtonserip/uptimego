@@ -1,5 +1,5 @@
 CREATE TABLE uptime_config (
-    id UUID PRIMARY KEY,
+    id BIGINT PRIMARY KEY,
     user_id UUID NOT NULL,
     url VARCHAR(255),
     type VARCHAR(255),

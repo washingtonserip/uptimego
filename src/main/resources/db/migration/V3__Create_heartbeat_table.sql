@@ -1,6 +1,6 @@
 CREATE TABLE heartbeat (
     id UUID PRIMARY KEY,
-    uptime_config_id UUID NOT NULL,
+    uptime_config_id BIGINT NOT NULL,
     status VARCHAR(255),
     response_time DOUBLE PRECISION,
     details JSONB,

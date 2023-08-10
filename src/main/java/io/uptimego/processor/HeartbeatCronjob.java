@@ -26,7 +26,7 @@ public class HeartbeatCronjob {
     @Autowired
     private HeartbeatProcessor heartbeatProcessor;
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 20000)
     public void processHeartbeats() {
         log.info("Heartbeat processing started");
 

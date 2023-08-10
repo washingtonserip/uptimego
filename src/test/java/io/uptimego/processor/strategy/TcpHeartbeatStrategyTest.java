@@ -1,5 +1,6 @@
 package io.uptimego.processor.strategy;
 
+import io.hypersistence.tsid.TSID;
 import io.uptimego.model.*;
 import io.uptimego.service.SocketService;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,14 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.net.UnknownHostException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TcpHeartbeatStrategyTestConfig {
+class TcpHeartbeatStrategyTest {
 
     @Mock
     private SocketService socketService;
@@ -31,7 +31,7 @@ class TcpHeartbeatStrategyTestConfig {
         User user = new User();
         user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(UUID.randomUUID());
+        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.TCP);
         uptimeConfig.setOptions(new UptimeConfigOptions());
@@ -49,7 +49,7 @@ class TcpHeartbeatStrategyTestConfig {
 
     @Test
     void shouldReturnUptimeAsDownWhenSocketCannotConnect() throws Exception {
-        Exception error = new IllegalArgumentException("connect: The address can't be null");;
+        Exception error = new IllegalArgumentException("connect: The address can't be null");
         doThrow(error).when(socketService).connectSocket(null, 80);
 
         Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);

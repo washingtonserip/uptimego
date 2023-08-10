@@ -1,5 +1,6 @@
 package io.uptimego.processor.strategy;
 
+import io.hypersistence.tsid.TSID;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigType;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class HttpHeartbeatStrategyTest {
@@ -38,7 +39,7 @@ public class HttpHeartbeatStrategyTest {
         User user = new User();
         user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(UUID.randomUUID());
+        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.HTTP);
     }

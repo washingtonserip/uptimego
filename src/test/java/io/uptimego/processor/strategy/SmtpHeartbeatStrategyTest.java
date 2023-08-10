@@ -1,5 +1,6 @@
 package io.uptimego.processor.strategy;
 
+import io.hypersistence.tsid.TSID;
 import io.uptimego.model.*;
 import io.uptimego.service.EmailService;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ class SmtpHeartbeatStrategyTest {
         User user = new User();
         user.setId(UUID.randomUUID());
         uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(UUID.randomUUID());
+        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
         uptimeConfig.setType(UptimeConfigType.SMTP);
         uptimeConfig.setOptions(new UptimeConfigOptions());

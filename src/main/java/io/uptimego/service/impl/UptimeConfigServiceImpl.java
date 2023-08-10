@@ -5,17 +5,13 @@ import io.uptimego.model.User;
 import io.uptimego.repository.UptimeConfigRepository;
 import io.uptimego.security.service.UserServiceImpl;
 import io.uptimego.service.UptimeConfigService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +28,7 @@ public class UptimeConfigServiceImpl implements UptimeConfigService {
     }
 
     @Override
-    public Optional<UptimeConfig> findById(UUID id) {
+    public Optional<UptimeConfig> findById(Long id) {
         return repository.findById(id);
     }
 
@@ -52,7 +48,7 @@ public class UptimeConfigServiceImpl implements UptimeConfigService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 }

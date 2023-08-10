@@ -1,5 +1,6 @@
 package io.uptimego.controller;
 
+import io.hypersistence.tsid.TSID;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.UptimeConfigService;
 import org.junit.jupiter.api.Test;
@@ -48,12 +49,12 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindById() throws Exception {
-        UUID id = UUID.randomUUID();
+        long id = TSID.Factory.getTsid().toLong();
         UptimeConfig config = new UptimeConfig();
         config.setUrl("http://example.com");
         when(service.findById(id)).thenReturn(Optional.of(config));
 
-        mockMvc.perform(get("/uptime/" + id.toString()))
+        mockMvc.perform(get("/uptime/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url").value("http://example.com"));
 
@@ -77,12 +78,12 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testUpdate() throws Exception {
-        UUID id = UUID.randomUUID();
+        long id = TSID.Factory.getTsid().toLong();
         UptimeConfig config = new UptimeConfig();
         config.setUrl("http://updated.com");
         when(service.update(any())).thenReturn(config);
 
-        mockMvc.perform(put("/uptime/" + id.toString())
+        mockMvc.perform(put("/uptime/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"url\":\"http://updated.com\"}"))
                 .andExpect(status().isOk())
@@ -94,9 +95,9 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testDelete() throws Exception {
-        UUID id = UUID.randomUUID();
+        long id = TSID.Factory.getTsid().toLong();
 
-        mockMvc.perform(delete("/uptime/" + id.toString()))
+        mockMvc.perform(delete("/uptime/" + id))
                 .andExpect(status().isOk());
 
         verify(service, times(1)).delete(id);

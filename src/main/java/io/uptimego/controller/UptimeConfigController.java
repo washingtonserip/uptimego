@@ -22,7 +22,7 @@ public class UptimeConfigController {
     }
 
     @GetMapping("/{id}")
-    public UptimeConfig findById(@PathVariable UUID id) {
+    public UptimeConfig findById(@PathVariable Long id) {
         return service.findById(id).orElseThrow(() -> new RuntimeException("UptimeConfig não encontrado"));
     }
 
@@ -32,13 +32,13 @@ public class UptimeConfigController {
     }
 
     @PutMapping("/{id}")
-    public UptimeConfig update(@PathVariable UUID id, @RequestBody UptimeConfig uptimeConfig) {
+    public UptimeConfig update(@PathVariable Long id, @RequestBody UptimeConfig uptimeConfig) {
         uptimeConfig.setId(id);
         return service.update(uptimeConfig);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 }
