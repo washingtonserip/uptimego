@@ -6,7 +6,9 @@ import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HttpHeartbeatStrategy implements HeartbeatStrategy {
 
     @Autowired

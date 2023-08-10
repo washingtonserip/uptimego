@@ -6,7 +6,9 @@ import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
 import io.uptimego.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
     static final String EMAIL_FROM = "teste@uptimego.io";
 

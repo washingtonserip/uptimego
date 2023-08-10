@@ -5,9 +5,11 @@ import io.uptimego.model.HeartbeatDetails;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.NetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 
+@Component
 public class PingHeartbeatStrategy implements HeartbeatStrategy {
     @Autowired
     private NetworkService networkService;
