@@ -1,15 +1,9 @@
 package io.uptimego.model;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,12 +15,20 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
-    private UUID id;
+    @GeneratedValue(generator = "tsid")
+    @GenericGenerator(
+            name = "tsid",
+            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
+    )
+    private Long id;
+
     private String name;
+
     @Column(unique = true)
     private String email;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 

@@ -2,14 +2,12 @@ package io.uptimego.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.uptimego.service.EntityChangesListener;
-
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import java.util.UUID;
+import javax.persistence.*;
 
 @Entity
 @EntityListeners(EntityChangesListener.class)

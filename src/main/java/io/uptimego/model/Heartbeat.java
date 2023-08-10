@@ -1,14 +1,12 @@
 package io.uptimego.model;
 
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -30,7 +28,7 @@ public class Heartbeat {
     @Enumerated(EnumType.STRING)
     private HeartbeatStatus status;
 
-    private double responseTime;
+    private double latency;
 
     @CreationTimestamp
     private LocalDateTime timestamp;

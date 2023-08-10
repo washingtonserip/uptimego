@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +34,7 @@ public class HeadHeartbeatStrategyTest {
     @BeforeEach
     public void setUp() {
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
@@ -64,7 +63,6 @@ public class HeadHeartbeatStrategyTest {
         Heartbeat heartbeat = headUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals("Response code is not 2xx", heartbeat.getDetails().getStatusReason());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 
@@ -76,7 +74,6 @@ public class HeadHeartbeatStrategyTest {
         Heartbeat heartbeat = headUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 }

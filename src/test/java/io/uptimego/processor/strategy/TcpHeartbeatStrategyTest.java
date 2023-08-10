@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -29,7 +27,7 @@ class TcpHeartbeatStrategyTest {
     @BeforeEach
     public void setUp() {
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);

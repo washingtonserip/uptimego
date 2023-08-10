@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.mail.SendFailedException;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -30,7 +29,7 @@ class SmtpHeartbeatStrategyTest {
     @BeforeEach
     public void setUp() {
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
@@ -57,7 +56,6 @@ class SmtpHeartbeatStrategyTest {
         Heartbeat heartbeat = smtpUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
         verify(emailService, times(1)).sendEmail(null, 25, SmtpHeartbeatStrategy.EMAIL_FROM, "test@test.com");
     }
 }

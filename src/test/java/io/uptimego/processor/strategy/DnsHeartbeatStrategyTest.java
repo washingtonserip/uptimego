@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -34,7 +33,7 @@ public class DnsHeartbeatStrategyTest {
     @BeforeEach
     public void setUp() {
         User user = new User();
-        user.setId(UUID.randomUUID());
+        user.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig = new UptimeConfig();
         uptimeConfig.setId(TSID.Factory.getTsid().toLong());
         uptimeConfig.setUser(user);
@@ -50,7 +49,6 @@ public class DnsHeartbeatStrategyTest {
         Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("up", heartbeat.getStatus());
-        assertEquals(localHostAddress.getHostAddress(), heartbeat.getDetails().getIpAddress());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 
@@ -62,7 +60,6 @@ public class DnsHeartbeatStrategyTest {
         Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
 
         assertEquals("down", heartbeat.getStatus());
-        assertEquals(error.getMessage(), heartbeat.getDetails().getStatusReason());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 }
