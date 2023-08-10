@@ -175,6 +175,12 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
+        <!-- Hypersistence Utils library -->
+        <dependency>
+            <groupId>io.hypersistence</groupId>
+            <artifactId>hypersistence-utils-hibernate-55</artifactId>
+            <version>3.5.0</version>
+        </dependency>
     </dependencies>
 
     <build>

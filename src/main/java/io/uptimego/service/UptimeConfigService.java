@@ -7,27 +7,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
-public class UptimeConfigService {
-    @Autowired
-    private UptimeConfigRepository uptimeConfigRepository;
+public interface UptimeConfigService {
 
-    public Page<UptimeConfig> findAll(Pageable pageable) {
-        return uptimeConfigRepository.findAll(pageable);
-    }
+    UptimeConfig create(UptimeConfig uptimeConfig);
 
-    public UptimeConfig save(UptimeConfig uptimeConfig) {
-        return uptimeConfigRepository.save(uptimeConfig);
-    }
+    Optional<UptimeConfig> findById(UUID id);
 
-    public Optional<UptimeConfig> findById(UUID id) {
-        return uptimeConfigRepository.findById(id);
-    }
+    List<UptimeConfig> findAll();
 
-    public void delete(UptimeConfig existingHeartbeat) {
-        uptimeConfigRepository.delete(existingHeartbeat);
-    }
+    Page<UptimeConfig> findAll(Pageable pageable);
+
+    UptimeConfig update(UptimeConfig uptimeConfig);
+
+    void delete(UUID id);
 }

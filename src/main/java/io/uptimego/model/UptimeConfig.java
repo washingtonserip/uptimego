@@ -1,14 +1,17 @@
 package io.uptimego.model;
 
-import io.uptimego.utils.JsonbConverter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.uptimego.service.EntityChangesListener;
 
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.util.UUID;
 
 @Entity
+@EntityListeners(EntityChangesListener.class)
 @Getter
 @Setter
 public class UptimeConfig {
@@ -16,6 +19,7 @@ public class UptimeConfig {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     private UUID id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -25,6 +29,6 @@ public class UptimeConfig {
     @Enumerated(EnumType.STRING)
     private UptimeConfigType type;
 
-    @Convert(converter = JsonbConverter.class)
+    @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
     private UptimeConfigOptions options;
 }

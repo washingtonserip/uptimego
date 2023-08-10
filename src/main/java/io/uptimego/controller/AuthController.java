@@ -27,7 +27,6 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
 
-
     private final JwtTokenService jwtTokenService;
     private final UserService userService;
 

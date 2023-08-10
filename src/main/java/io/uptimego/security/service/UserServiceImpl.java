@@ -11,8 +11,12 @@ import io.uptimego.service.UserValidationService;
 import io.uptimego.utils.GeneralMessageAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -31,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByEmail(email).get();
     }
 
     @Override
@@ -59,5 +63,19 @@ public class UserServiceImpl implements UserService {
         final User user = findByUsername(username);
 
         return UserMapper.INSTANCE.convertToAuthenticatedUserDto(user);
+    }
+
+    public User getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            String email = ((UserDetails) principal).getUsername();
+            User user = findByUsername(email);
+            if (user != null) {
+                return user;
+            }
+        }
+
+        throw new RuntimeException("Usuário não encontrado");
     }
 }
