@@ -85,12 +85,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- Spring Boot Test Starter para integração de testes -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <!-- JUnit Jupiter (JUnit 5) para testes -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

@@ -1,10 +1,7 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigType;
-import io.uptimego.model.User;
+import io.uptimego.model.*;
 import io.uptimego.service.NetworkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DnsHeartbeatStrategyTest {
+public class DnsUptimeCheckStrategyTest {
 
     @Mock
     private NetworkService networkService;
 
     @InjectMocks
-    private DnsHeartbeatStrategy dnsUptimeStrategy;
+    private DnsUptimeCheckStrategy dnsUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -48,7 +45,7 @@ public class DnsHeartbeatStrategyTest {
 
         Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 
@@ -59,7 +56,7 @@ public class DnsHeartbeatStrategyTest {
 
         Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 }

@@ -1,10 +1,7 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigType;
-import io.uptimego.model.User;
+import io.uptimego.model.*;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -23,13 +20,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class HttpHeartbeatStrategyTest {
+public class HttpUptimeCheckStrategyTest {
 
     @Mock
     private HttpClientService httpClientService;
 
     @InjectMocks
-    private HttpHeartbeatStrategy httpUptimeStrategy;
+    private HttpUptimeCheckStrategy httpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -58,7 +55,7 @@ public class HttpHeartbeatStrategyTest {
 
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
         assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
     }
 
@@ -77,7 +74,7 @@ public class HttpHeartbeatStrategyTest {
 
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
     }
 
@@ -89,7 +86,7 @@ public class HttpHeartbeatStrategyTest {
 
         Heartbeat heartbeat = httpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         assertEquals(uptimeConfig.getId(), heartbeat.getUptimeConfig().getId());
     }
 }

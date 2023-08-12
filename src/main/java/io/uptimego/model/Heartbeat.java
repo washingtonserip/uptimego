@@ -32,4 +32,8 @@ public class Heartbeat {
 
     @CreationTimestamp
     private LocalDateTime timestamp;
+
+    public boolean isEmpty() {
+        return id == null && uptimeConfig == null && status == null;
+    }
 }

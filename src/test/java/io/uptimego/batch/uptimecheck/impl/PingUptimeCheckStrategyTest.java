@@ -1,4 +1,4 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
 import io.uptimego.model.*;
@@ -18,12 +18,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PingHeartbeatStrategyTest {
+public class PingUptimeCheckStrategyTest {
     @Mock
     private NetworkService networkService;
 
     @InjectMocks
-    private PingHeartbeatStrategy pingUptimeStrategy;
+    private PingUptimeCheckStrategy pingUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -48,7 +48,7 @@ public class PingHeartbeatStrategyTest {
 
         Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class PingHeartbeatStrategyTest {
 
         Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
     }
 
     @Test
@@ -74,6 +74,6 @@ public class PingHeartbeatStrategyTest {
 
         Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
     }
 }

@@ -1,9 +1,9 @@
-package io.uptimego.processor;
+package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.batch.uptimecheck.impl.*;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigType;
-import io.uptimego.processor.strategy.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,27 +17,27 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class HeartbeatProcessorTest {
+class UptimeCheckStrategyHandlerTest {
 
     @Mock
-    private HttpHeartbeatStrategy httpUptimeStrategy;
+    private HttpUptimeCheckStrategy httpUptimeStrategy;
 
     @Mock
-    private HeadHeartbeatStrategy headUptimeStrategy;
+    private HeadUptimeCheckStrategy headUptimeStrategy;
 
     @Mock
-    private TcpHeartbeatStrategy tcpUptimeStrategy;
+    private TcpUptimeCheckStrategy tcpUptimeStrategy;
 
     @Mock
-    private DnsHeartbeatStrategy dnsUptimeStrategy;
+    private DnsUptimeCheckStrategy dnsUptimeStrategy;
 
     @Mock
-    private SmtpHeartbeatStrategy smtpUptimeStrategy;
+    private SmtpUptimeCheckStrategy smtpUptimeStrategy;
 
     @Mock
-    private PingHeartbeatStrategy pingUptimeStrategy;
+    private PingUptimeCheckStrategy pingUptimeStrategy;
 
-    private HeartbeatProcessor heartbeatProcessor;
+    private UptimeCheckStrategyHandler uptimeCheckStrategyHandler;
 
     @BeforeEach
     void setUp() {
@@ -48,7 +48,7 @@ class HeartbeatProcessorTest {
         when(smtpUptimeStrategy.getType()).thenReturn("SMTP");
         when(pingUptimeStrategy.getType()).thenReturn("PING");
 
-        List<HeartbeatStrategy> uptimeStrategies = Arrays.asList(
+        List<UptimeCheckStrategy> uptimeStrategies = Arrays.asList(
                 httpUptimeStrategy,
                 headUptimeStrategy,
                 tcpUptimeStrategy,
@@ -56,7 +56,7 @@ class HeartbeatProcessorTest {
                 smtpUptimeStrategy,
                 pingUptimeStrategy
         );
-        heartbeatProcessor = new HeartbeatProcessor(uptimeStrategies);
+        uptimeCheckStrategyHandler = new UptimeCheckStrategyHandler(uptimeStrategies);
     }
 
     @Test
@@ -89,7 +89,7 @@ class HeartbeatProcessorTest {
         heartbeatProcessor_genericTest("PING", pingUptimeStrategy);
     }
 
-    private void heartbeatProcessor_genericTest(String heartbeatType, HeartbeatStrategy strategy) {
+    private void heartbeatProcessor_genericTest(String heartbeatType, UptimeCheckStrategy strategy) {
         // Setup
         UptimeConfig uptimeConfig = new UptimeConfig();
         uptimeConfig.setType(UptimeConfigType.valueOf(heartbeatType));
@@ -97,7 +97,7 @@ class HeartbeatProcessorTest {
         when(strategy.getHeartbeat(uptimeConfig)).thenReturn(expectedHeartbeat);
 
         // Execute
-        Heartbeat actualHeartbeat = heartbeatProcessor.execute(uptimeConfig);
+        Heartbeat actualHeartbeat = uptimeCheckStrategyHandler.execute(uptimeConfig);
 
         // Verify
         assertEquals(expectedHeartbeat, actualHeartbeat);
@@ -111,6 +111,6 @@ class HeartbeatProcessorTest {
         uptimeConfig.setType(UptimeConfigType.UNKNOWN);
 
         // Execute and Verify
-        assertThrows(IllegalArgumentException.class, () -> heartbeatProcessor.execute(uptimeConfig));
+        assertThrows(IllegalArgumentException.class, () -> uptimeCheckStrategyHandler.execute(uptimeConfig));
     }
 }

@@ -1,5 +1,6 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
+import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
@@ -10,13 +11,14 @@ import org.springframework.stereotype.Component;
 import java.net.InetAddress;
 
 @Component
-public class PingHeartbeatStrategy implements HeartbeatStrategy {
+public class DnsUptimeCheckStrategy implements UptimeCheckStrategy {
+
     @Autowired
     private NetworkService networkService;
 
     @Override
     public String getType() {
-        return "PING";
+        return "DNS";
     }
 
     @Override
@@ -25,12 +27,8 @@ public class PingHeartbeatStrategy implements HeartbeatStrategy {
         heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
-            InetAddress address = networkService.getByName(uptimeConfig.getOptions().getHost());
-            if (networkService.isReachable(address, 2000)) {
-                heartbeat.setStatus(HeartbeatStatus.UP);
-            } else {
-                heartbeat.setStatus(HeartbeatStatus.DOWN);
-            }
+            InetAddress address = networkService.getByName(uptimeConfig.getUrl());
+            heartbeat.setStatus(HeartbeatStatus.UP);
         } catch (Exception e) {
             heartbeat.setStatus(HeartbeatStatus.DOWN);
         }

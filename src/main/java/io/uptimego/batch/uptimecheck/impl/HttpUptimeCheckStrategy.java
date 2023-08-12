@@ -1,5 +1,6 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
+import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
@@ -9,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HeadHeartbeatStrategy implements HeartbeatStrategy {
+public class HttpUptimeCheckStrategy implements UptimeCheckStrategy {
 
     @Autowired
     private HttpClientService httpClientService;
 
     @Override
     public String getType() {
-        return "HEAD";
+        return "HTTP";
     }
 
     @Override
@@ -25,7 +26,7 @@ public class HeadHeartbeatStrategy implements HeartbeatStrategy {
         heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
-            Response response = httpClientService.executeHeadRequest(uptimeConfig.getUrl());
+            Response response = httpClientService.executeGetRequest(uptimeConfig.getUrl());
             if (response.isSuccessful()) {
                 heartbeat.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 heartbeat.setStatus(HeartbeatStatus.UP);

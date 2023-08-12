@@ -1,23 +1,23 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
+import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
-import io.uptimego.service.EmailService;
+import io.uptimego.service.SocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
-    static final String EMAIL_FROM = "teste@uptimego.io";
+public class TcpUptimeCheckStrategy implements UptimeCheckStrategy {
 
     @Autowired
-    private EmailService emailService;
+    private SocketService socketService;
 
     @Override
     public String getType() {
-        return "SMTP";
+        return "TCP";
     }
 
     @Override
@@ -27,8 +27,7 @@ public class SmtpHeartbeatStrategy implements HeartbeatStrategy {
 
         try {
             UptimeConfigOptions options = uptimeConfig.getOptions();
-            String emailTo = options.getEmailTo() != null ? options.getEmailTo() : "test@test.com";
-            emailService.sendEmail(options.getHost(), options.getPort(), EMAIL_FROM, emailTo);
+            socketService.connectSocket(options.getHost(), options.getPort());
             heartbeat.setStatus(HeartbeatStatus.UP);
         } catch (Exception e) {
             heartbeat.setStatus(HeartbeatStatus.DOWN);

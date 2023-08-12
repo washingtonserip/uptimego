@@ -1,22 +1,23 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
+import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
 import io.uptimego.model.Heartbeat;
 import io.uptimego.model.HeartbeatStatus;
 import io.uptimego.model.UptimeConfig;
-import io.uptimego.service.HttpClientService;
-import okhttp3.Response;
+import io.uptimego.service.NetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
-public class HttpHeartbeatStrategy implements HeartbeatStrategy {
+import java.net.InetAddress;
 
+@Component
+public class PingUptimeCheckStrategy implements UptimeCheckStrategy {
     @Autowired
-    private HttpClientService httpClientService;
+    private NetworkService networkService;
 
     @Override
     public String getType() {
-        return "HTTP";
+        return "PING";
     }
 
     @Override
@@ -25,9 +26,8 @@ public class HttpHeartbeatStrategy implements HeartbeatStrategy {
         heartbeat.setUptimeConfig(uptimeConfig);
 
         try {
-            Response response = httpClientService.executeGetRequest(uptimeConfig.getUrl());
-            if (response.isSuccessful()) {
-                heartbeat.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
+            InetAddress address = networkService.getByName(uptimeConfig.getOptions().getHost());
+            if (networkService.isReachable(address, 2000)) {
                 heartbeat.setStatus(HeartbeatStatus.UP);
             } else {
                 heartbeat.setStatus(HeartbeatStatus.DOWN);

@@ -1,10 +1,7 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigType;
-import io.uptimego.model.User;
+import io.uptimego.model.*;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,13 +18,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HeadHeartbeatStrategyTest {
+public class HeadUptimeCheckStrategyTest {
 
     @Mock
     private HttpClientService httpClientService;
 
     @InjectMocks
-    private HeadHeartbeatStrategy headUptimeStrategy;
+    private HeadUptimeCheckStrategy headUptimeCheckStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -48,9 +45,9 @@ public class HeadHeartbeatStrategyTest {
         when(response.isSuccessful()).thenReturn(true);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Heartbeat heartbeat = headUptimeStrategy.getHeartbeat(uptimeConfig);
+        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 
@@ -60,9 +57,9 @@ public class HeadHeartbeatStrategyTest {
         when(response.isSuccessful()).thenReturn(false);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Heartbeat heartbeat = headUptimeStrategy.getHeartbeat(uptimeConfig);
+        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 
@@ -71,9 +68,9 @@ public class HeadHeartbeatStrategyTest {
         Exception error = new IOException();
         when(httpClientService.executeHeadRequest(any())).thenThrow(error);
 
-        Heartbeat heartbeat = headUptimeStrategy.getHeartbeat(uptimeConfig);
+        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 }

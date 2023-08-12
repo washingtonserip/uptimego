@@ -1,4 +1,4 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
 import io.uptimego.model.*;
@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TcpHeartbeatStrategyTest {
+class TcpUptimeCheckStrategyTest {
 
     @Mock
     private SocketService socketService;
 
     @InjectMocks
-    private TcpHeartbeatStrategy tcpUptimeStrategy;
+    private TcpUptimeCheckStrategy tcpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -41,7 +41,7 @@ class TcpHeartbeatStrategyTest {
         uptimeConfig.getOptions().setHost("localhost");
         Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
         verify(socketService, times(1)).connectSocket("localhost", 80);
     }
 
@@ -52,7 +52,7 @@ class TcpHeartbeatStrategyTest {
 
         Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
         verify(socketService, times(1)).connectSocket(null, 80);
     }
 }

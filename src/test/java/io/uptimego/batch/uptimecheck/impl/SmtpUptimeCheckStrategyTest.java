@@ -1,4 +1,4 @@
-package io.uptimego.processor.strategy;
+package io.uptimego.batch.uptimecheck.impl;
 
 import io.hypersistence.tsid.TSID;
 import io.uptimego.model.*;
@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class SmtpHeartbeatStrategyTest {
+class SmtpUptimeCheckStrategyTest {
 
     @Mock
     private EmailService emailService;
 
     @InjectMocks
-    private SmtpHeartbeatStrategy smtpUptimeStrategy;
+    private SmtpUptimeCheckStrategy smtpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -44,18 +44,18 @@ class SmtpHeartbeatStrategyTest {
         uptimeConfig.getOptions().setHost("smtp.example.com");
         Heartbeat heartbeat = smtpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("up", heartbeat.getStatus());
-        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpHeartbeatStrategy.EMAIL_FROM, "test@test.com");
+        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 
     @Test
     void shouldReturnUptimeAsDownWhenEmailCannotBeSent() throws Exception {
         Exception error = new SendFailedException("No recipient addresses");
-        doThrow(error).when(emailService).sendEmail(null, 25, SmtpHeartbeatStrategy.EMAIL_FROM, "test@test.com");
+        doThrow(error).when(emailService).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
 
         Heartbeat heartbeat = smtpUptimeStrategy.getHeartbeat(uptimeConfig);
 
-        assertEquals("down", heartbeat.getStatus());
-        verify(emailService, times(1)).sendEmail(null, 25, SmtpHeartbeatStrategy.EMAIL_FROM, "test@test.com");
+        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        verify(emailService, times(1)).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 }
