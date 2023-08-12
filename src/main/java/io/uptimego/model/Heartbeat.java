@@ -28,7 +28,7 @@ public class Heartbeat {
     @Enumerated(EnumType.STRING)
     private HeartbeatStatus status;
 
-    private double latency;
+    private Integer latency;
 
     @CreationTimestamp
     private LocalDateTime timestamp;

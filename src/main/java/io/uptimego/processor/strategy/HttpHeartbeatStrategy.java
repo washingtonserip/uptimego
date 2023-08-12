@@ -27,7 +27,7 @@ public class HttpHeartbeatStrategy implements HeartbeatStrategy {
         try {
             Response response = httpClientService.executeGetRequest(uptimeConfig.getUrl());
             if (response.isSuccessful()) {
-                heartbeat.setLatency(response.receivedResponseAtMillis() - response.sentRequestAtMillis());
+                heartbeat.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 heartbeat.setStatus(HeartbeatStatus.UP);
             } else {
                 heartbeat.setStatus(HeartbeatStatus.DOWN);
