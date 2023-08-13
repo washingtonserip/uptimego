@@ -3,7 +3,7 @@ package io.uptimego.cron.targetcheck.impl;
 import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import io.uptimego.service.NetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,12 +21,12 @@ public class PingTargetCheckStrategy implements TargetCheckStrategy {
     }
 
     @Override
-    public Pulse getPulse(UptimeConfig uptimeConfig) {
+    public Pulse getPulse(Target target) {
         Pulse pulse = new Pulse();
-        pulse.setUptimeConfig(uptimeConfig);
+        pulse.setTarget(target);
 
         try {
-            InetAddress address = networkService.getByName(uptimeConfig.getOptions().getHost());
+            InetAddress address = networkService.getByName(target.getOptions().getHost());
             if (networkService.isReachable(address, 2000)) {
                 pulse.setStatus(PulseStatus.UP);
             } else {

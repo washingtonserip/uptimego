@@ -3,7 +3,7 @@ package io.uptimego.controller;
 import io.hypersistence.tsid.TSID;
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
-import io.uptimego.service.UptimeConfigService;
+import io.uptimego.service.TargetService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,19 +22,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UptimeConfigControllerTest {
+public class TargetControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private UptimeConfigService service;
+    private TargetService service;
 
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testCreate() throws Exception {
         User user = EntityTestFactory.createUser();
-        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
+        Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.create(any())).thenReturn(config);
 
         mockMvc.perform(post("/uptime")
@@ -50,7 +50,7 @@ public class UptimeConfigControllerTest {
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindById() throws Exception {
         User user = EntityTestFactory.createUser();
-        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
+        Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.findById(config.getId())).thenReturn(Optional.of(config));
 
         mockMvc.perform(get("/uptime/" + config.getId()))
@@ -64,7 +64,7 @@ public class UptimeConfigControllerTest {
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindAll() throws Exception {
         User user = EntityTestFactory.createUser();
-        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
+        Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.findAll()).thenReturn(Collections.singletonList(config));
 
         mockMvc.perform(get("/uptime"))
@@ -78,7 +78,7 @@ public class UptimeConfigControllerTest {
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testUpdate() throws Exception {
         User user = EntityTestFactory.createUser();
-        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://updated.com");
+        Target config = EntityTestFactory.createTarget(user, "https://updated.com");
         when(service.update(any())).thenReturn(config);
 
         mockMvc.perform(put("/uptime/" + config.getId())

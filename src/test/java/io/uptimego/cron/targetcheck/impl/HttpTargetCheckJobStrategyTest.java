@@ -3,7 +3,7 @@ package io.uptimego.cron.targetcheck.impl;
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import io.uptimego.model.User;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
@@ -31,17 +31,17 @@ public class HttpTargetCheckJobStrategyTest {
     @InjectMocks
     private HttpTargetCheckStrategy httpUptimeStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io");
     }
 
     @Test
     public void shouldReturnUptimeAsUpWhenResponseIsSuccessful() throws IOException {
-        uptimeConfig.setUrl("https://example.com");
+        target.setUrl("https://example.com");
 
         Response response = new Response.Builder()
                 .code(200)
@@ -52,15 +52,15 @@ public class HttpTargetCheckJobStrategyTest {
 
         when(httpClientService.executeGetRequest(anyString())).thenReturn(response);
 
-        Pulse pulse = httpUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = httpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
-        assertEquals(uptimeConfig.getId(), pulse.getUptimeConfig().getId());
+        assertEquals(target.getId(), pulse.getTarget().getId());
     }
 
     @Test
     public void shouldReturnUptimeAsDownWhenResponseIsNotSuccessful() throws IOException {
-        uptimeConfig.setUrl("https://example.com");
+        target.setUrl("https://example.com");
 
         Response response = new Response.Builder()
                 .code(404)
@@ -71,21 +71,21 @@ public class HttpTargetCheckJobStrategyTest {
 
         when(httpClientService.executeGetRequest(anyString())).thenReturn(response);
 
-        Pulse pulse = httpUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = httpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
-        assertEquals(uptimeConfig.getId(), pulse.getUptimeConfig().getId());
+        assertEquals(target.getId(), pulse.getTarget().getId());
     }
 
     @Test
     public void shouldReturnUptimeAsDownWhenExceptionOccurs() throws IOException {
-        uptimeConfig.setUrl("https://invalidurl.com");
+        target.setUrl("https://invalidurl.com");
         Exception error = new IOException();
         when(httpClientService.executeGetRequest(anyString())).thenThrow(error);
 
-        Pulse pulse = httpUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = httpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
-        assertEquals(uptimeConfig.getId(), pulse.getUptimeConfig().getId());
+        assertEquals(target.getId(), pulse.getTarget().getId());
     }
 }

@@ -26,12 +26,12 @@ public class HeadTargetCheckJobStrategyTest {
     @InjectMocks
     private HeadTargetCheckStrategy headTargetCheckStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.HEAD);
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.HEAD);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class HeadTargetCheckJobStrategyTest {
         when(response.isSuccessful()).thenReturn(true);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
@@ -52,7 +52,7 @@ public class HeadTargetCheckJobStrategyTest {
         when(response.isSuccessful()).thenReturn(false);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
@@ -63,7 +63,7 @@ public class HeadTargetCheckJobStrategyTest {
         Exception error = new IOException();
         when(httpClientService.executeHeadRequest(any())).thenThrow(error);
 
-        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());

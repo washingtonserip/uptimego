@@ -1,7 +1,7 @@
 package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.Pulse;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public class TargetCheckProcessor {
     @Autowired
     private TargetCheckStrategyHandler targetCheckStrategyHandler;
 
-    public List<Pulse> process(List<UptimeConfig> configs) throws Exception {
+    public List<Pulse> process(List<Target> configs) throws Exception {
         List<CompletableFuture<Pulse>> futures = new ArrayList<>();
-        log.info("Processing {} UptimeConfigs", configs.size());
+        log.info("Processing {} targets", configs.size());
 
-        for (UptimeConfig config : configs) {
+        for (Target config : configs) {
             try {
                 futures.add(processAsync(config));
             } catch (Exception e) {
@@ -48,9 +48,9 @@ public class TargetCheckProcessor {
     }
 
     @Async
-    public CompletableFuture<Pulse> processAsync(UptimeConfig uptimeConfig) {
-        log.info("Processing UptimeConfig: {}", uptimeConfig);
-        Pulse pulse = targetCheckStrategyHandler.execute(uptimeConfig);
+    public CompletableFuture<Pulse> processAsync(Target target) {
+        log.info("Processing targets: {}", target);
+        Pulse pulse = targetCheckStrategyHandler.execute(target);
         log.info("Successfully processed pulse: {}", pulse);
 
         return CompletableFuture.completedFuture(pulse);

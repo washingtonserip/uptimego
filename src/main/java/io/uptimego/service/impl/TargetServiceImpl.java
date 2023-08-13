@@ -1,10 +1,10 @@
 package io.uptimego.service.impl;
 
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import io.uptimego.model.User;
-import io.uptimego.repository.UptimeConfigRepository;
+import io.uptimego.repository.TargetRepository;
 import io.uptimego.security.service.UserServiceImpl;
-import io.uptimego.service.UptimeConfigService;
+import io.uptimego.service.TargetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,36 +15,36 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UptimeConfigServiceImpl implements UptimeConfigService {
+public class TargetServiceImpl implements TargetService {
 
-    private final UptimeConfigRepository repository;
+    private final TargetRepository repository;
     private final UserServiceImpl userService;
 
     @Override
-    public UptimeConfig create(UptimeConfig uptimeConfig) {
+    public Target create(Target target) {
         User user = userService.getCurrentUser();
-        uptimeConfig.setUser(user);
-        return repository.save(uptimeConfig);
+        target.setUser(user);
+        return repository.save(target);
     }
 
     @Override
-    public Optional<UptimeConfig> findById(Long id) {
+    public Optional<Target> findById(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<UptimeConfig> findAll() {
+    public List<Target> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public Page<UptimeConfig> findAll(Pageable pageable) {
+    public Page<Target> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
     @Override
-    public UptimeConfig update(UptimeConfig uptimeConfig) {
-        return repository.save(uptimeConfig);
+    public Target update(Target target) {
+        return repository.save(target);
     }
 
     @Override

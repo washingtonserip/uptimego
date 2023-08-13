@@ -13,25 +13,25 @@ public class EntityTestFactory {
         return user;
     }
 
-    public static UptimeConfig createUptimeConfig(User user, String url) {
-        UptimeConfig config = new UptimeConfig();
+    public static Target createTarget(User user, String url) {
+        Target config = new Target();
         config.setId(TSID.Factory.getTsid().toLong());
         config.setUser(user);
         config.setUrl(url);
-        config.setType(UptimeConfigType.HTTP);
+        config.setType(TargetType.HTTP);
         return config;
     }
 
-    public static UptimeConfig createUptimeConfig(User user, String url, UptimeConfigType type) {
-        UptimeConfig config = createUptimeConfig(user, url);
+    public static Target createTarget(User user, String url, TargetType type) {
+        Target config = createTarget(user, url);
         config.setType(type);
         return config;
     }
 
-    public static Pulse createPulse(UptimeConfig uptimeConfig, PulseStatus status, int latency) {
+    public static Pulse createPulse(Target target, PulseStatus status, int latency) {
         Pulse pulse = new Pulse();
         pulse.setId(TSID.Factory.getTsid().toLong());
-        pulse.setUptimeConfig(uptimeConfig);
+        pulse.setTarget(target);
         pulse.setStatus(status);
         pulse.setLatency(latency);
         pulse.setTimestamp(LocalDateTime.now());

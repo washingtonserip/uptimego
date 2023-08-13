@@ -24,7 +24,7 @@ public class Pulse {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uptime_config_id")
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @Enumerated(EnumType.STRING)
     private PulseStatus status;
@@ -35,6 +35,6 @@ public class Pulse {
     private LocalDateTime timestamp;
 
     public boolean isEmpty() {
-        return id == null && uptimeConfig == null && status == null;
+        return id == null && target == null && status == null;
     }
 }

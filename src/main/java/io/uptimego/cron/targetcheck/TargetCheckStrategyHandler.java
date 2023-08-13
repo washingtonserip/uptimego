@@ -1,7 +1,7 @@
 package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.Pulse;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +21,11 @@ public class TargetCheckStrategyHandler {
                 .collect(Collectors.toMap(TargetCheckStrategy::getType, Function.identity()));
     }
 
-    public Pulse execute(UptimeConfig uptimeConfig) {
-        TargetCheckStrategy targetCheckStrategy = targetCheckStrategyMap.get(uptimeConfig.getType().name());
+    public Pulse execute(Target target) {
+        TargetCheckStrategy targetCheckStrategy = targetCheckStrategyMap.get(target.getType().name());
         if (targetCheckStrategy == null) {
-            throw new IllegalArgumentException("Unsupported uptime config type: " + uptimeConfig.getType());
+            throw new IllegalArgumentException("Unsupported uptime config type: " + target.getType());
         }
-        return targetCheckStrategy.getPulse(uptimeConfig);
+        return targetCheckStrategy.getPulse(target);
     }
 }

@@ -25,50 +25,50 @@ public class PingTargetCheckJobStrategyTest {
     @InjectMocks
     private PingTargetCheckStrategy pingUptimeStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.PING);
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.PING);
     }
 
     @Test
     public void testCheckUptime_withReachableHost_shouldReturnUp() throws Exception {
-        uptimeConfig.setOptions(new UptimeConfigOptions());
-        uptimeConfig.getOptions().setHost("host");
+        target.setOptions(new TargetOptions());
+        target.getOptions().setHost("host");
         InetAddress inetAddress = mock(InetAddress.class);
 
         when(networkService.getByName("host")).thenReturn(inetAddress);
         when(networkService.isReachable(inetAddress, 2000)).thenReturn(true);
 
-        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
     }
 
     @Test
     public void testCheckUptime_withUnreachableHost_shouldReturnDown() throws Exception {
-        uptimeConfig.setOptions(new UptimeConfigOptions());
-        uptimeConfig.getOptions().setHost("host");
+        target.setOptions(new TargetOptions());
+        target.getOptions().setHost("host");
         InetAddress inetAddress = mock(InetAddress.class);
 
         when(networkService.getByName("host")).thenReturn(inetAddress);
         when(networkService.isReachable(inetAddress, 2000)).thenReturn(false);
 
-        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
     }
 
     @Test
     public void testCheckUptime_withException_shouldReturnDown() throws Exception {
-        uptimeConfig.setOptions(new UptimeConfigOptions());
-        uptimeConfig.getOptions().setHost("host");
+        target.setOptions(new TargetOptions());
+        target.getOptions().setHost("host");
 
         when(networkService.getByName("host")).thenThrow(UnknownHostException.class);
 
-        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
     }

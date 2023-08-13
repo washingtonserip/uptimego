@@ -11,10 +11,10 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(name = "uptime_configs")
+@Table(name = "targets")
 @EntityListeners(EntityChangesListener.class)
 @Entity
-public class UptimeConfig {
+public class Target {
 
     @Id
     @GeneratedValue(generator = "tsid")
@@ -32,8 +32,8 @@ public class UptimeConfig {
     private String url;
 
     @Enumerated(EnumType.STRING)
-    private UptimeConfigType type;
+    private TargetType type;
 
     @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
-    private UptimeConfigOptions options;
+    private TargetOptions options;
 }

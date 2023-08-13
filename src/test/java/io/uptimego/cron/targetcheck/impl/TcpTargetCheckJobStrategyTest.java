@@ -22,20 +22,20 @@ class TcpTargetCheckJobStrategyTest {
     @InjectMocks
     private TcpTargetCheckStrategy tcpUptimeStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.TCP);
-        uptimeConfig.setOptions(new UptimeConfigOptions());
-        uptimeConfig.getOptions().setPort(80);
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.TCP);
+        target.setOptions(new TargetOptions());
+        target.getOptions().setPort(80);
     }
 
     @Test
     void shouldReturnUptimeAsUpWhenSocketConnects() throws Exception {
-        uptimeConfig.getOptions().setHost("localhost");
-        Pulse pulse = tcpUptimeStrategy.getPulse(uptimeConfig);
+        target.getOptions().setHost("localhost");
+        Pulse pulse = tcpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(socketService, times(1)).connectSocket("localhost", 80);
@@ -46,7 +46,7 @@ class TcpTargetCheckJobStrategyTest {
         Exception error = new IllegalArgumentException("connect: The address can't be null");
         doThrow(error).when(socketService).connectSocket(null, 80);
 
-        Pulse pulse = tcpUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = tcpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(socketService, times(1)).connectSocket(null, 80);

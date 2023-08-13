@@ -3,7 +3,7 @@ package io.uptimego.cron.targetcheck.impl;
 import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,12 @@ public class HeadTargetCheckStrategy implements TargetCheckStrategy {
     }
 
     @Override
-    public Pulse getPulse(UptimeConfig uptimeConfig) {
+    public Pulse getPulse(Target target) {
         Pulse pulse = new Pulse();
-        pulse.setUptimeConfig(uptimeConfig);
+        pulse.setTarget(target);
 
         try {
-            Response response = httpClientService.executeHeadRequest(uptimeConfig.getUrl());
+            Response response = httpClientService.executeHeadRequest(target.getUrl());
             if (response.isSuccessful()) {
                 pulse.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 pulse.setStatus(PulseStatus.UP);

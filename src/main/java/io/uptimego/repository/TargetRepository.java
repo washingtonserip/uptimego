@@ -5,15 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 
-public interface UptimeConfigRepository extends JpaRepository<UptimeConfig, Long> {
-    Page<UptimeConfig> findAll(Pageable pageable);
+public interface TargetRepository extends JpaRepository<Target, Long> {
+    Page<Target> findAll(Pageable pageable);
 
-    @Query("SELECT uc FROM UptimeConfig uc " +
+    @Query("SELECT uc FROM Target uc " +
             "JOIN uc.user u " +
             "JOIN u.subscription s " +
             "JOIN s.plan p " +
             "WHERE p.slug = :planSlug")
-    Page<UptimeConfig> findByPlanSlug(PlanSlug planSlug, Pageable pageable);
+    Page<Target> findByPlanSlug(PlanSlug planSlug, Pageable pageable);
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UptimeConfigOptions {
+public class TargetOptions {
     private String host;
     private int port;
     private String emailTo;

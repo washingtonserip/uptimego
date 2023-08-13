@@ -24,21 +24,21 @@ class SmtpTargetCheckJobStrategyTest {
     @InjectMocks
     private SmtpTargetCheckStrategy smtpUptimeStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.SMTP);
-        uptimeConfig.setOptions(new UptimeConfigOptions());
-        uptimeConfig.getOptions().setPort(25);
-        uptimeConfig.getOptions().setEmailTo("test@test.com");
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.SMTP);
+        target.setOptions(new TargetOptions());
+        target.getOptions().setPort(25);
+        target.getOptions().setEmailTo("test@test.com");
     }
 
     @Test
     void shouldReturnUptimeAsUpWhenEmailIsSent() throws Exception {
-        uptimeConfig.getOptions().setHost("smtp.example.com");
-        Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
+        target.getOptions().setHost("smtp.example.com");
+        Pulse pulse = smtpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");
@@ -49,7 +49,7 @@ class SmtpTargetCheckJobStrategyTest {
         Exception error = new SendFailedException("No recipient addresses");
         doThrow(error).when(emailService).sendEmail(null, 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");
 
-        Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = smtpUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(emailService, times(1)).sendEmail(null, 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");

@@ -3,8 +3,8 @@ package io.uptimego.cron.targetcheck.impl;
 import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigOptions;
+import io.uptimego.model.Target;
+import io.uptimego.model.TargetOptions;
 import io.uptimego.service.SocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,12 +21,12 @@ public class TcpTargetCheckStrategy implements TargetCheckStrategy {
     }
 
     @Override
-    public Pulse getPulse(UptimeConfig uptimeConfig) {
+    public Pulse getPulse(Target target) {
         Pulse pulse = new Pulse();
-        pulse.setUptimeConfig(uptimeConfig);
+        pulse.setTarget(target);
 
         try {
-            UptimeConfigOptions options = uptimeConfig.getOptions();
+            TargetOptions options = target.getOptions();
             socketService.connectSocket(options.getHost(), options.getPort());
             pulse.setStatus(PulseStatus.UP);
         } catch (Exception e) {

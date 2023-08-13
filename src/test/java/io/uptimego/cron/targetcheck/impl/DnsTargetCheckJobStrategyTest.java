@@ -25,34 +25,34 @@ public class DnsTargetCheckJobStrategyTest {
     @InjectMocks
     private DnsTargetCheckStrategy dnsUptimeStrategy;
 
-    private UptimeConfig uptimeConfig;
+    private Target target;
 
     @BeforeEach
     public void setUp() {
         User user = EntityTestFactory.createUser();
-        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.DNS);
+        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.DNS);
     }
 
     @Test
     public void getPulse_Success() throws Exception {
-        uptimeConfig.setUrl("https://uptimego.io");
+        target.setUrl("https://uptimego.io");
         InetAddress localHostAddress = InetAddress.getLocalHost();
-        when(networkService.getByName(uptimeConfig.getUrl())).thenReturn(localHostAddress);
+        when(networkService.getByName(target.getUrl())).thenReturn(localHostAddress);
 
-        Pulse pulse = dnsUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = dnsUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
-        verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
+        verify(networkService, times(1)).getByName(target.getUrl());
     }
 
     @Test
     public void getPulse_Failure() throws Exception {
         Exception error = new UnknownHostException("NUL character not allowed in hostname");
-        when(networkService.getByName(uptimeConfig.getUrl())).thenThrow(error);
+        when(networkService.getByName(target.getUrl())).thenThrow(error);
 
-        Pulse pulse = dnsUptimeStrategy.getPulse(uptimeConfig);
+        Pulse pulse = dnsUptimeStrategy.getPulse(target);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
-        verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
+        verify(networkService, times(1)).getByName(target.getUrl());
     }
 }

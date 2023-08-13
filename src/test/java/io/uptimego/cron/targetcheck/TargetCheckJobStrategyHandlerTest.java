@@ -92,8 +92,8 @@ class TargetCheckJobStrategyHandlerTest {
     private void targetCheckStrategyHandler_genericTest(String pulseType, TargetCheckStrategy strategy) {
         // Setup
         User user = EntityTestFactory.createUser();
-        UptimeConfig mockConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
-        mockConfig.setType(UptimeConfigType.valueOf(pulseType));
+        Target mockConfig = EntityTestFactory.createTarget(user, "https://uptimego.io");
+        mockConfig.setType(TargetType.valueOf(pulseType));
         Pulse expectedPulse = EntityTestFactory.createPulse(mockConfig, PulseStatus.UP, 50);
         when(strategy.getPulse(mockConfig)).thenReturn(expectedPulse);
 
@@ -108,10 +108,10 @@ class TargetCheckJobStrategyHandlerTest {
     @Test
     void targetCheckStrategyHandler_unsupportedStrategy() {
         // Setup
-        UptimeConfig uptimeConfig = new UptimeConfig();
-        uptimeConfig.setType(UptimeConfigType.UNKNOWN);
+        Target target = new Target();
+        target.setType(TargetType.UNKNOWN);
 
         // Execute and Verify
-        assertThrows(IllegalArgumentException.class, () -> targetCheckStrategyHandler.execute(uptimeConfig));
+        assertThrows(IllegalArgumentException.class, () -> targetCheckStrategyHandler.execute(target));
     }
 }

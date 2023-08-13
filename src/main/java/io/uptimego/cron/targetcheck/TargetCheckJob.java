@@ -2,9 +2,9 @@ package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.PlanSlug;
 import io.uptimego.model.Pulse;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.Target;
 import io.uptimego.repository.PulseRepository;
-import io.uptimego.repository.UptimeConfigRepository;
+import io.uptimego.repository.TargetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class TargetCheckJob {
     private static final Logger log = LoggerFactory.getLogger(TargetCheckScheduler.class);
 
     @Autowired
-    private UptimeConfigRepository uptimeConfigRepository;
+    private TargetRepository targetRepository;
 
     @Autowired
     private TargetCheckProcessor targetCheckProcessor;
@@ -31,11 +31,11 @@ public class TargetCheckJob {
     public void execute(PlanSlug planSlug) throws Exception {
         int pageSize = 10; // Adjust as needed
         Pageable pageable = PageRequest.of(0, pageSize);
-        Page<UptimeConfig> page;
+        Page<Target> page;
         log.info("Executing TargetCheckJob");
 
         do {
-            page = uptimeConfigRepository.findByPlanSlug(planSlug, pageable);
+            page = targetRepository.findByPlanSlug(planSlug, pageable);
             if(!page.hasContent()) {
                 break;
             }
