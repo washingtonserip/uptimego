@@ -38,9 +38,9 @@ class SmtpUptimeCheckStrategyTest {
     @Test
     void shouldReturnUptimeAsUpWhenEmailIsSent() throws Exception {
         uptimeConfig.getOptions().setHost("smtp.example.com");
-        Heartbeat heartbeat = smtpUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 
@@ -49,9 +49,9 @@ class SmtpUptimeCheckStrategyTest {
         Exception error = new SendFailedException("No recipient addresses");
         doThrow(error).when(emailService).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
 
-        Heartbeat heartbeat = smtpUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(emailService, times(1)).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 }

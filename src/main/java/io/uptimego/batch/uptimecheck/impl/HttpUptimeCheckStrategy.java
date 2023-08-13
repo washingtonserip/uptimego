@@ -1,8 +1,8 @@
 package io.uptimego.batch.uptimecheck.impl;
 
 import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.HeartbeatStatus;
+import io.uptimego.model.Pulse;
+import io.uptimego.model.PulseStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Response;
@@ -21,22 +21,22 @@ public class HttpUptimeCheckStrategy implements UptimeCheckStrategy {
     }
 
     @Override
-    public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setUptimeConfig(uptimeConfig);
+    public Pulse getPulse(UptimeConfig uptimeConfig) {
+        Pulse pulse = new Pulse();
+        pulse.setUptimeConfig(uptimeConfig);
 
         try {
             Response response = httpClientService.executeGetRequest(uptimeConfig.getUrl());
             if (response.isSuccessful()) {
-                heartbeat.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
-                heartbeat.setStatus(HeartbeatStatus.UP);
+                pulse.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
+                pulse.setStatus(PulseStatus.UP);
             } else {
-                heartbeat.setStatus(HeartbeatStatus.DOWN);
+                pulse.setStatus(PulseStatus.DOWN);
             }
         } catch (Exception e) {
-            heartbeat.setStatus(HeartbeatStatus.DOWN);
+            pulse.setStatus(PulseStatus.DOWN);
         }
 
-        return heartbeat;
+        return pulse;
     }
 }

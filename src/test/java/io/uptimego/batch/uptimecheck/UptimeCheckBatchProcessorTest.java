@@ -25,22 +25,22 @@ public class UptimeCheckBatchProcessorTest {
 
     @Test
     public void testProcessWithEmptyConfigs() throws Exception {
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of());
-        assertTrue(heartbeats.isEmpty());
+        List<Pulse> pulses = uptimeCheckBatchProcessor.process(List.of());
+        assertTrue(pulses.isEmpty());
     }
 
     @Test
     public void testProcessWithOneSuccessfulConfig() throws Exception {
         User user = EntityTestFactory.createUser();
         UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
-        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(config, HeartbeatStatus.DOWN, 100);
+        Pulse expectedPulse = EntityTestFactory.createPulse(config, PulseStatus.DOWN, 100);
 
-        when(uptimeCheckStrategyHandler.execute(config)).thenReturn(expectedHeartbeat);
+        when(uptimeCheckStrategyHandler.execute(config)).thenReturn(expectedPulse);
 
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(config));
+        List<Pulse> pulses = uptimeCheckBatchProcessor.process(List.of(config));
 
-        assertEquals(1, heartbeats.size());
-        assertEquals(expectedHeartbeat, heartbeats.get(0));
+        assertEquals(1, pulses.size());
+        assertEquals(expectedPulse, pulses.get(0));
     }
 
     @Test
@@ -57,15 +57,15 @@ public class UptimeCheckBatchProcessorTest {
         User user = EntityTestFactory.createUser();
         UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
         UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
-        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
+        Pulse expectedPulse = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
 
-        when(uptimeCheckStrategyHandler.execute(mockConfig1)).thenReturn(expectedHeartbeat);
+        when(uptimeCheckStrategyHandler.execute(mockConfig1)).thenReturn(expectedPulse);
         when(uptimeCheckStrategyHandler.execute(mockConfig2)).thenThrow(new RuntimeException("Test exception"));
 
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
+        List<Pulse> pulses = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
 
-        assertEquals(1, heartbeats.size());
-        assertEquals(expectedHeartbeat, heartbeats.get(0));
+        assertEquals(1, pulses.size());
+        assertEquals(expectedPulse, pulses.get(0));
     }
 
     @Test
@@ -73,23 +73,23 @@ public class UptimeCheckBatchProcessorTest {
         User user = EntityTestFactory.createUser();
         UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
         UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
-        Heartbeat mockHeartbeat1 = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
-        Heartbeat mockHeartbeat2 = EntityTestFactory.createHeartbeat(mockConfig2, HeartbeatStatus.UP, 50);
+        Pulse mockPulse1 = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
+        Pulse mockPulse2 = EntityTestFactory.createPulse(mockConfig2, PulseStatus.UP, 50);
 
         doAnswer(invocation -> {
             Thread.sleep(1000);
-            return mockHeartbeat1;
+            return mockPulse1;
         }).when(uptimeCheckStrategyHandler).execute(eq(mockConfig1));
 
         doAnswer(invocation -> {
             Thread.sleep(1000);
-            return mockHeartbeat2;
+            return mockPulse2;
         }).when(uptimeCheckStrategyHandler).execute(eq(mockConfig2));
 
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
+        List<Pulse> pulses = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
 
-        assertEquals(2, heartbeats.size());
-        assertEquals(mockHeartbeat1, heartbeats.get(0));
-        assertEquals(mockHeartbeat2, heartbeats.get(1));
+        assertEquals(2, pulses.size());
+        assertEquals(mockPulse1, pulses.get(0));
+        assertEquals(mockPulse2, pulses.get(1));
     }
 }

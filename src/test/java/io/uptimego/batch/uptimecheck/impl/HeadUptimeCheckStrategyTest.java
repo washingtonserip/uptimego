@@ -35,37 +35,37 @@ public class HeadUptimeCheckStrategyTest {
     }
 
     @Test
-    public void getHeartbeat_Success() throws Exception {
+    public void getPulse_Success() throws Exception {
         Response response = mock(Response.class);
         when(response.isSuccessful()).thenReturn(true);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 
     @Test
-    public void getHeartbeat_Failure() throws Exception {
+    public void getPulse_Failure() throws Exception {
         Response response = mock(Response.class);
         when(response.isSuccessful()).thenReturn(false);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 
     @Test
-    public void getHeartbeat_Exception() throws Exception {
+    public void getPulse_Exception() throws Exception {
         Exception error = new IOException();
         when(httpClientService.executeHeadRequest(any())).thenThrow(error);
 
-        Heartbeat heartbeat = headUptimeCheckStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
     }
 }

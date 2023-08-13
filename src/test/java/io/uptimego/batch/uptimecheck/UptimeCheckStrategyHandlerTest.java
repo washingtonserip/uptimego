@@ -59,53 +59,53 @@ class UptimeCheckStrategyHandlerTest {
     }
 
     @Test
-    void heartbeatProcessor_httpStrategy() {
-        heartbeatProcessor_genericTest("HTTP", httpUptimeStrategy);
+    void uptimeCheckStrategyHandler_httpStrategy() {
+        uptimeCheckStrategyHandler_genericTest("HTTP", httpUptimeStrategy);
     }
 
     @Test
-    void heartbeatProcessor_headStrategy() {
-        heartbeatProcessor_genericTest("HEAD", headUptimeStrategy);
+    void uptimeCheckStrategyHandler_headStrategy() {
+        uptimeCheckStrategyHandler_genericTest("HEAD", headUptimeStrategy);
     }
 
     @Test
-    void heartbeatProcessor_tcpStrategy() {
-        heartbeatProcessor_genericTest("TCP", tcpUptimeStrategy);
+    void uptimeCheckStrategyHandler_tcpStrategy() {
+        uptimeCheckStrategyHandler_genericTest("TCP", tcpUptimeStrategy);
     }
 
     @Test
-    void heartbeatProcessor_dnsStrategy() {
-        heartbeatProcessor_genericTest("DNS", dnsUptimeStrategy);
+    void uptimeCheckStrategyHandler_dnsStrategy() {
+        uptimeCheckStrategyHandler_genericTest("DNS", dnsUptimeStrategy);
     }
 
     @Test
-    void heartbeatProcessor_smtpStrategy() {
-        heartbeatProcessor_genericTest("SMTP", smtpUptimeStrategy);
+    void uptimeCheckStrategyHandler_smtpStrategy() {
+        uptimeCheckStrategyHandler_genericTest("SMTP", smtpUptimeStrategy);
     }
 
     @Test
-    void heartbeatProcessor_pingStrategy() {
-        heartbeatProcessor_genericTest("PING", pingUptimeStrategy);
+    void uptimeCheckStrategyHandler_pingStrategy() {
+        uptimeCheckStrategyHandler_genericTest("PING", pingUptimeStrategy);
     }
 
-    private void heartbeatProcessor_genericTest(String heartbeatType, UptimeCheckStrategy strategy) {
+    private void uptimeCheckStrategyHandler_genericTest(String pulseType, UptimeCheckStrategy strategy) {
         // Setup
         User user = EntityTestFactory.createUser();
         UptimeConfig mockConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
-        mockConfig.setType(UptimeConfigType.valueOf(heartbeatType));
-        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(mockConfig, HeartbeatStatus.UP, 50);
-        when(strategy.getHeartbeat(mockConfig)).thenReturn(expectedHeartbeat);
+        mockConfig.setType(UptimeConfigType.valueOf(pulseType));
+        Pulse expectedPulse = EntityTestFactory.createPulse(mockConfig, PulseStatus.UP, 50);
+        when(strategy.getPulse(mockConfig)).thenReturn(expectedPulse);
 
         // Execute
-        Heartbeat actualHeartbeat = uptimeCheckStrategyHandler.execute(mockConfig);
+        Pulse actualPulse = uptimeCheckStrategyHandler.execute(mockConfig);
 
         // Verify
-        assertEquals(expectedHeartbeat, actualHeartbeat);
-        verify(strategy, times(1)).getHeartbeat(mockConfig);
+        assertEquals(expectedPulse, actualPulse);
+        verify(strategy, times(1)).getPulse(mockConfig);
     }
 
     @Test
-    void heartbeatProcessor_unsupportedStrategy() {
+    void uptimeCheckStrategyHandler_unsupportedStrategy() {
         // Setup
         UptimeConfig uptimeConfig = new UptimeConfig();
         uptimeConfig.setType(UptimeConfigType.UNKNOWN);

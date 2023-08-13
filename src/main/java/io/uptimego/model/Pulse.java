@@ -8,10 +8,11 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
-public class Heartbeat {
+@Table(name = "pulses")
+@Entity
+public class Pulse {
 
     @Id
     @GeneratedValue(generator = "tsid")
@@ -26,7 +27,7 @@ public class Heartbeat {
     private UptimeConfig uptimeConfig;
 
     @Enumerated(EnumType.STRING)
-    private HeartbeatStatus status;
+    private PulseStatus status;
 
     private Integer latency;
 

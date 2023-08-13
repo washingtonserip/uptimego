@@ -1,4 +1,4 @@
-CREATE TABLE heartbeat (
+CREATE TABLE pulses (
     id BIGINT PRIMARY KEY,
     uptime_config_id BIGINT NOT NULL,
     status VARCHAR(10),

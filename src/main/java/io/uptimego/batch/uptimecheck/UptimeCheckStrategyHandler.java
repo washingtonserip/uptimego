@@ -1,6 +1,6 @@
 package io.uptimego.batch.uptimecheck;
 
-import io.uptimego.model.Heartbeat;
+import io.uptimego.model.Pulse;
 import io.uptimego.model.UptimeConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,11 +21,11 @@ public class UptimeCheckStrategyHandler {
                 .collect(Collectors.toMap(UptimeCheckStrategy::getType, Function.identity()));
     }
 
-    public Heartbeat execute(UptimeConfig uptimeConfig) {
+    public Pulse execute(UptimeConfig uptimeConfig) {
         UptimeCheckStrategy uptimeCheckStrategy = uptimeCheckStrategyMap.get(uptimeConfig.getType().name());
         if (uptimeCheckStrategy == null) {
             throw new IllegalArgumentException("Unsupported uptime config type: " + uptimeConfig.getType());
         }
-        return uptimeCheckStrategy.getHeartbeat(uptimeConfig);
+        return uptimeCheckStrategy.getPulse(uptimeConfig);
     }
 }

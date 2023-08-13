@@ -1,6 +1,6 @@
 package io.uptimego.model;
 
-public enum HeartbeatStatus {
+public enum PulseStatus {
     UP,
     DOWN
 }

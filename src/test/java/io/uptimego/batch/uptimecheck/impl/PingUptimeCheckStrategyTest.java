@@ -42,9 +42,9 @@ public class PingUptimeCheckStrategyTest {
         when(networkService.getByName("host")).thenReturn(inetAddress);
         when(networkService.isReachable(inetAddress, 2000)).thenReturn(true);
 
-        Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        assertEquals(PulseStatus.UP, pulse.getStatus());
     }
 
     @Test
@@ -56,9 +56,9 @@ public class PingUptimeCheckStrategyTest {
         when(networkService.getByName("host")).thenReturn(inetAddress);
         when(networkService.isReachable(inetAddress, 2000)).thenReturn(false);
 
-        Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
     }
 
     @Test
@@ -68,8 +68,8 @@ public class PingUptimeCheckStrategyTest {
 
         when(networkService.getByName("host")).thenThrow(UnknownHostException.class);
 
-        Heartbeat heartbeat = pingUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = pingUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
     }
 }

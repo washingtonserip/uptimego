@@ -34,25 +34,25 @@ public class DnsUptimeCheckStrategyTest {
     }
 
     @Test
-    public void getHeartbeat_Success() throws Exception {
-        uptimeConfig.setUrl("http://uptimego.io");
+    public void getPulse_Success() throws Exception {
+        uptimeConfig.setUrl("https://uptimego.io");
         InetAddress localHostAddress = InetAddress.getLocalHost();
         when(networkService.getByName(uptimeConfig.getUrl())).thenReturn(localHostAddress);
 
-        Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = dnsUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 
     @Test
-    public void getHeartbeat_Failure() throws Exception {
+    public void getPulse_Failure() throws Exception {
         Exception error = new UnknownHostException("NUL character not allowed in hostname");
         when(networkService.getByName(uptimeConfig.getUrl())).thenThrow(error);
 
-        Heartbeat heartbeat = dnsUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = dnsUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(networkService, times(1)).getByName(uptimeConfig.getUrl());
     }
 }

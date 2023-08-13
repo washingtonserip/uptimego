@@ -1,8 +1,8 @@
 package io.uptimego.batch.uptimecheck;
 
-import io.uptimego.model.Heartbeat;
+import io.uptimego.model.Pulse;
 import io.uptimego.model.UptimeConfig;
-import io.uptimego.repository.HeartbeatRepository;
+import io.uptimego.repository.PulseRepository;
 import io.uptimego.repository.UptimeConfigRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class UptimeCheckJob {
     private UptimeCheckBatchProcessor uptimeCheckProcessor;
 
     @Autowired
-    private HeartbeatRepository heartbeatRepository;
+    private PulseRepository pulseRepository;
 
     public void execute() throws Exception {
         int pageSize = 10; // Adjust as needed
@@ -39,12 +39,12 @@ public class UptimeCheckJob {
                 break;
             }
 
-            List<Heartbeat> heartbeats = uptimeCheckProcessor.process(page.getContent());
-            if(heartbeats.isEmpty()) {
+            List<Pulse> pulses = uptimeCheckProcessor.process(page.getContent());
+            if(pulses.isEmpty()) {
                 break;
             }
-            heartbeats.removeIf(Heartbeat::isEmpty);
-            heartbeatRepository.saveAll(heartbeats);
+            pulses.removeIf(Pulse::isEmpty);
+            pulseRepository.saveAll(pulses);
             pageable = pageable.next();
         } while (page.hasNext());
     }

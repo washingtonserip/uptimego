@@ -39,9 +39,9 @@ public class UptimeConfigControllerTest {
 
         mockMvc.perform(post("/uptime")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"url\":\"http://example.com\"}"))
+                        .content("{\"url\":\"https://example.com\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.url").value("http://example.com"));
+                .andExpect(jsonPath("$.url").value("https://example.com"));
 
         verify(service, times(1)).create(any());
     }
@@ -55,7 +55,7 @@ public class UptimeConfigControllerTest {
 
         mockMvc.perform(get("/uptime/" + config.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.url").value("http://example.com"));
+                .andExpect(jsonPath("$.url").value("https://example.com"));
 
         verify(service, times(1)).findById(config.getId());
     }
@@ -78,14 +78,14 @@ public class UptimeConfigControllerTest {
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testUpdate() throws Exception {
         User user = EntityTestFactory.createUser();
-        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://updated.com");
         when(service.update(any())).thenReturn(config);
 
         mockMvc.perform(put("/uptime/" + config.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"url\":\"http://updated.com\"}"))
+                        .content("{\"url\":\"https://updated.com\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.url").value("http://updated.com"));
+                .andExpect(jsonPath("$.url").value("https://updated.com"));
 
         verify(service, times(1)).update(any());
     }

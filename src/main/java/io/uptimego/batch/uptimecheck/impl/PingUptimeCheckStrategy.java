@@ -1,8 +1,8 @@
 package io.uptimego.batch.uptimecheck.impl;
 
 import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.HeartbeatStatus;
+import io.uptimego.model.Pulse;
+import io.uptimego.model.PulseStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.service.NetworkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +21,21 @@ public class PingUptimeCheckStrategy implements UptimeCheckStrategy {
     }
 
     @Override
-    public Heartbeat getHeartbeat(UptimeConfig uptimeConfig) {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setUptimeConfig(uptimeConfig);
+    public Pulse getPulse(UptimeConfig uptimeConfig) {
+        Pulse pulse = new Pulse();
+        pulse.setUptimeConfig(uptimeConfig);
 
         try {
             InetAddress address = networkService.getByName(uptimeConfig.getOptions().getHost());
             if (networkService.isReachable(address, 2000)) {
-                heartbeat.setStatus(HeartbeatStatus.UP);
+                pulse.setStatus(PulseStatus.UP);
             } else {
-                heartbeat.setStatus(HeartbeatStatus.DOWN);
+                pulse.setStatus(PulseStatus.DOWN);
             }
         } catch (Exception e) {
-            heartbeat.setStatus(HeartbeatStatus.DOWN);
+            pulse.setStatus(PulseStatus.DOWN);
         }
 
-        return heartbeat;
+        return pulse;
     }
 }

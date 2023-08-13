@@ -35,9 +35,9 @@ class TcpUptimeCheckStrategyTest {
     @Test
     void shouldReturnUptimeAsUpWhenSocketConnects() throws Exception {
         uptimeConfig.getOptions().setHost("localhost");
-        Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = tcpUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.UP, heartbeat.getStatus());
+        assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(socketService, times(1)).connectSocket("localhost", 80);
     }
 
@@ -46,9 +46,9 @@ class TcpUptimeCheckStrategyTest {
         Exception error = new IllegalArgumentException("connect: The address can't be null");
         doThrow(error).when(socketService).connectSocket(null, 80);
 
-        Heartbeat heartbeat = tcpUptimeStrategy.getHeartbeat(uptimeConfig);
+        Pulse pulse = tcpUptimeStrategy.getPulse(uptimeConfig);
 
-        assertEquals(HeartbeatStatus.DOWN, heartbeat.getStatus());
+        assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(socketService, times(1)).connectSocket(null, 80);
     }
 }

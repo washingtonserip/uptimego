@@ -28,13 +28,13 @@ public class EntityTestFactory {
         return config;
     }
 
-    public static Heartbeat createHeartbeat(UptimeConfig uptimeConfig, HeartbeatStatus status, int latency) {
-        Heartbeat heartbeat = new Heartbeat();
-        heartbeat.setId(TSID.Factory.getTsid().toLong());
-        heartbeat.setUptimeConfig(uptimeConfig);
-        heartbeat.setStatus(status);
-        heartbeat.setLatency(latency);
-        heartbeat.setTimestamp(LocalDateTime.now());
-        return heartbeat;
+    public static Pulse createPulse(UptimeConfig uptimeConfig, PulseStatus status, int latency) {
+        Pulse pulse = new Pulse();
+        pulse.setId(TSID.Factory.getTsid().toLong());
+        pulse.setUptimeConfig(uptimeConfig);
+        pulse.setStatus(status);
+        pulse.setLatency(latency);
+        pulse.setTimestamp(LocalDateTime.now());
+        return pulse;
     }
 }
