@@ -1,6 +1,6 @@
 package io.uptimego.batch.uptimecheck.impl;
 
-import io.hypersistence.tsid.TSID;
+import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
 import io.uptimego.service.SocketService;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,12 +26,8 @@ class TcpUptimeCheckStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = new User();
-        user.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig.setUser(user);
-        uptimeConfig.setType(UptimeConfigType.TCP);
+        User user = EntityTestFactory.createUser();
+        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.TCP);
         uptimeConfig.setOptions(new UptimeConfigOptions());
         uptimeConfig.getOptions().setPort(80);
     }

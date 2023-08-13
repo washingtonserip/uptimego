@@ -1,7 +1,10 @@
 package io.uptimego.batch.uptimecheck.impl;
 
-import io.hypersistence.tsid.TSID;
-import io.uptimego.model.*;
+import io.uptimego.EntityTestFactory;
+import io.uptimego.model.Heartbeat;
+import io.uptimego.model.HeartbeatStatus;
+import io.uptimego.model.UptimeConfig;
+import io.uptimego.model.User;
 import io.uptimego.service.HttpClientService;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -32,12 +35,8 @@ public class HttpUptimeCheckStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = new User();
-        user.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig.setUser(user);
-        uptimeConfig.setType(UptimeConfigType.HTTP);
+        User user = EntityTestFactory.createUser();
+        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
     }
 
     @Test

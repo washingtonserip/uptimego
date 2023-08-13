@@ -1,7 +1,7 @@
 package io.uptimego.batch.uptimecheck;
 
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.EntityTestFactory;
+import io.uptimego.model.*;
 import io.uptimego.repository.HeartbeatRepository;
 import io.uptimego.repository.UptimeConfigRepository;
 import org.junit.jupiter.api.Test;
@@ -22,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -41,17 +42,13 @@ public class UptimeCheckJobTest {
 
     @Test
     public void execute_ShouldProcessUntilLastPage() throws Exception {
-        UptimeConfig mockConfig1 = new UptimeConfig();
-        mockConfig1.setId(1L);
-        UptimeConfig mockConfig2 = new UptimeConfig();
-        mockConfig2.setId(2L);
+        User user = EntityTestFactory.createUser();
+        UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
+        Heartbeat mockHeartbeat1 = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
+        Heartbeat mockHeartbeat2 = EntityTestFactory.createHeartbeat(mockConfig2, HeartbeatStatus.UP, 50);
         List<UptimeConfig> mockConfigList = Arrays.asList(mockConfig1, mockConfig2);
-
-        Heartbeat heartbeat1 = new Heartbeat();
-        heartbeat1.setId(1L);
-        Heartbeat heartbeat2 = new Heartbeat();
-        heartbeat2.setId(2L);
-        List<Heartbeat> mockHeartbeatList = Arrays.asList(heartbeat1, heartbeat2);
+        List<Heartbeat> mockHeartbeatList = Arrays.asList(mockHeartbeat1, mockHeartbeat2);
 
         // Pages (has next)
         Page<UptimeConfig> firstPage = new PageImpl<>(mockConfigList, PageRequest.of(0, 10), 20);
@@ -69,21 +66,16 @@ public class UptimeCheckJobTest {
 
     @Test
     public void execute_ShouldProcessSinglePageOnly_WhenOnlyOnePageExists() throws Exception {
-        UptimeConfig mockConfig1 = new UptimeConfig();
-        mockConfig1.setId(1L);
-        UptimeConfig mockConfig2 = new UptimeConfig();
-        mockConfig2.setId(2L);
+        User user = EntityTestFactory.createUser();
+        UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
+        Heartbeat mockHeartbeat1 = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
+        Heartbeat mockHeartbeat2 = EntityTestFactory.createHeartbeat(mockConfig2, HeartbeatStatus.UP, 50);
         List<UptimeConfig> mockConfigList = Arrays.asList(mockConfig1, mockConfig2);
-
-        Heartbeat heartbeat1 = new Heartbeat();
-        heartbeat1.setId(1L);
-        Heartbeat heartbeat2 = new Heartbeat();
-        heartbeat2.setId(2L);
-        List<Heartbeat> mockHeartbeatList = Arrays.asList(heartbeat1, heartbeat2);
+        List<Heartbeat> mockHeartbeatList = Arrays.asList(mockHeartbeat1, mockHeartbeat2);
 
         Page<UptimeConfig> singlePage = new PageImpl<>(mockConfigList);
-
-        Mockito.when(uptimeConfigRepository.findAll(any(Pageable.class)))
+        when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(singlePage);
 
         doReturn(mockHeartbeatList).when(uptimeCheckProcessor).process(eq(mockConfigList));
@@ -99,7 +91,7 @@ public class UptimeCheckJobTest {
         // Empty page
         Page<UptimeConfig> emptyPage = Page.empty();
 
-        Mockito.when(uptimeConfigRepository.findAll(any(Pageable.class)))
+        when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(emptyPage);
 
         uptimeCheckJob.execute();
@@ -113,10 +105,10 @@ public class UptimeCheckJobTest {
         List<UptimeConfig> mockConfigList = Arrays.asList(new UptimeConfig());
         Page<UptimeConfig> singlePage = new PageImpl<>(mockConfigList);
 
-        Mockito.when(uptimeConfigRepository.findAll(any(Pageable.class)))
+        when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(singlePage);
 
-        Mockito.when(uptimeCheckProcessor.process(anyList()))
+        when(uptimeCheckProcessor.process(anyList()))
                 .thenThrow(new RuntimeException("Processor error"));
 
         assertThrows(RuntimeException.class, () -> uptimeCheckJob.execute());

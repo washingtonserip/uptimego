@@ -1,6 +1,6 @@
 package io.uptimego.batch.uptimecheck.impl;
 
-import io.hypersistence.tsid.TSID;
+import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
 import io.uptimego.service.NetworkService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,12 +29,8 @@ public class DnsUptimeCheckStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = new User();
-        user.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig = new UptimeConfig();
-        uptimeConfig.setId(TSID.Factory.getTsid().toLong());
-        uptimeConfig.setUser(user);
-        uptimeConfig.setType(UptimeConfigType.DNS);
+        User user = EntityTestFactory.createUser();
+        uptimeConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io", UptimeConfigType.DNS);
     }
 
     @Test

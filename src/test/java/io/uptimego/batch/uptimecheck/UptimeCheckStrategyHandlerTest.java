@@ -1,9 +1,8 @@
 package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.EntityTestFactory;
 import io.uptimego.batch.uptimecheck.impl.*;
-import io.uptimego.model.Heartbeat;
-import io.uptimego.model.UptimeConfig;
-import io.uptimego.model.UptimeConfigType;
+import io.uptimego.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -91,17 +90,18 @@ class UptimeCheckStrategyHandlerTest {
 
     private void heartbeatProcessor_genericTest(String heartbeatType, UptimeCheckStrategy strategy) {
         // Setup
-        UptimeConfig uptimeConfig = new UptimeConfig();
-        uptimeConfig.setType(UptimeConfigType.valueOf(heartbeatType));
-        Heartbeat expectedHeartbeat = new Heartbeat();
-        when(strategy.getHeartbeat(uptimeConfig)).thenReturn(expectedHeartbeat);
+        User user = EntityTestFactory.createUser();
+        UptimeConfig mockConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        mockConfig.setType(UptimeConfigType.valueOf(heartbeatType));
+        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(mockConfig, HeartbeatStatus.UP, 50);
+        when(strategy.getHeartbeat(mockConfig)).thenReturn(expectedHeartbeat);
 
         // Execute
-        Heartbeat actualHeartbeat = uptimeCheckStrategyHandler.execute(uptimeConfig);
+        Heartbeat actualHeartbeat = uptimeCheckStrategyHandler.execute(mockConfig);
 
         // Verify
         assertEquals(expectedHeartbeat, actualHeartbeat);
-        verify(strategy, times(1)).getHeartbeat(uptimeConfig);
+        verify(strategy, times(1)).getHeartbeat(mockConfig);
     }
 
     @Test

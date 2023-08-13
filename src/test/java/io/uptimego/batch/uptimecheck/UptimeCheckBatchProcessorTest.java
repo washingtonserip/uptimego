@@ -1,15 +1,16 @@
 package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -30,8 +31,9 @@ public class UptimeCheckBatchProcessorTest {
 
     @Test
     public void testProcessWithOneSuccessfulConfig() throws Exception {
-        UptimeConfig config = new UptimeConfig(); // Assuming a default constructor
-        Heartbeat expectedHeartbeat = new Heartbeat();
+        User user = EntityTestFactory.createUser();
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(config, HeartbeatStatus.DOWN, 100);
 
         when(uptimeCheckStrategyHandler.execute(config)).thenReturn(expectedHeartbeat);
 
@@ -52,14 +54,15 @@ public class UptimeCheckBatchProcessorTest {
 
     @Test
     public void testProcessWithMixedConfigs() throws Exception {
-        UptimeConfig config1 = new UptimeConfig();
-        UptimeConfig config2 = new UptimeConfig();
-        Heartbeat expectedHeartbeat = new Heartbeat();
+        User user = EntityTestFactory.createUser();
+        UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
+        Heartbeat expectedHeartbeat = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
 
-        when(uptimeCheckStrategyHandler.execute(config1)).thenReturn(expectedHeartbeat);
-        when(uptimeCheckStrategyHandler.execute(config2)).thenThrow(new RuntimeException("Test exception"));
+        when(uptimeCheckStrategyHandler.execute(mockConfig1)).thenReturn(expectedHeartbeat);
+        when(uptimeCheckStrategyHandler.execute(mockConfig2)).thenThrow(new RuntimeException("Test exception"));
 
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(config1, config2));
+        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
 
         assertEquals(1, heartbeats.size());
         assertEquals(expectedHeartbeat, heartbeats.get(0));
@@ -67,49 +70,26 @@ public class UptimeCheckBatchProcessorTest {
 
     @Test
     public void testAsyncProcessing() throws Exception {
-        User user = new User();
-        user.setId(1L);
-
-        UptimeConfig config1 = new UptimeConfig();
-        config1.setId(1L);
-        config1.setUser(user);
-        config1.setUrl("http://www.google.com");
-        config1.setType(UptimeConfigType.HTTP);
-
-        UptimeConfig config2 = new UptimeConfig();
-        config2.setId(1L);
-        config2.setUser(user);
-        config2.setUrl("http://www.yahoo.com");
-        config2.setType(UptimeConfigType.HTTP);
-
-        Heartbeat heartbeat1 = new Heartbeat();
-        heartbeat1.setId(1L);
-        heartbeat1.setUptimeConfig(config1);
-        heartbeat1.setStatus(HeartbeatStatus.DOWN);
-        heartbeat1.setLatency(100);
-        heartbeat1.setTimestamp(LocalDateTime.now());
-
-        Heartbeat heartbeat2 = new Heartbeat();
-        heartbeat2.setId(1L);
-        heartbeat2.setUptimeConfig(config2);
-        heartbeat2.setStatus(HeartbeatStatus.UP);
-        heartbeat2.setLatency(50);
-        heartbeat2.setTimestamp(LocalDateTime.now());
+        User user = EntityTestFactory.createUser();
+        UptimeConfig mockConfig1 = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
+        UptimeConfig mockConfig2 = EntityTestFactory.createUptimeConfig(user, "https://wpires.com.br");
+        Heartbeat mockHeartbeat1 = EntityTestFactory.createHeartbeat(mockConfig1, HeartbeatStatus.DOWN, 100);
+        Heartbeat mockHeartbeat2 = EntityTestFactory.createHeartbeat(mockConfig2, HeartbeatStatus.UP, 50);
 
         doAnswer(invocation -> {
             Thread.sleep(1000);
-            return heartbeat1;
-        }).when(uptimeCheckStrategyHandler).execute(eq(config1));
+            return mockHeartbeat1;
+        }).when(uptimeCheckStrategyHandler).execute(eq(mockConfig1));
 
         doAnswer(invocation -> {
             Thread.sleep(1000);
-            return heartbeat2;
-        }).when(uptimeCheckStrategyHandler).execute(eq(config2));
+            return mockHeartbeat2;
+        }).when(uptimeCheckStrategyHandler).execute(eq(mockConfig2));
 
-        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(config1, config2));
+        List<Heartbeat> heartbeats = uptimeCheckBatchProcessor.process(List.of(mockConfig1, mockConfig2));
 
         assertEquals(2, heartbeats.size());
-        assertEquals(heartbeat1, heartbeats.get(0));
-        assertEquals(heartbeat2, heartbeats.get(1));
+        assertEquals(mockHeartbeat1, heartbeats.get(0));
+        assertEquals(mockHeartbeat2, heartbeats.get(1));
     }
 }

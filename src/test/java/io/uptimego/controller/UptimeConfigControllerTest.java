@@ -1,7 +1,8 @@
 package io.uptimego.controller;
 
 import io.hypersistence.tsid.TSID;
-import io.uptimego.model.UptimeConfig;
+import io.uptimego.EntityTestFactory;
+import io.uptimego.model.*;
 import io.uptimego.service.UptimeConfigService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testCreate() throws Exception {
-        UptimeConfig config = new UptimeConfig();
-        config.setUrl("http://example.com");
+        User user = EntityTestFactory.createUser();
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
         when(service.create(any())).thenReturn(config);
 
         mockMvc.perform(post("/uptime")
@@ -48,28 +49,27 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindById() throws Exception {
-        long id = TSID.Factory.getTsid().toLong();
-        UptimeConfig config = new UptimeConfig();
-        config.setUrl("http://example.com");
-        when(service.findById(id)).thenReturn(Optional.of(config));
+        User user = EntityTestFactory.createUser();
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
+        when(service.findById(config.getId())).thenReturn(Optional.of(config));
 
-        mockMvc.perform(get("/uptime/" + id))
+        mockMvc.perform(get("/uptime/" + config.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url").value("http://example.com"));
 
-        verify(service, times(1)).findById(id);
+        verify(service, times(1)).findById(config.getId());
     }
 
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindAll() throws Exception {
-        UptimeConfig config = new UptimeConfig();
-        config.setUrl("http://example.com");
+        User user = EntityTestFactory.createUser();
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
         when(service.findAll()).thenReturn(Collections.singletonList(config));
 
         mockMvc.perform(get("/uptime"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].url").value("http://example.com"));
+                .andExpect(jsonPath("$[0].url").value("https://example.com"));
 
         verify(service, times(1)).findAll();
     }
@@ -77,12 +77,11 @@ public class UptimeConfigControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testUpdate() throws Exception {
-        long id = TSID.Factory.getTsid().toLong();
-        UptimeConfig config = new UptimeConfig();
-        config.setUrl("http://updated.com");
+        User user = EntityTestFactory.createUser();
+        UptimeConfig config = EntityTestFactory.createUptimeConfig(user, "https://example.com");
         when(service.update(any())).thenReturn(config);
 
-        mockMvc.perform(put("/uptime/" + id)
+        mockMvc.perform(put("/uptime/" + config.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"url\":\"http://updated.com\"}"))
                 .andExpect(status().isOk())
