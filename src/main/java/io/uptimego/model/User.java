@@ -7,11 +7,11 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@Entity
 public class User {
 
     @Id
@@ -31,5 +31,8 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+//    @OneToOne(mappedBy = "user")
+//    private Subscription subscription;
 
 }
