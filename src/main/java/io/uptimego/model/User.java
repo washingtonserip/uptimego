@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,5 +35,8 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Subscription subscription;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Channel> channels;
 
 }

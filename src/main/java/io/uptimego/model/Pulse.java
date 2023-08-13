@@ -23,7 +23,7 @@ public class Pulse {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uptime_config_id")
+    @JoinColumn(name = "target_id")
     private Target target;
 
     @Enumerated(EnumType.STRING)
