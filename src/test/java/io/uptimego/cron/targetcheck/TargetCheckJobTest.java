@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck;
+package io.uptimego.cron.targetcheck;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -26,16 +26,16 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class UptimeCheckJobTest {
+public class TargetCheckJobTest {
 
     @InjectMocks
-    private UptimeCheckJob uptimeCheckJob;
+    private TargetCheckJob targetCheckJob;
 
     @Mock
     private UptimeConfigRepository uptimeConfigRepository;
 
     @Mock
-    private UptimeCheckBatchProcessor uptimeCheckProcessor;
+    private TargetCheckProcessor targetCheckProcessor;
 
     @Mock
     private PulseRepository pulseRepository;
@@ -56,11 +56,11 @@ public class UptimeCheckJobTest {
 
         doReturn(firstPage).when(uptimeConfigRepository).findAll(eq(PageRequest.of(0, 10)));
         doReturn(secondPage).when(uptimeConfigRepository).findAll(eq(PageRequest.of(1, 10)));
-        doReturn(mockPulseList).when(uptimeCheckProcessor).process(anyList());
+        doReturn(mockPulseList).when(targetCheckProcessor).process(anyList());
 
-        uptimeCheckJob.execute(PlanSlug.BASIC);
+        targetCheckJob.execute(PlanSlug.BASIC);
 
-        Mockito.verify(uptimeCheckProcessor, Mockito.times(2)).process(anyList());
+        Mockito.verify(targetCheckProcessor, Mockito.times(2)).process(anyList());
         Mockito.verify(pulseRepository, Mockito.times(2)).saveAll(anyList());
     }
 
@@ -78,9 +78,9 @@ public class UptimeCheckJobTest {
         when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(singlePage);
 
-        doReturn(mockPulseList).when(uptimeCheckProcessor).process(eq(mockConfigList));
+        doReturn(mockPulseList).when(targetCheckProcessor).process(eq(mockConfigList));
 
-        uptimeCheckJob.execute(PlanSlug.BASIC);
+        targetCheckJob.execute(PlanSlug.BASIC);
 
         Mockito.verify(uptimeConfigRepository, Mockito.times(1)).findAll(any(Pageable.class));
         Mockito.verify(pulseRepository).saveAll(eq(mockPulseList));
@@ -94,9 +94,9 @@ public class UptimeCheckJobTest {
         when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(emptyPage);
 
-        uptimeCheckJob.execute(PlanSlug.BASIC);
+        targetCheckJob.execute(PlanSlug.BASIC);
 
-        Mockito.verify(uptimeCheckProcessor, Mockito.never()).process(anyList());
+        Mockito.verify(targetCheckProcessor, Mockito.never()).process(anyList());
         Mockito.verify(pulseRepository, Mockito.never()).saveAll(anyList());
     }
 
@@ -108,9 +108,9 @@ public class UptimeCheckJobTest {
         when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(singlePage);
 
-        when(uptimeCheckProcessor.process(anyList()))
+        when(targetCheckProcessor.process(anyList()))
                 .thenThrow(new RuntimeException("Processor error"));
 
-        assertThrows(RuntimeException.class, () -> uptimeCheckJob.execute(PlanSlug.BASIC));
+        assertThrows(RuntimeException.class, () -> targetCheckJob.execute(PlanSlug.BASIC));
     }
 }

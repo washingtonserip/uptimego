@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DnsUptimeCheckStrategyTest {
+public class DnsTargetCheckJobStrategyTest {
 
     @Mock
     private NetworkService networkService;
 
     @InjectMocks
-    private DnsUptimeCheckStrategy dnsUptimeStrategy;
+    private DnsTargetCheckStrategy dnsUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 

@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck;
+package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.PlanSlug;
 import org.slf4j.Logger;
@@ -8,18 +8,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UptimeCheckScheduler {
-    private static final Logger log = LoggerFactory.getLogger(UptimeCheckScheduler.class);
+public class TargetCheckScheduler {
+    private static final Logger log = LoggerFactory.getLogger(TargetCheckScheduler.class);
 
     @Autowired
-    private UptimeCheckJob uptimeCheckJob;
+    private TargetCheckJob targetCheckJob;
 
     @Scheduled(fixedRate = 30000)
-    public void triggerUptimeCheck() {
+    public void triggerTargetCheck() {
         try {
-            uptimeCheckJob.execute(PlanSlug.BASIC);
+            targetCheckJob.execute(PlanSlug.BASIC);
         } catch (Exception e) {
-            log.info("Error executing UptimeCheckJob", e);
+            log.info("Error executing TargetCheckJob", e);
             throw new RuntimeException(e);
         }
     }

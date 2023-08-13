@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -18,13 +18,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class HeadUptimeCheckStrategyTest {
+public class HeadTargetCheckJobStrategyTest {
 
     @Mock
     private HttpClientService httpClientService;
 
     @InjectMocks
-    private HeadUptimeCheckStrategy headUptimeCheckStrategy;
+    private HeadTargetCheckStrategy headTargetCheckStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -40,7 +40,7 @@ public class HeadUptimeCheckStrategyTest {
         when(response.isSuccessful()).thenReturn(true);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
@@ -52,7 +52,7 @@ public class HeadUptimeCheckStrategyTest {
         when(response.isSuccessful()).thenReturn(false);
         when(httpClientService.executeHeadRequest(any())).thenReturn(response);
 
-        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());
@@ -63,7 +63,7 @@ public class HeadUptimeCheckStrategyTest {
         Exception error = new IOException();
         when(httpClientService.executeHeadRequest(any())).thenThrow(error);
 
-        Pulse pulse = headUptimeCheckStrategy.getPulse(uptimeConfig);
+        Pulse pulse = headTargetCheckStrategy.getPulse(uptimeConfig);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
         verify(httpClientService, times(1)).executeHeadRequest(any());

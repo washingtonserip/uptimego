@@ -1,7 +1,7 @@
-package io.uptimego.batch.uptimecheck;
+package io.uptimego.cron.targetcheck;
 
 import io.uptimego.EntityTestFactory;
-import io.uptimego.batch.uptimecheck.impl.*;
+import io.uptimego.cron.targetcheck.impl.*;
 import io.uptimego.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,31 +12,32 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UptimeCheckStrategyHandlerTest {
+class TargetCheckJobStrategyHandlerTest {
 
     @Mock
-    private HttpUptimeCheckStrategy httpUptimeStrategy;
+    private HttpTargetCheckStrategy httpUptimeStrategy;
 
     @Mock
-    private HeadUptimeCheckStrategy headUptimeStrategy;
+    private HeadTargetCheckStrategy headUptimeStrategy;
 
     @Mock
-    private TcpUptimeCheckStrategy tcpUptimeStrategy;
+    private TcpTargetCheckStrategy tcpUptimeStrategy;
 
     @Mock
-    private DnsUptimeCheckStrategy dnsUptimeStrategy;
+    private DnsTargetCheckStrategy dnsUptimeStrategy;
 
     @Mock
-    private SmtpUptimeCheckStrategy smtpUptimeStrategy;
+    private SmtpTargetCheckStrategy smtpUptimeStrategy;
 
     @Mock
-    private PingUptimeCheckStrategy pingUptimeStrategy;
+    private PingTargetCheckStrategy pingUptimeStrategy;
 
-    private UptimeCheckStrategyHandler uptimeCheckStrategyHandler;
+    private TargetCheckStrategyHandler targetCheckStrategyHandler;
 
     @BeforeEach
     void setUp() {
@@ -47,7 +48,7 @@ class UptimeCheckStrategyHandlerTest {
         when(smtpUptimeStrategy.getType()).thenReturn("SMTP");
         when(pingUptimeStrategy.getType()).thenReturn("PING");
 
-        List<UptimeCheckStrategy> uptimeStrategies = Arrays.asList(
+        List<TargetCheckStrategy> uptimeStrategies = Arrays.asList(
                 httpUptimeStrategy,
                 headUptimeStrategy,
                 tcpUptimeStrategy,
@@ -55,40 +56,40 @@ class UptimeCheckStrategyHandlerTest {
                 smtpUptimeStrategy,
                 pingUptimeStrategy
         );
-        uptimeCheckStrategyHandler = new UptimeCheckStrategyHandler(uptimeStrategies);
+        targetCheckStrategyHandler = new TargetCheckStrategyHandler(uptimeStrategies);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_httpStrategy() {
-        uptimeCheckStrategyHandler_genericTest("HTTP", httpUptimeStrategy);
+    void targetCheckStrategyHandler_httpStrategy() {
+        targetCheckStrategyHandler_genericTest("HTTP", httpUptimeStrategy);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_headStrategy() {
-        uptimeCheckStrategyHandler_genericTest("HEAD", headUptimeStrategy);
+    void targetCheckStrategyHandler_headStrategy() {
+        targetCheckStrategyHandler_genericTest("HEAD", headUptimeStrategy);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_tcpStrategy() {
-        uptimeCheckStrategyHandler_genericTest("TCP", tcpUptimeStrategy);
+    void targetCheckStrategyHandler_tcpStrategy() {
+        targetCheckStrategyHandler_genericTest("TCP", tcpUptimeStrategy);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_dnsStrategy() {
-        uptimeCheckStrategyHandler_genericTest("DNS", dnsUptimeStrategy);
+    void targetCheckStrategyHandler_dnsStrategy() {
+        targetCheckStrategyHandler_genericTest("DNS", dnsUptimeStrategy);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_smtpStrategy() {
-        uptimeCheckStrategyHandler_genericTest("SMTP", smtpUptimeStrategy);
+    void targetCheckStrategyHandler_smtpStrategy() {
+        targetCheckStrategyHandler_genericTest("SMTP", smtpUptimeStrategy);
     }
 
     @Test
-    void uptimeCheckStrategyHandler_pingStrategy() {
-        uptimeCheckStrategyHandler_genericTest("PING", pingUptimeStrategy);
+    void targetCheckStrategyHandler_pingStrategy() {
+        targetCheckStrategyHandler_genericTest("PING", pingUptimeStrategy);
     }
 
-    private void uptimeCheckStrategyHandler_genericTest(String pulseType, UptimeCheckStrategy strategy) {
+    private void targetCheckStrategyHandler_genericTest(String pulseType, TargetCheckStrategy strategy) {
         // Setup
         User user = EntityTestFactory.createUser();
         UptimeConfig mockConfig = EntityTestFactory.createUptimeConfig(user, "https://uptimego.io");
@@ -97,7 +98,7 @@ class UptimeCheckStrategyHandlerTest {
         when(strategy.getPulse(mockConfig)).thenReturn(expectedPulse);
 
         // Execute
-        Pulse actualPulse = uptimeCheckStrategyHandler.execute(mockConfig);
+        Pulse actualPulse = targetCheckStrategyHandler.execute(mockConfig);
 
         // Verify
         assertEquals(expectedPulse, actualPulse);
@@ -105,12 +106,12 @@ class UptimeCheckStrategyHandlerTest {
     }
 
     @Test
-    void uptimeCheckStrategyHandler_unsupportedStrategy() {
+    void targetCheckStrategyHandler_unsupportedStrategy() {
         // Setup
         UptimeConfig uptimeConfig = new UptimeConfig();
         uptimeConfig.setType(UptimeConfigType.UNKNOWN);
 
         // Execute and Verify
-        assertThrows(IllegalArgumentException.class, () -> uptimeCheckStrategyHandler.execute(uptimeConfig));
+        assertThrows(IllegalArgumentException.class, () -> targetCheckStrategyHandler.execute(uptimeConfig));
     }
 }

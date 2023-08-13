@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck;
+package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.PlanSlug;
 import io.uptimego.model.Pulse;
@@ -16,14 +16,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UptimeCheckJob {
-    private static final Logger log = LoggerFactory.getLogger(UptimeCheckScheduler.class);
+public class TargetCheckJob {
+    private static final Logger log = LoggerFactory.getLogger(TargetCheckScheduler.class);
 
     @Autowired
     private UptimeConfigRepository uptimeConfigRepository;
 
     @Autowired
-    private UptimeCheckBatchProcessor uptimeCheckProcessor;
+    private TargetCheckProcessor targetCheckProcessor;
 
     @Autowired
     private PulseRepository pulseRepository;
@@ -32,7 +32,7 @@ public class UptimeCheckJob {
         int pageSize = 10; // Adjust as needed
         Pageable pageable = PageRequest.of(0, pageSize);
         Page<UptimeConfig> page;
-        log.info("Executing UptimeCheckJob");
+        log.info("Executing TargetCheckJob");
 
         do {
             page = uptimeConfigRepository.findByPlanSlug(planSlug, pageable);
@@ -40,7 +40,7 @@ public class UptimeCheckJob {
                 break;
             }
 
-            List<Pulse> pulses = uptimeCheckProcessor.process(page.getContent());
+            List<Pulse> pulses = targetCheckProcessor.process(page.getContent());
             if(pulses.isEmpty()) {
                 break;
             }

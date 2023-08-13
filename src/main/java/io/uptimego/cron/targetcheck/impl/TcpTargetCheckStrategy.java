@@ -1,24 +1,23 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
-import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
+import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.model.UptimeConfigOptions;
-import io.uptimego.service.EmailService;
+import io.uptimego.service.SocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SmtpUptimeCheckStrategy implements UptimeCheckStrategy {
-    static final String EMAIL_FROM = "teste@uptimego.io";
+public class TcpTargetCheckStrategy implements TargetCheckStrategy {
 
     @Autowired
-    private EmailService emailService;
+    private SocketService socketService;
 
     @Override
     public String getType() {
-        return "SMTP";
+        return "TCP";
     }
 
     @Override
@@ -28,8 +27,7 @@ public class SmtpUptimeCheckStrategy implements UptimeCheckStrategy {
 
         try {
             UptimeConfigOptions options = uptimeConfig.getOptions();
-            String emailTo = options.getEmailTo() != null ? options.getEmailTo() : "test@test.com";
-            emailService.sendEmail(options.getHost(), options.getPort(), EMAIL_FROM, emailTo);
+            socketService.connectSocket(options.getHost(), options.getPort());
             pulse.setStatus(PulseStatus.UP);
         } catch (Exception e) {
             pulse.setStatus(PulseStatus.DOWN);

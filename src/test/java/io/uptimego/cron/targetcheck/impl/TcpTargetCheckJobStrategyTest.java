@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -14,13 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TcpUptimeCheckStrategyTest {
+class TcpTargetCheckJobStrategyTest {
 
     @Mock
     private SocketService socketService;
 
     @InjectMocks
-    private TcpUptimeCheckStrategy tcpUptimeStrategy;
+    private TcpTargetCheckStrategy tcpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 

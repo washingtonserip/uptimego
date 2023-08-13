@@ -1,6 +1,6 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
-import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
+import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
 import io.uptimego.model.UptimeConfig;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.net.InetAddress;
 
 @Component
-public class DnsUptimeCheckStrategy implements UptimeCheckStrategy {
+public class DnsTargetCheckStrategy implements TargetCheckStrategy {
 
     @Autowired
     private NetworkService networkService;

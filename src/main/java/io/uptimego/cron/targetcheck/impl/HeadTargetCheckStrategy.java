@@ -1,6 +1,6 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
-import io.uptimego.batch.uptimecheck.UptimeCheckStrategy;
+import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.PulseStatus;
 import io.uptimego.model.UptimeConfig;
@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HttpUptimeCheckStrategy implements UptimeCheckStrategy {
+public class HeadTargetCheckStrategy implements TargetCheckStrategy {
 
     @Autowired
     private HttpClientService httpClientService;
 
     @Override
     public String getType() {
-        return "HTTP";
+        return "HEAD";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class HttpUptimeCheckStrategy implements UptimeCheckStrategy {
         pulse.setUptimeConfig(uptimeConfig);
 
         try {
-            Response response = httpClientService.executeGetRequest(uptimeConfig.getUrl());
+            Response response = httpClientService.executeHeadRequest(uptimeConfig.getUrl());
             if (response.isSuccessful()) {
                 pulse.setLatency((int) (response.receivedResponseAtMillis() - response.sentRequestAtMillis()));
                 pulse.setStatus(PulseStatus.UP);

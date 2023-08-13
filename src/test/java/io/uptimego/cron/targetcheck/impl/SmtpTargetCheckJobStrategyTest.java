@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class SmtpUptimeCheckStrategyTest {
+class SmtpTargetCheckJobStrategyTest {
 
     @Mock
     private EmailService emailService;
 
     @InjectMocks
-    private SmtpUptimeCheckStrategy smtpUptimeStrategy;
+    private SmtpTargetCheckStrategy smtpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 
@@ -41,17 +41,17 @@ class SmtpUptimeCheckStrategyTest {
         Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
 
         assertEquals(PulseStatus.UP, pulse.getStatus());
-        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
+        verify(emailService, times(1)).sendEmail("smtp.example.com", 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 
     @Test
     void shouldReturnUptimeAsDownWhenEmailCannotBeSent() throws Exception {
         Exception error = new SendFailedException("No recipient addresses");
-        doThrow(error).when(emailService).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
+        doThrow(error).when(emailService).sendEmail(null, 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");
 
         Pulse pulse = smtpUptimeStrategy.getPulse(uptimeConfig);
 
         assertEquals(PulseStatus.DOWN, pulse.getStatus());
-        verify(emailService, times(1)).sendEmail(null, 25, SmtpUptimeCheckStrategy.EMAIL_FROM, "test@test.com");
+        verify(emailService, times(1)).sendEmail(null, 25, SmtpTargetCheckStrategy.EMAIL_FROM, "test@test.com");
     }
 }

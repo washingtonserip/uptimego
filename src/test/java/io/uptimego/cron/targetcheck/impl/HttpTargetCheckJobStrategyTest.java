@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.Pulse;
@@ -23,13 +23,13 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class HttpUptimeCheckStrategyTest {
+public class HttpTargetCheckJobStrategyTest {
 
     @Mock
     private HttpClientService httpClientService;
 
     @InjectMocks
-    private HttpUptimeCheckStrategy httpUptimeStrategy;
+    private HttpTargetCheckStrategy httpUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 

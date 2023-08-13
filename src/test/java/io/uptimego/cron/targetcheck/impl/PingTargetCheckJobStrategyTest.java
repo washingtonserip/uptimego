@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck.impl;
+package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
@@ -18,12 +18,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class PingUptimeCheckStrategyTest {
+public class PingTargetCheckJobStrategyTest {
     @Mock
     private NetworkService networkService;
 
     @InjectMocks
-    private PingUptimeCheckStrategy pingUptimeStrategy;
+    private PingTargetCheckStrategy pingUptimeStrategy;
 
     private UptimeConfig uptimeConfig;
 

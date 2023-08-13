@@ -1,4 +1,4 @@
-package io.uptimego.batch.uptimecheck;
+package io.uptimego.cron.targetcheck;
 
 import io.uptimego.model.Pulse;
 import io.uptimego.model.UptimeConfig;
@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 
 @Component
 @EnableAsync(proxyTargetClass = true)
-public class UptimeCheckBatchProcessor {
+public class TargetCheckProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(UptimeCheckBatchProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(TargetCheckProcessor.class);
 
     @Autowired
-    private UptimeCheckStrategyHandler uptimeCheckStrategyHandler;
+    private TargetCheckStrategyHandler targetCheckStrategyHandler;
 
     public List<Pulse> process(List<UptimeConfig> configs) throws Exception {
         List<CompletableFuture<Pulse>> futures = new ArrayList<>();
@@ -50,7 +50,7 @@ public class UptimeCheckBatchProcessor {
     @Async
     public CompletableFuture<Pulse> processAsync(UptimeConfig uptimeConfig) {
         log.info("Processing UptimeConfig: {}", uptimeConfig);
-        Pulse pulse = uptimeCheckStrategyHandler.execute(uptimeConfig);
+        Pulse pulse = targetCheckStrategyHandler.execute(uptimeConfig);
         log.info("Successfully processed pulse: {}", pulse);
 
         return CompletableFuture.completedFuture(pulse);
