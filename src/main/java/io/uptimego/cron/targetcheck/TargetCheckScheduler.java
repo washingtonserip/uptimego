@@ -15,7 +15,7 @@ public class TargetCheckScheduler {
     private TargetCheckJob targetCheckJob;
 
     @Scheduled(fixedRate = 30000)
-    public void triggerTargetCheck() {
+    public void triggerTargetCheckForBasicUsers() {
         try {
             targetCheckJob.execute(PlanSlug.BASIC);
         } catch (Exception e) {
@@ -23,5 +23,14 @@ public class TargetCheckScheduler {
             throw new RuntimeException(e);
         }
     }
-}
 
+    @Scheduled(fixedRate = 10000)
+    public void triggerTargetCheckForProUsers() {
+        try {
+            targetCheckJob.execute(PlanSlug.PRO);
+        } catch (Exception e) {
+            log.info("Error executing TargetCheckJob", e);
+            throw new RuntimeException(e);
+        }
+    }
+}

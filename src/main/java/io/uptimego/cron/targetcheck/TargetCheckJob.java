@@ -41,11 +41,10 @@ public class TargetCheckJob {
             }
 
             List<Pulse> pulses = targetCheckProcessor.process(page.getContent());
-            if(pulses.isEmpty()) {
-                break;
-            }
             pulses.removeIf(Pulse::isEmpty);
-            pulseRepository.saveAll(pulses);
+            if(!pulses.isEmpty()) {
+                pulseRepository.saveAll(pulses);
+            }
             pageable = pageable.next();
         } while (page.hasNext());
     }
