@@ -22,14 +22,26 @@ public class TargetCheckSchedulerTest {
     private TargetCheckJob targetCheckJob;
 
     @Test
-    public void triggerTargetCheck_ShouldCallJob() throws Exception {
-        targetCheckScheduler.triggerTargetCheck();
+    public void triggerTargetCheckForBasicUsers_ShouldCallJob() throws Exception {
+        targetCheckScheduler.triggerTargetCheckForBasicUsers();
         Mockito.verify(targetCheckJob).execute(PlanSlug.BASIC);
     }
 
     @Test
-    public void triggerTargetCheck_ShouldThrowRuntimeExceptionOnException() throws Exception {
+    public void triggerTargetCheckForBasicUsers_ShouldThrowRuntimeExceptionOnException() throws Exception {
         Mockito.doThrow(new Exception()).when(targetCheckJob).execute(PlanSlug.BASIC);
-        assertThrows(RuntimeException.class, () -> targetCheckScheduler.triggerTargetCheck());
+        assertThrows(RuntimeException.class, () -> targetCheckScheduler.triggerTargetCheckForBasicUsers());
+    }
+
+    @Test
+    public void triggerTargetCheckForProUsers_ShouldCallJob() throws Exception {
+        targetCheckScheduler.triggerTargetCheckForProUsers();
+        Mockito.verify(targetCheckJob).execute(PlanSlug.BASIC);
+    }
+
+    @Test
+    public void triggerTargetCheckForProUsers_ShouldThrowRuntimeExceptionOnException() throws Exception {
+        Mockito.doThrow(new Exception()).when(targetCheckJob).execute(PlanSlug.BASIC);
+        assertThrows(RuntimeException.class, () -> targetCheckScheduler.triggerTargetCheckForProUsers());
     }
 }
