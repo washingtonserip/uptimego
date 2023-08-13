@@ -1,4 +1,4 @@
-CREATE TABLE uptime_config (
+CREATE TABLE uptime_configs (
     id BIGINT PRIMARY KEY,
     user_id BIGINT NOT NULL,
     url VARCHAR(1000),
@@ -8,4 +8,4 @@ CREATE TABLE uptime_config (
 );
 
 CREATE UNIQUE INDEX idx_unique_user_url_type
-ON uptime_config (user_id, url, type);
+ON uptime_configs (user_id, url, type);

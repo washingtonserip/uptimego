@@ -9,10 +9,11 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
-@Entity
-@EntityListeners(EntityChangesListener.class)
 @Getter
 @Setter
+@Table(name = "uptime_configs")
+@EntityListeners(EntityChangesListener.class)
+@Entity
 public class UptimeConfig {
 
     @Id
