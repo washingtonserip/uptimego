@@ -1,5 +1,6 @@
 package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.model.PlanSlug;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.UptimeConfig;
 import io.uptimego.repository.PulseRepository;
@@ -27,14 +28,14 @@ public class UptimeCheckJob {
     @Autowired
     private PulseRepository pulseRepository;
 
-    public void execute() throws Exception {
+    public void execute(PlanSlug planSlug) throws Exception {
         int pageSize = 10; // Adjust as needed
         Pageable pageable = PageRequest.of(0, pageSize);
         Page<UptimeConfig> page;
         log.info("Executing UptimeCheckJob");
 
         do {
-            page = uptimeConfigRepository.findAll(pageable);
+            page = uptimeConfigRepository.findByPlanSlug(planSlug, pageable);
             if(!page.hasContent()) {
                 break;
             }

@@ -58,7 +58,7 @@ public class UptimeCheckJobTest {
         doReturn(secondPage).when(uptimeConfigRepository).findAll(eq(PageRequest.of(1, 10)));
         doReturn(mockPulseList).when(uptimeCheckProcessor).process(anyList());
 
-        uptimeCheckJob.execute();
+        uptimeCheckJob.execute(PlanSlug.BASIC);
 
         Mockito.verify(uptimeCheckProcessor, Mockito.times(2)).process(anyList());
         Mockito.verify(pulseRepository, Mockito.times(2)).saveAll(anyList());
@@ -80,7 +80,7 @@ public class UptimeCheckJobTest {
 
         doReturn(mockPulseList).when(uptimeCheckProcessor).process(eq(mockConfigList));
 
-        uptimeCheckJob.execute();
+        uptimeCheckJob.execute(PlanSlug.BASIC);
 
         Mockito.verify(uptimeConfigRepository, Mockito.times(1)).findAll(any(Pageable.class));
         Mockito.verify(pulseRepository).saveAll(eq(mockPulseList));
@@ -94,7 +94,7 @@ public class UptimeCheckJobTest {
         when(uptimeConfigRepository.findAll(any(Pageable.class)))
                 .thenReturn(emptyPage);
 
-        uptimeCheckJob.execute();
+        uptimeCheckJob.execute(PlanSlug.BASIC);
 
         Mockito.verify(uptimeCheckProcessor, Mockito.never()).process(anyList());
         Mockito.verify(pulseRepository, Mockito.never()).saveAll(anyList());
@@ -111,6 +111,6 @@ public class UptimeCheckJobTest {
         when(uptimeCheckProcessor.process(anyList()))
                 .thenThrow(new RuntimeException("Processor error"));
 
-        assertThrows(RuntimeException.class, () -> uptimeCheckJob.execute());
+        assertThrows(RuntimeException.class, () -> uptimeCheckJob.execute(PlanSlug.BASIC));
     }
 }

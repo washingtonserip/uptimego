@@ -1,5 +1,5 @@
 package io.uptimego.model;
 
-public enum PlanSlugs {
+public enum PlanSlug {
     BASIC, PRO, ENTERPRISE
 }

@@ -1,7 +1,7 @@
 package io.uptimego.service.impl;
 
 import io.uptimego.model.Plan;
-import io.uptimego.model.PlanSlugs;
+import io.uptimego.model.PlanSlug;
 import io.uptimego.model.Subscription;
 import io.uptimego.model.User;
 import io.uptimego.repository.PlanRepository;
@@ -24,7 +24,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     @Transactional
     public Subscription createBasicSubscription(User user) {
-        Plan plan = planRepository.findBySlug(PlanSlugs.BASIC);
+        Plan plan = planRepository.findBySlug(PlanSlug.BASIC);
         Subscription subscription = new Subscription();
         subscription.setStartDate(new Date());
         subscription.setUser(user);

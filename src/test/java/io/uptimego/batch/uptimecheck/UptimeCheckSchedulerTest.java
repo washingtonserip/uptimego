@@ -1,5 +1,6 @@
 package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.model.PlanSlug;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,12 +24,12 @@ public class UptimeCheckSchedulerTest {
     @Test
     public void triggerUptimeCheck_ShouldCallJob() throws Exception {
         uptimeCheckScheduler.triggerUptimeCheck();
-        Mockito.verify(uptimeCheckJob).execute();
+        Mockito.verify(uptimeCheckJob).execute(PlanSlug.BASIC);
     }
 
     @Test
     public void triggerUptimeCheck_ShouldThrowRuntimeExceptionOnException() throws Exception {
-        Mockito.doThrow(new Exception()).when(uptimeCheckJob).execute();
+        Mockito.doThrow(new Exception()).when(uptimeCheckJob).execute(PlanSlug.BASIC);
         assertThrows(RuntimeException.class, () -> uptimeCheckScheduler.triggerUptimeCheck());
     }
 }

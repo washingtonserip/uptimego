@@ -13,7 +13,7 @@ import java.util.List;
 public class Plan {
     @Id
     @Enumerated(EnumType.STRING)
-    private PlanSlugs slug;
+    private PlanSlug slug;
     private String name; // e.g. "Basic", "Pro", "Enterprise"
     private Double price;
     private String description;

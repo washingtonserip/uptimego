@@ -1,5 +1,6 @@
 package io.uptimego.batch.uptimecheck;
 
+import io.uptimego.model.PlanSlug;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,10 @@ public class UptimeCheckScheduler {
     @Autowired
     private UptimeCheckJob uptimeCheckJob;
 
-    @Scheduled(fixedRate = 30000) // Every 30 seconds
+    @Scheduled(fixedRate = 30000)
     public void triggerUptimeCheck() {
         try {
-            uptimeCheckJob.execute();
+            uptimeCheckJob.execute(PlanSlug.BASIC);
         } catch (Exception e) {
             log.info("Error executing UptimeCheckJob", e);
             throw new RuntimeException(e);
