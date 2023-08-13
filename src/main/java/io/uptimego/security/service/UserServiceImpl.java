@@ -7,6 +7,7 @@ import io.uptimego.security.dto.AuthenticatedUserDto;
 import io.uptimego.security.dto.RegistrationRequest;
 import io.uptimego.security.dto.RegistrationResponse;
 import io.uptimego.security.mapper.UserMapper;
+import io.uptimego.service.SubscriptionService;
 import io.uptimego.service.UserValidationService;
 import io.uptimego.utils.GeneralMessageAccessor;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private static final String REGISTRATION_SUCCESSFUL = "registration_successful";
 
     private final UserRepository userRepository;
+
+    private final SubscriptionService subscriptionService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -46,8 +47,9 @@ public class UserServiceImpl implements UserService {
         final User user = UserMapper.INSTANCE.convertToUser(registrationRequest);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setUserRole(UserRole.USER);
-
         userRepository.save(user);
+
+        user.setSubscription(subscriptionService.createBasicSubscription(user));
 
         final String username = registrationRequest.getEmail();
         final String registrationSuccessMessage = generalMessageAccessor.getMessage(null, REGISTRATION_SUCCESSFUL, username);

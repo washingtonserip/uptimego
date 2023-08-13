@@ -2,6 +2,7 @@ package io.uptimego.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,8 +12,13 @@ import java.util.Date;
 @Table(name = "payments")
 @Entity
 public class Payment {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "tsid")
+    @GenericGenerator(
+            name = "tsid",
+            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
+    )
     private Long id;
     private Double amount;
     private Date paymentDate;

@@ -12,8 +12,8 @@ import java.util.List;
 @Entity
 public class Plan {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Enumerated(EnumType.STRING)
+    private PlanSlugs slug;
     private String name; // e.g. "Basic", "Pro", "Enterprise"
     private Double price;
     private String description;
