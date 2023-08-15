@@ -37,4 +37,13 @@ public class EntityTestFactory {
         pulse.setTimestamp(LocalDateTime.now());
         return pulse;
     }
+
+    public static Alert buildAlert(Pulse pulse) {
+        Alert alert = new Alert();
+        alert.setUser(pulse.getTarget().getUser());
+        alert.setPulse(pulse);
+        alert.setAlertType(AlertType.DOWNTIME);
+        alert.setStatus(AlertStatus.CREATED);
+        return alert;
+    }
 }

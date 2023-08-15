@@ -23,6 +23,9 @@ public class Subscription {
     private Date startDate;
     private Date endDate;
 
+    @Enumerated(EnumType.STRING)
+    private SubscriptionStatus status;
+
     @ManyToOne
     private User user;
 

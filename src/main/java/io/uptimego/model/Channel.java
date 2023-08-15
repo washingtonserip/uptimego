@@ -1,13 +1,20 @@
 package io.uptimego.model;
 
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "channels")
 public class Channel {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "tsid")
+    @GenericGenerator(
+            name = "tsid",
+            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
+    )
     private Long channelId;
 
     @ManyToOne
