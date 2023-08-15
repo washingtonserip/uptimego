@@ -2,7 +2,7 @@ package io.uptimego.cron.pulsecheck;
 
 import io.uptimego.model.Alert;
 import io.uptimego.model.Pulse;
-import io.uptimego.model.PulseStatus;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.repository.AlertRepository;
 import io.uptimego.repository.PulseRepository;
 import org.junit.jupiter.api.Test;
@@ -10,12 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;

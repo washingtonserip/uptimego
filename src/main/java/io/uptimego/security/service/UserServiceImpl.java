@@ -1,7 +1,7 @@
 package io.uptimego.security.service;
 
 import io.uptimego.model.User;
-import io.uptimego.model.UserRole;
+import io.uptimego.enums.UserRole;
 import io.uptimego.repository.UserRepository;
 import io.uptimego.security.dto.AuthenticatedUserDto;
 import io.uptimego.security.dto.RegistrationRequest;

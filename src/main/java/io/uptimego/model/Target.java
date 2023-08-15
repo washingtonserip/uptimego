@@ -1,6 +1,7 @@
 package io.uptimego.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.uptimego.enums.TargetType;
 import io.uptimego.service.EntityChangesListener;
 import lombok.Getter;
 import lombok.Setter;

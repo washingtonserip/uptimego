@@ -1,15 +1,13 @@
 package io.uptimego.cron.targetcheck;
 
 import io.uptimego.EntityTestFactory;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package io.uptimego.model;
+package io.uptimego.enums;
 
 public enum AlertStatus {
     CREATED, SENT, ACKNOWLEDGED, FAILED

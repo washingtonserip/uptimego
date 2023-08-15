@@ -2,7 +2,7 @@ package io.uptimego.cron.pulsecheck;
 
 import io.uptimego.model.Alert;
 import io.uptimego.model.Pulse;
-import io.uptimego.model.PulseStatus;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.repository.AlertRepository;
 import io.uptimego.repository.PulseRepository;
 import org.slf4j.Logger;

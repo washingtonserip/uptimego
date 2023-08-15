@@ -1,6 +1,10 @@
 package io.uptimego;
 
 import io.hypersistence.tsid.TSID;
+import io.uptimego.enums.AlertStatus;
+import io.uptimego.enums.AlertType;
+import io.uptimego.enums.PulseStatus;
+import io.uptimego.enums.TargetType;
 import io.uptimego.model.*;
 
 import java.time.LocalDateTime;

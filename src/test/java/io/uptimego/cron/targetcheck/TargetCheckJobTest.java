@@ -1,6 +1,8 @@
 package io.uptimego.cron.targetcheck;
 
 import io.uptimego.EntityTestFactory;
+import io.uptimego.enums.PlanSlug;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.model.*;
 import io.uptimego.repository.PulseRepository;
 import io.uptimego.repository.TargetRepository;
@@ -10,12 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.List;

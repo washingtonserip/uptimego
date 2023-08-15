@@ -1,6 +1,6 @@
 package io.uptimego.security.service;
 
-import io.uptimego.model.UserRole;
+import io.uptimego.enums.UserRole;
 import io.uptimego.security.dto.AuthenticatedUserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

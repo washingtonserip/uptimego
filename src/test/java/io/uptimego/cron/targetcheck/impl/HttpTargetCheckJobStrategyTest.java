@@ -2,7 +2,7 @@ package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.Pulse;
-import io.uptimego.model.PulseStatus;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.model.Target;
 import io.uptimego.model.User;
 import io.uptimego.service.HttpClientService;

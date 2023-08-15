@@ -1,4 +1,4 @@
-package io.uptimego.model;
+package io.uptimego.enums;
 
 public enum TargetType {
     HTTP, HEAD, TCP, DNS, SMTP, PING, PUSH, CUSTOM,

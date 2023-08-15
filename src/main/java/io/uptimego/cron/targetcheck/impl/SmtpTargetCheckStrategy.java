@@ -2,7 +2,7 @@ package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.cron.targetcheck.TargetCheckStrategy;
 import io.uptimego.model.Pulse;
-import io.uptimego.model.PulseStatus;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.model.Target;
 import io.uptimego.model.TargetOptions;
 import io.uptimego.service.EmailService;

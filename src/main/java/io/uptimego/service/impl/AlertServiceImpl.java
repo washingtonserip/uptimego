@@ -1,8 +1,8 @@
 package io.uptimego.service.impl;
 
 import io.uptimego.model.Alert;
-import io.uptimego.model.AlertStatus;
-import io.uptimego.model.AlertType;
+import io.uptimego.enums.AlertStatus;
+import io.uptimego.enums.AlertType;
 import io.uptimego.model.Pulse;
 import io.uptimego.repository.AlertRepository;
 import io.uptimego.service.AlertService;

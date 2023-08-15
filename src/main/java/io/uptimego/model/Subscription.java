@@ -1,5 +1,6 @@
 package io.uptimego.model;
 
+import io.uptimego.enums.SubscriptionStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;

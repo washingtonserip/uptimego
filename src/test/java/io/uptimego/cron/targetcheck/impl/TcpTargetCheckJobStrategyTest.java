@@ -1,6 +1,8 @@
 package io.uptimego.cron.targetcheck.impl;
 
 import io.uptimego.EntityTestFactory;
+import io.uptimego.enums.PulseStatus;
+import io.uptimego.enums.TargetType;
 import io.uptimego.model.*;
 import io.uptimego.service.SocketService;
 import org.junit.jupiter.api.BeforeEach;

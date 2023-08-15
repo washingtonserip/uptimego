@@ -1,5 +1,6 @@
 package io.uptimego.model;
 
+import io.uptimego.enums.UserRole;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 

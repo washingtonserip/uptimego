@@ -1,6 +1,7 @@
 package io.uptimego.cron.pulsecheck;
 
 import io.uptimego.EntityTestFactory;
+import io.uptimego.enums.PulseStatus;
 import io.uptimego.model.*;
 import io.uptimego.service.AlertService;
 import org.junit.jupiter.api.Test;

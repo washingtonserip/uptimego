@@ -1,6 +1,6 @@
 package io.uptimego.cron.targetcheck;
 
-import io.uptimego.model.PlanSlug;
+import io.uptimego.enums.PlanSlug;
 import io.uptimego.model.Pulse;
 import io.uptimego.model.Target;
 import io.uptimego.repository.PulseRepository;

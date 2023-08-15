@@ -1,5 +1,7 @@
 package io.uptimego.service.impl;
 
+import io.uptimego.enums.PlanSlug;
+import io.uptimego.enums.SubscriptionStatus;
 import io.uptimego.model.*;
 import io.uptimego.repository.PlanRepository;
 import io.uptimego.repository.SubscriptionRepository;

@@ -1,6 +1,6 @@
 package io.uptimego.cron.targetcheck;
 
-import io.uptimego.model.PlanSlug;
+import io.uptimego.enums.PlanSlug;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

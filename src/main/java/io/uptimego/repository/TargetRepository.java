@@ -1,6 +1,6 @@
 package io.uptimego.repository;
 
-import io.uptimego.model.PlanSlug;
+import io.uptimego.enums.PlanSlug;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

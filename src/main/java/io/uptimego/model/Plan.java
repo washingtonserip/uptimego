@@ -1,5 +1,6 @@
 package io.uptimego.model;
 
+import io.uptimego.enums.PlanSlug;
 import lombok.Getter;
 import lombok.Setter;
 
