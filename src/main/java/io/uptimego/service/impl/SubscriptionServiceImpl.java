@@ -1,9 +1,6 @@
 package io.uptimego.service.impl;
 
-import io.uptimego.model.Plan;
-import io.uptimego.model.PlanSlug;
-import io.uptimego.model.Subscription;
-import io.uptimego.model.User;
+import io.uptimego.model.*;
 import io.uptimego.repository.PlanRepository;
 import io.uptimego.repository.SubscriptionRepository;
 import io.uptimego.service.SubscriptionService;
@@ -29,6 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscription.setStartDate(new Date());
         subscription.setUser(user);
         subscription.setPlan(plan);
+        subscription.setStatus(SubscriptionStatus.ACTIVE);
 
         // Set end date to one year from now
         Calendar cal = Calendar.getInstance();

@@ -24,7 +24,7 @@ public class PulseCheckProcessor {
     @Autowired
     private AlertService alertService;
 
-    public List<Alert> process(List<Pulse> pulses) throws Exception {
+    public List<Alert> process(List<Pulse> pulses) {
         List<CompletableFuture<Alert>> futures = new ArrayList<>();
         log.info("Processing {} pulses", pulses.size());
 

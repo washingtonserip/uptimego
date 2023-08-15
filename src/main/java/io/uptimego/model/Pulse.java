@@ -22,7 +22,7 @@ public class Pulse {
     )
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
 
