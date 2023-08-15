@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import io.uptimego.model.Target;
+import org.springframework.data.repository.query.Param;
 
 public interface TargetRepository extends JpaRepository<Target, Long> {
     Page<Target> findAll(Pageable pageable);
@@ -14,6 +15,6 @@ public interface TargetRepository extends JpaRepository<Target, Long> {
             "JOIN uc.user u " +
             "JOIN u.subscription s " +
             "JOIN s.plan p " +
-            "WHERE p.slug = :planSlug")
-    Page<Target> findByPlanSlug(PlanSlug planSlug, Pageable pageable);
+            "WHERE p.slug = :slug")
+    Page<Target> findByPlanSlug(@Param("slug") PlanSlug planSlug, Pageable pageable);
 }

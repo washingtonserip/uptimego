@@ -11,8 +11,15 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
+
 @Repository
 public interface AlertRepository extends JpaRepository<Alert, Long> {
-    @Query("SELECT a FROM Alert a WHERE a.pulse = :pulse AND a.createdAt >= (NOW() - INTERVAL '5 MINUTE')")
-    Alert findByPulse(Pulse pulse);
+    @Query("SELECT a FROM Alert a WHERE a.pulse = :pulse AND a.createdAt >= :threshold")
+    Alert findByPulse(@Param("pulse") Pulse pulse, @Param("threshold") LocalDateTime threshold);
 }

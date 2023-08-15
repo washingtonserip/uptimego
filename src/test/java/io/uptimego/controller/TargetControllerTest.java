@@ -37,7 +37,7 @@ public class TargetControllerTest {
         Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.create(any())).thenReturn(config);
 
-        mockMvc.perform(post("/uptime")
+        mockMvc.perform(post("/targets")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"url\":\"https://example.com\"}"))
                 .andExpect(status().isOk())
@@ -53,7 +53,7 @@ public class TargetControllerTest {
         Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.findById(config.getId())).thenReturn(Optional.of(config));
 
-        mockMvc.perform(get("/uptime/" + config.getId()))
+        mockMvc.perform(get("/targets/" + config.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url").value("https://example.com"));
 
@@ -67,7 +67,7 @@ public class TargetControllerTest {
         Target config = EntityTestFactory.createTarget(user, "https://example.com");
         when(service.findAll()).thenReturn(Collections.singletonList(config));
 
-        mockMvc.perform(get("/uptime"))
+        mockMvc.perform(get("/targets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].url").value("https://example.com"));
 
@@ -81,7 +81,7 @@ public class TargetControllerTest {
         Target config = EntityTestFactory.createTarget(user, "https://updated.com");
         when(service.update(any())).thenReturn(config);
 
-        mockMvc.perform(put("/uptime/" + config.getId())
+        mockMvc.perform(put("/targets/" + config.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"url\":\"https://updated.com\"}"))
                 .andExpect(status().isOk())
@@ -95,7 +95,7 @@ public class TargetControllerTest {
     public void testDelete() throws Exception {
         long id = TSID.Factory.getTsid().toLong();
 
-        mockMvc.perform(delete("/uptime/" + id))
+        mockMvc.perform(delete("/targets/" + id))
                 .andExpect(status().isOk());
 
         verify(service, times(1)).delete(id);

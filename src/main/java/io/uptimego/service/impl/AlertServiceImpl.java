@@ -22,7 +22,8 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public Alert createNonDuplicatedAlert(Pulse pulse) {
-        Alert existentAlert = alertRepository.findByPulse(pulse);
+        LocalDateTime threshold = LocalDateTime.now().minusMinutes(5);
+        Alert existentAlert = alertRepository.findByPulse(pulse, threshold);
         if (existentAlert != null) {
             log.info("Alert already exists for alert {}", pulse.getId());
             return existentAlert;
