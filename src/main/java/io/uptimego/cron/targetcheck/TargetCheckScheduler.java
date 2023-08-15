@@ -19,7 +19,7 @@ public class TargetCheckScheduler {
         try {
             targetCheckJob.execute(PlanSlug.BASIC);
         } catch (Exception e) {
-            log.info("Error executing TargetCheckJob", e);
+            log.error("Error executing TargetCheckJob", e);
             throw new RuntimeException(e);
         }
     }
@@ -29,7 +29,7 @@ public class TargetCheckScheduler {
         try {
             targetCheckJob.execute(PlanSlug.PRO);
         } catch (Exception e) {
-            log.info("Error executing TargetCheckJob", e);
+            log.error("Error executing TargetCheckJob", e);
             throw new RuntimeException(e);
         }
     }

@@ -19,7 +19,7 @@ public class PulseCheckScheduler {
         try {
             targetCheckJob.execute();
         } catch (Exception e) {
-            log.info("Error executing PulseCheckJob", e);
+            log.error("Error executing PulseCheckJob", e);
             throw new RuntimeException(e);
         }
     }
