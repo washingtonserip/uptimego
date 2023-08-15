@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,8 +25,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class TargetCheckJobTest {
 
     @InjectMocks
@@ -54,8 +54,10 @@ public class TargetCheckJobTest {
         Page<Target> firstPage = new PageImpl<>(mockConfigList, PageRequest.of(0, 10), 20);
         Page<Target> secondPage = new PageImpl<>(mockConfigList, PageRequest.of(1, 10), 20);
 
-        doReturn(firstPage).when(targetRepository).findAll(eq(PageRequest.of(0, 10)));
-        doReturn(secondPage).when(targetRepository).findAll(eq(PageRequest.of(1, 10)));
+        doReturn(firstPage).when(targetRepository)
+                .findByPlanSlug(eq(PlanSlug.BASIC), eq(PageRequest.of(0, 10)));
+        doReturn(secondPage).when(targetRepository)
+                .findByPlanSlug(eq(PlanSlug.BASIC), eq(PageRequest.of(1, 10)));
         doReturn(mockPulseList).when(targetCheckProcessor).process(anyList());
 
         targetCheckJob.execute(PlanSlug.BASIC);
@@ -75,14 +77,15 @@ public class TargetCheckJobTest {
         List<Pulse> mockPulseList = Arrays.asList(mockPulse1, mockPulse2);
 
         Page<Target> singlePage = new PageImpl<>(mockConfigList);
-        when(targetRepository.findAll(any(Pageable.class)))
+        when(targetRepository.findByPlanSlug(eq(PlanSlug.BASIC), any(Pageable.class)))
                 .thenReturn(singlePage);
 
         doReturn(mockPulseList).when(targetCheckProcessor).process(eq(mockConfigList));
 
         targetCheckJob.execute(PlanSlug.BASIC);
 
-        Mockito.verify(targetRepository, Mockito.times(1)).findAll(any(Pageable.class));
+        Mockito.verify(targetRepository, Mockito.times(1))
+                .findByPlanSlug(eq(PlanSlug.BASIC), any(Pageable.class));
         Mockito.verify(pulseRepository).saveAll(eq(mockPulseList));
     }
 
@@ -91,7 +94,7 @@ public class TargetCheckJobTest {
         // Empty page
         Page<Target> emptyPage = Page.empty();
 
-        when(targetRepository.findAll(any(Pageable.class)))
+        when(targetRepository.findByPlanSlug(eq(PlanSlug.BASIC), any(Pageable.class)))
                 .thenReturn(emptyPage);
 
         targetCheckJob.execute(PlanSlug.BASIC);
@@ -105,7 +108,7 @@ public class TargetCheckJobTest {
         List<Target> mockConfigList = Arrays.asList(new Target());
         Page<Target> singlePage = new PageImpl<>(mockConfigList);
 
-        when(targetRepository.findAll(any(Pageable.class)))
+        when(targetRepository.findByPlanSlug(eq(PlanSlug.BASIC), any(Pageable.class)))
                 .thenReturn(singlePage);
 
         when(targetCheckProcessor.process(anyList()))

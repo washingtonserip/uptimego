@@ -36,14 +36,12 @@ public class TargetCheckJob {
 
         do {
             page = targetRepository.findByPlanSlug(planSlug, pageable);
-            if(!page.hasContent()) {
-                break;
-            }
-
-            List<Pulse> pulses = targetCheckProcessor.process(page.getContent());
-            pulses.removeIf(Pulse::isEmpty);
-            if(!pulses.isEmpty()) {
-                pulseRepository.saveAll(pulses);
+            if (page != null && page.hasContent()) {
+                List<Pulse> pulses = targetCheckProcessor.process(page.getContent());
+                pulses.removeIf(Pulse::isEmpty);
+                if(!pulses.isEmpty()) {
+                    pulseRepository.saveAll(pulses);
+                }
             }
             pageable = pageable.next();
         } while (page.hasNext());
