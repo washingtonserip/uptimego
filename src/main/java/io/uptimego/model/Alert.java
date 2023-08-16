@@ -22,7 +22,7 @@ public class Alert {
             name = "tsid",
             strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
     )
-    private Long alertId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
