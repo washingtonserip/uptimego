@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 
 public class EntityTestFactory {
 
-    public static User createUser() {
+    public static User buildUser() {
         User user = new User();
         user.setId(TSID.Factory.getTsid().toLong());
         return user;
     }
 
-    public static Target createTarget(User user, String url) {
+    public static Target buildTarget(User user, String url) {
         Target config = new Target();
         config.setId(TSID.Factory.getTsid().toLong());
         config.setUser(user);
@@ -26,13 +26,13 @@ public class EntityTestFactory {
         return config;
     }
 
-    public static Target createTarget(User user, String url, TargetType type) {
-        Target config = createTarget(user, url);
+    public static Target buildTarget(User user, String url, TargetType type) {
+        Target config = buildTarget(user, url);
         config.setType(type);
         return config;
     }
 
-    public static Pulse createPulse(Target target, PulseStatus status, int latency) {
+    public static Pulse buildPulse(Target target, PulseStatus status, int latency) {
         Pulse pulse = new Pulse();
         pulse.setId(TSID.Factory.getTsid().toLong());
         pulse.setTarget(target);

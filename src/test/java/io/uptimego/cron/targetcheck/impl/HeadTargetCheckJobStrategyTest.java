@@ -32,8 +32,8 @@ public class HeadTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.HEAD);
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io", TargetType.HEAD);
     }
 
     @Test

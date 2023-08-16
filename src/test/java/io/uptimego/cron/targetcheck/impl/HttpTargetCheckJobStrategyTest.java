@@ -35,8 +35,8 @@ public class HttpTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io");
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io");
     }
 
     @Test

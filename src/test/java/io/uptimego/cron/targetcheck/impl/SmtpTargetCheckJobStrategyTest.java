@@ -30,8 +30,8 @@ class SmtpTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.SMTP);
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io", TargetType.SMTP);
         target.setOptions(new TargetOptions());
         target.getOptions().setPort(25);
         target.getOptions().setEmailTo("test@test.com");

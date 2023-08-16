@@ -31,8 +31,8 @@ public class PingTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.PING);
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io", TargetType.PING);
     }
 
     @Test

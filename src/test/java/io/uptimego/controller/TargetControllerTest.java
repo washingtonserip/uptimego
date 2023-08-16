@@ -33,8 +33,8 @@ public class TargetControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testCreate() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://example.com");
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://example.com");
         when(service.create(any())).thenReturn(config);
 
         mockMvc.perform(post("/targets")
@@ -49,8 +49,8 @@ public class TargetControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindById() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://example.com");
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://example.com");
         when(service.findById(config.getId())).thenReturn(Optional.of(config));
 
         mockMvc.perform(get("/targets/" + config.getId()))
@@ -63,8 +63,8 @@ public class TargetControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testFindAll() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://example.com");
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://example.com");
         when(service.findAll()).thenReturn(Collections.singletonList(config));
 
         mockMvc.perform(get("/targets"))
@@ -77,8 +77,8 @@ public class TargetControllerTest {
     @Test
     @WithMockUser(username = "testUser", roles = {"USER"})
     public void testUpdate() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://updated.com");
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://updated.com");
         when(service.update(any())).thenReturn(config);
 
         mockMvc.perform(put("/targets/" + config.getId())

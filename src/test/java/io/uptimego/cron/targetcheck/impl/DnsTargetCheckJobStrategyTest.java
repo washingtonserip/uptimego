@@ -31,8 +31,8 @@ public class DnsTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.DNS);
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io", TargetType.DNS);
     }
 
     @Test

@@ -93,10 +93,10 @@ class TargetCheckJobStrategyHandlerTest {
 
     private void targetCheckStrategyHandler_genericTest(String pulseType, TargetCheckStrategy strategy) {
         // Setup
-        User user = EntityTestFactory.createUser();
-        Target mockConfig = EntityTestFactory.createTarget(user, "https://uptimego.io");
+        User user = EntityTestFactory.buildUser();
+        Target mockConfig = EntityTestFactory.buildTarget(user, "https://uptimego.io");
         mockConfig.setType(TargetType.valueOf(pulseType));
-        Pulse expectedPulse = EntityTestFactory.createPulse(mockConfig, PulseStatus.UP, 50);
+        Pulse expectedPulse = EntityTestFactory.buildPulse(mockConfig, PulseStatus.UP, 50);
         when(strategy.getPulse(mockConfig)).thenReturn(expectedPulse);
 
         // Execute

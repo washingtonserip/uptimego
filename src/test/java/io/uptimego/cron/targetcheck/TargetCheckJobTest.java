@@ -42,11 +42,11 @@ public class TargetCheckJobTest {
 
     @Test
     public void execute_ShouldProcessUntilLastPage() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target mockConfig1 = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Target mockConfig2 = EntityTestFactory.createTarget(user, "https://wpires.com.br");
-        Pulse mockPulse1 = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
-        Pulse mockPulse2 = EntityTestFactory.createPulse(mockConfig2, PulseStatus.UP, 50);
+        User user = EntityTestFactory.buildUser();
+        Target mockConfig1 = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Target mockConfig2 = EntityTestFactory.buildTarget(user, "https://wpires.com.br");
+        Pulse mockPulse1 = EntityTestFactory.buildPulse(mockConfig1, PulseStatus.DOWN, 100);
+        Pulse mockPulse2 = EntityTestFactory.buildPulse(mockConfig2, PulseStatus.UP, 50);
         List<Target> mockConfigList = Arrays.asList(mockConfig1, mockConfig2);
         List<Pulse> mockPulseList = Arrays.asList(mockPulse1, mockPulse2);
 
@@ -68,11 +68,11 @@ public class TargetCheckJobTest {
 
     @Test
     public void execute_ShouldProcessSinglePageOnly_WhenOnlyOnePageExists() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target mockConfig1 = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Target mockConfig2 = EntityTestFactory.createTarget(user, "https://wpires.com.br");
-        Pulse mockPulse1 = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
-        Pulse mockPulse2 = EntityTestFactory.createPulse(mockConfig2, PulseStatus.UP, 50);
+        User user = EntityTestFactory.buildUser();
+        Target mockConfig1 = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Target mockConfig2 = EntityTestFactory.buildTarget(user, "https://wpires.com.br");
+        Pulse mockPulse1 = EntityTestFactory.buildPulse(mockConfig1, PulseStatus.DOWN, 100);
+        Pulse mockPulse2 = EntityTestFactory.buildPulse(mockConfig2, PulseStatus.UP, 50);
         List<Target> mockConfigList = Arrays.asList(mockConfig1, mockConfig2);
         List<Pulse> mockPulseList = Arrays.asList(mockPulse1, mockPulse2);
 

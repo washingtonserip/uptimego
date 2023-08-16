@@ -28,8 +28,8 @@ class TcpTargetCheckJobStrategyTest {
 
     @BeforeEach
     public void setUp() {
-        User user = EntityTestFactory.createUser();
-        target = EntityTestFactory.createTarget(user, "https://uptimego.io", TargetType.TCP);
+        User user = EntityTestFactory.buildUser();
+        target = EntityTestFactory.buildTarget(user, "https://uptimego.io", TargetType.TCP);
         target.setOptions(new TargetOptions());
         target.getOptions().setPort(80);
     }

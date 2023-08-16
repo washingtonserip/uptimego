@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -49,9 +48,9 @@ public class PulseCheckJobTest {
 
     @Test
     public void testExecuteWithPulses() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Pulse pulse = EntityTestFactory.createPulse(config, PulseStatus.UP, 50);
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Pulse pulse = EntityTestFactory.buildPulse(config, PulseStatus.UP, 50);
         Page<Pulse> page = new PageImpl<>(Collections.singletonList(pulse));
         when(pulseRepository.findByStatus(eq(PulseStatus.DOWN), any(Pageable.class))).thenReturn(page);
 
@@ -63,9 +62,9 @@ public class PulseCheckJobTest {
 
     @Test
     public void testExecuteWithException() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Pulse pulse = EntityTestFactory.createPulse(config, PulseStatus.UP, 50);
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Pulse pulse = EntityTestFactory.buildPulse(config, PulseStatus.UP, 50);
         Page<Pulse> page = new PageImpl<>(Collections.singletonList(pulse));
         when(pulseRepository.findByStatus(eq(PulseStatus.DOWN), any(Pageable.class))).thenReturn(page);
         doThrow(new RuntimeException("Test Exception")).when(alertService).createNonDuplicatedAlert(any());

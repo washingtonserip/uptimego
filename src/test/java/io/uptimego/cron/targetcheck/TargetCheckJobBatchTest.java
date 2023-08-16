@@ -33,9 +33,9 @@ public class TargetCheckJobBatchTest {
 
     @Test
     public void testProcessWithOneSuccessfulConfig() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target config = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Pulse expectedPulse = EntityTestFactory.createPulse(config, PulseStatus.DOWN, 100);
+        User user = EntityTestFactory.buildUser();
+        Target config = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Pulse expectedPulse = EntityTestFactory.buildPulse(config, PulseStatus.DOWN, 100);
 
         when(targetCheckStrategyHandler.execute(config)).thenReturn(expectedPulse);
 
@@ -56,10 +56,10 @@ public class TargetCheckJobBatchTest {
 
     @Test
     public void testProcessWithMixedConfigs() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target mockConfig1 = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Target mockConfig2 = EntityTestFactory.createTarget(user, "https://wpires.com.br");
-        Pulse expectedPulse = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
+        User user = EntityTestFactory.buildUser();
+        Target mockConfig1 = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Target mockConfig2 = EntityTestFactory.buildTarget(user, "https://wpires.com.br");
+        Pulse expectedPulse = EntityTestFactory.buildPulse(mockConfig1, PulseStatus.DOWN, 100);
 
         when(targetCheckStrategyHandler.execute(mockConfig1)).thenReturn(expectedPulse);
         when(targetCheckStrategyHandler.execute(mockConfig2)).thenThrow(new RuntimeException("Test exception"));
@@ -72,11 +72,11 @@ public class TargetCheckJobBatchTest {
 
     @Test
     public void testAsyncProcessing() throws Exception {
-        User user = EntityTestFactory.createUser();
-        Target mockConfig1 = EntityTestFactory.createTarget(user, "https://uptimego.io");
-        Target mockConfig2 = EntityTestFactory.createTarget(user, "https://wpires.com.br");
-        Pulse mockPulse1 = EntityTestFactory.createPulse(mockConfig1, PulseStatus.DOWN, 100);
-        Pulse mockPulse2 = EntityTestFactory.createPulse(mockConfig2, PulseStatus.UP, 50);
+        User user = EntityTestFactory.buildUser();
+        Target mockConfig1 = EntityTestFactory.buildTarget(user, "https://uptimego.io");
+        Target mockConfig2 = EntityTestFactory.buildTarget(user, "https://wpires.com.br");
+        Pulse mockPulse1 = EntityTestFactory.buildPulse(mockConfig1, PulseStatus.DOWN, 100);
+        Pulse mockPulse2 = EntityTestFactory.buildPulse(mockConfig2, PulseStatus.UP, 50);
 
         doAnswer(invocation -> {
             Thread.sleep(1000);
