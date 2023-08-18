@@ -28,25 +28,33 @@ public class MailNotificationStrategy implements NotificationStrategy {
 
     @Override
     public Notification sendNotification(Notification notification, Channel channel) {
-        String emailTo = channel.getMetadata() != null ? channel.getMetadata().getEmailTo() : null;
-        if (emailTo == null || emailTo.trim().isEmpty()) {
+        String emailTo = getEmailTo(channel);
+        if (emailTo == null) {
             log.warn("Channel has an empty email. Not sending email.");
             notification.setType(FAILURE);
             return notification;
         }
 
         try {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(emailTo);
-            mailMessage.setSubject(notification.getTitle());
-            mailMessage.setText(notification.getMessage());
+            SimpleMailMessage mailMessage = createMailMessage(emailTo, notification);
             emailSender.send(mailMessage);
             notification.setType(SUCCESS);
-            return notification;
         } catch (MailException e) {
-            log.error("Failed to send email alert");
+            log.error("Failed to send email alert. Exception: {}", e.getMessage(), e);
             notification.setType(FAILURE);
-            return notification;
         }
+        return notification;
+    }
+
+    private String getEmailTo(Channel channel) {
+        return channel.getMetadata() != null ? channel.getMetadata().getEmailTo() : null;
+    }
+
+    private SimpleMailMessage createMailMessage(String emailTo, Notification notification) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(emailTo.trim());
+        mailMessage.setSubject(notification.getTitle());
+        mailMessage.setText(notification.getMessage());
+        return mailMessage;
     }
 }

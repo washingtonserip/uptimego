@@ -12,4 +12,5 @@ import lombok.Setter;
 public class ChannelMetadata {
     private String emailTo;
     private String phoneNumber;
+    private String slackChannel;
 }
