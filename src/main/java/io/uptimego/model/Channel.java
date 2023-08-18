@@ -1,12 +1,18 @@
 package io.uptimego.model;
 
 
+import io.uptimego.enums.ChannelType;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
-@Entity
+@Getter
+@Setter
 @Table(name = "channels")
+@Entity
 public class Channel {
 
     @Id
@@ -21,10 +27,9 @@ public class Channel {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String channelType;
+    @Enumerated(EnumType.STRING)
+    private ChannelType type;
 
-    @Column(columnDefinition = "jsonb")
-    private String metadata; // you can also use a custom class if you have a fixed schema
-
-    // Getters and setters
+    @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
+    private ChannelMetadata metadata;
 }

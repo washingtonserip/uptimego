@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,4 +44,8 @@ public class Alert {
 
     @CreationTimestamp
     private LocalDateTime acknowledgedAt;
+
+    @OneToMany(mappedBy = "alert", cascade = CascadeType.ALL)
+    private Set<Notification> notifications;
+
 }
