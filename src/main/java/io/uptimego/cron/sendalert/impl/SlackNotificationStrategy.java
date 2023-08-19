@@ -59,9 +59,4 @@ public class SlackNotificationStrategy implements NotificationStrategy {
 
         return notification;
     }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }
