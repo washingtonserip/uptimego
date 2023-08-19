@@ -1,7 +1,7 @@
 package io.uptimego.enums;
 
 public enum TargetType {
-    HTTP, HEAD, TCP, DNS, SMTP, PING, PUSH, CUSTOM,
+    HTTP, HEAD, DNS, PING,
     // only for unit tests
     UNKNOWN
 }
