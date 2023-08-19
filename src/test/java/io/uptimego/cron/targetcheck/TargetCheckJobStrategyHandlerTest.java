@@ -34,9 +34,6 @@ class TargetCheckJobStrategyHandlerTest {
     private DnsTargetCheckStrategy dnsUptimeStrategy;
 
     @Mock
-    private SmtpTargetCheckStrategy smtpUptimeStrategy;
-
-    @Mock
     private PingTargetCheckStrategy pingUptimeStrategy;
 
     private TargetCheckStrategyHandler targetCheckStrategyHandler;
@@ -47,7 +44,6 @@ class TargetCheckJobStrategyHandlerTest {
         when(headUptimeStrategy.getType()).thenReturn("HEAD");
         when(tcpUptimeStrategy.getType()).thenReturn("TCP");
         when(dnsUptimeStrategy.getType()).thenReturn("DNS");
-        when(smtpUptimeStrategy.getType()).thenReturn("SMTP");
         when(pingUptimeStrategy.getType()).thenReturn("PING");
 
         List<TargetCheckStrategy> uptimeStrategies = Arrays.asList(
@@ -55,7 +51,6 @@ class TargetCheckJobStrategyHandlerTest {
                 headUptimeStrategy,
                 tcpUptimeStrategy,
                 dnsUptimeStrategy,
-                smtpUptimeStrategy,
                 pingUptimeStrategy
         );
         targetCheckStrategyHandler = new TargetCheckStrategyHandler(uptimeStrategies);
@@ -79,11 +74,6 @@ class TargetCheckJobStrategyHandlerTest {
     @Test
     void targetCheckStrategyHandler_dnsStrategy() {
         targetCheckStrategyHandler_genericTest("DNS", dnsUptimeStrategy);
-    }
-
-    @Test
-    void targetCheckStrategyHandler_smtpStrategy() {
-        targetCheckStrategyHandler_genericTest("SMTP", smtpUptimeStrategy);
     }
 
     @Test
