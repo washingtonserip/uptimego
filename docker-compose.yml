@@ -4,10 +4,4 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
-  app:
-    build: .
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
+      POSTGRES_PASSWORD: secret
