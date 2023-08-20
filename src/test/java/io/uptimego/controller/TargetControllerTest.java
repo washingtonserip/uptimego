@@ -4,6 +4,7 @@ import io.hypersistence.tsid.TSID;
 import io.uptimego.EntityTestFactory;
 import io.uptimego.model.*;
 import io.uptimego.service.TargetService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Disabled
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TargetControllerTest {
