@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "uptimego"
+
+    workspaces {
+      name = "uptimego-api"
+    }
+  }
+}
+
 variable "region" {
   description = "AWS region"
   default     = "us-east-2"
