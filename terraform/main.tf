@@ -17,7 +17,6 @@ variable "subnets" {
   description = "List of subnets for ECS service"
   default = [
     "subnet-02742491a1a6ae482",
-    "subnet-05ac36642da8236ec",
     "subnet-0f618abf2862bc9c5",
     "subnet-06371a1a93044fcb4",
     "subnet-063a910db8f9815e7",
