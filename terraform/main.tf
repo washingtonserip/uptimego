@@ -13,17 +13,6 @@ variable "region" {
   default     = "us-east-2"
 }
 
-variable "subnets" {
-  description = "List of subnets for ECS service"
-  default = [
-    "subnet-02742491a1a6ae482",
-    "subnet-0f618abf2862bc9c5",
-    "subnet-06371a1a93044fcb4",
-    "subnet-063a910db8f9815e7",
-    "subnet-04a6f4189388d9ec6"
-  ]
-}
-
 variable "cpu" {
   description = "CPU value for ECS task definition"
   default     = "256"
@@ -36,6 +25,26 @@ variable "memory" {
 
 provider "aws" {
   region = var.region
+}
+
+resource "aws_vpc" "my_vpc" {
+  cidr_block       = "10.0.0.0/16"
+  enable_dns_support = true
+  enable_dns_hostnames = true
+  tags = {
+    Name = "my_vpc"
+  }
+}
+
+resource "aws_subnet" "my_subnet" {
+  vpc_id                  = aws_vpc.my_vpc.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "us-east-2a"
+}
+
+variable "subnets" {
+  description = "List of subnets for ECS service"
+  default = [aws_subnet.my_subnet.id]
 }
 
 resource "aws_ecr_repository" "uptimego_api" {
