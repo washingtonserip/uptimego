@@ -108,7 +108,6 @@ resource "aws_ecs_task_definition" "uptimego_api_task_definition" {
         "hostPort": 80
       }
     ]
-    // Add other configurations as needed
   }
 ]
 DEFINITION
