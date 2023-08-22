@@ -42,11 +42,6 @@ resource "aws_subnet" "my_subnet" {
   availability_zone       = "us-east-2a"
 }
 
-variable "subnets" {
-  description = "List of subnets for ECS service"
-  default = [aws_subnet.my_subnet.id]
-}
-
 resource "aws_ecr_repository" "uptimego_api" {
   name = "uptimego_api"
 }
@@ -135,7 +130,7 @@ resource "aws_ecs_service" "uptimego_api_service" {
   desired_count = 1
 
   network_configuration {
-    subnets          = var.subnets
+    subnets          = [aws_subnet.my_subnet.id] # Direct reference to the subnet ID
     security_groups  = [aws_security_group.uptimego_api_sg.id]
     assign_public_ip = false
   }
