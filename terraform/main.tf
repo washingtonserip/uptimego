@@ -74,6 +74,7 @@ resource "aws_ecs_cluster" "uptimego_api_cluster" {
 resource "aws_security_group" "uptimego_api_sg" {
   name        = "uptimego_api_sg"
   description = "Security group for uptimego API"
+  vpc_id      = aws_vpc.my_vpc.id # Add this line to associate with the VPC
 
   ingress {
     from_port   = 80
