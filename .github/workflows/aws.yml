@@ -32,14 +32,14 @@ on:
       - '*' # Push events to every tag not containing /
 
 env:
-  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
-  ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
+  AWS_REGION: us-east-2                               # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: uptimego_api                        # set this to your Amazon ECR repository name
+  ECS_SERVICE: uptimego-api-service                   # set this to your Amazon ECS service name
+  ECS_CLUSTER: uptimego-api-cluster                   # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: terraform/task-definition.json # Replace with actual path
+                                                      # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: uptimego-api-container              # set this to the name of the container in the
+                                                      # containerDefinitions section of your task definition
 
 permissions:
   contents: read
