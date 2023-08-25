@@ -1,4 +1,5 @@
 {
+  "family": "uptimego-api-task-definition",
   "containerDefinitions": [
     {
       "name": "uptimego-api-container",
