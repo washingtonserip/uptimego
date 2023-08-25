@@ -19,5 +19,5 @@
   "network_mode": "awsvpc",
   "cpu": 256,
   "memory": 512,
-  "execution_role_arn": aws_iam_role.uptimego_api_execution_role.arn,
+  "execution_role_arn": "arn:aws:ecs:us-east-2:494755270253:service/uptimego-api-cluster/uptimego-api-service"
 }
