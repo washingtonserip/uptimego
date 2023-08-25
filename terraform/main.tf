@@ -35,19 +35,26 @@ resource "aws_vpc" "my_vpc" {
     Name = "my_vpc"
   }
 }
+
 resource "aws_vpc_endpoint" "ecr_api" {
   vpc_id       = aws_vpc.my_vpc.id
   service_name = "com.amazonaws.${var.region}.ecr.api"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [aws_subnet.my_subnet.id]
 }
 
 resource "aws_vpc_endpoint" "ecr_dkr" {
   vpc_id       = aws_vpc.my_vpc.id
   service_name = "com.amazonaws.${var.region}.ecr.dkr"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [aws_subnet.my_subnet.id]
 }
 
 resource "aws_vpc_endpoint" "ecs" {
   vpc_id       = aws_vpc.my_vpc.id
   service_name = "com.amazonaws.${var.region}.ecs"
+  vpc_endpoint_type = "Interface"
+  subnet_ids = [aws_subnet.my_subnet.id]
 }
 
 resource "aws_subnet" "my_subnet" {
