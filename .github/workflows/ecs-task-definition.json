@@ -1,11 +1,15 @@
 {
   "family": "uptimego-api-task-definition",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "networkMode": "awsvpc",
   "containerDefinitions": [
     {
       "name": "uptimego-api-container",
       "image": "494755270253.dkr.ecr.us-east-2.amazonaws.com/uptimego_api:latest",
-      "cpu": "256",
-      "memory": "512",
+      "cpu": 256,
+      "memory": 512,
       "essential": true,
       "portMappings": [
         {
