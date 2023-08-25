@@ -98,7 +98,7 @@ resource "aws_security_group" "uptimego_api_sg" {
 
 resource "aws_ecs_task_definition" "uptimego_api_task_definition" {
   family                = "uptimego-api-task-definition"
-  container_definitions = file("task-definition.json")
+  container_definitions = file("ecs-task-definition.json")
   requires_compatibilities = ["FARGATE"]
   network_mode          = "awsvpc"
   cpu                   = var.cpu

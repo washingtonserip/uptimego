@@ -1,0 +1,17 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "uptimego-api-container",
+      "image": "494755270253.dkr.ecr.us-east-2.amazonaws.com/uptimego_api:latest",
+      "cpu": 256,
+      "memory": 512,
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80
+        }
+      ]
+    }
+  ]
+}
