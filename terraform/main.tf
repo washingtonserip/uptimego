@@ -35,6 +35,20 @@ resource "aws_vpc" "my_vpc" {
     Name = "my_vpc"
   }
 }
+resource "aws_vpc_endpoint" "ecr_api" {
+  vpc_id       = aws_vpc.my_vpc.id
+  service_name = "com.amazonaws.${var.region}.ecr.api"
+}
+
+resource "aws_vpc_endpoint" "ecr_dkr" {
+  vpc_id       = aws_vpc.my_vpc.id
+  service_name = "com.amazonaws.${var.region}.ecr.dkr"
+}
+
+resource "aws_vpc_endpoint" "ecs" {
+  vpc_id       = aws_vpc.my_vpc.id
+  service_name = "com.amazonaws.${var.region}.ecs"
+}
 
 resource "aws_subnet" "my_subnet" {
   vpc_id                  = aws_vpc.my_vpc.id
