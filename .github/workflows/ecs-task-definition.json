@@ -4,7 +4,7 @@
   "cpu": "256",
   "memory": "512",
   "networkMode": "awsvpc",
-  "executionRoleArn": "arn:aws:ecs:us-east-2:494755270253:service/uptimego-api-cluster/uptimego-api-service",
+  "executionRoleArn": "arn:aws:iam::494755270253:role/uptimego_api_execution_role",
   "containerDefinitions": [
     {
       "name": "uptimego-api-container",
