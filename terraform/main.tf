@@ -97,13 +97,29 @@ resource "aws_security_group" "uptimego_api_sg" {
 }
 
 resource "aws_ecs_task_definition" "uptimego_api_task_definition" {
-  family                = "uptimego-api-task-definition"
-  container_definitions = file("ecs-task-definition.json")
+  family                   = "uptimego-api-task-definition"
+  container_definitions    = <<DEFINITION
+[
+  {
+    "name": "uptimego-api-container",
+    "image": "${aws_ecr_repository.uptimego_api.repository_url}:latest",
+    "cpu": ${var.cpu},
+    "memory": ${var.memory},
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ]
+  }
+]
+DEFINITION
   requires_compatibilities = ["FARGATE"]
-  network_mode          = "awsvpc"
-  cpu                   = var.cpu
-  memory                = var.memory
-  execution_role_arn    = aws_iam_role.uptimego_api_execution_role.arn
+  network_mode             = "awsvpc"
+  cpu                      = var.cpu
+  memory                   = var.memory
+  execution_role_arn       = aws_iam_role.uptimego_api_execution_role.arn
 }
 
 resource "aws_ecs_service" "uptimego_api_service" {
