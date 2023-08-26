@@ -1,0 +1,27 @@
+_id: req_2665aaf729574c8bb9c480d41434948d
+type: Request
+parentId: wrk_823c675af9e44e77ae82bf88dd1a3b32
+modified: 1693055577606
+created: 1693055577606
+url: "{{ _.base_url }}/targets/483256653958145360"
+name: Targets - delete
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - name: User-Agent
+    value: Insomnia/2023.5.2
+authentication:
+  type: bearer
+  prefix: Bearer
+  token: "{{ _.token }}"
+  disabled: false
+metaSortKey: -1691557530019.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

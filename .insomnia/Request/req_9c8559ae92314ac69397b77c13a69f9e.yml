@@ -1,0 +1,35 @@
+_id: req_9c8559ae92314ac69397b77c13a69f9e
+type: Request
+parentId: wrk_823c675af9e44e77ae82bf88dd1a3b32
+modified: 1693055577598
+created: 1693055577598
+url: "{{ _.base_url }}/targets"
+name: Targets - create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"url": "https://uptimego.io",
+    	"type":"HTTP"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.2
+authentication:
+  type: bearer
+  prefix: Bearer
+  token: "{{ _.token }}"
+  disabled: false
+metaSortKey: -1691580153853.5
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
