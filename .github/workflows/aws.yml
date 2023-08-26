@@ -26,10 +26,10 @@
 
 name: Deploy to Amazon ECS
 
-on:
-  push:
-    tags:        
-      - '*' # Push events to every tag not containing /
+#on:
+#  push:
+#    tags:
+#      - '*' # Push events to every tag not containing /
 
 env:
   AWS_REGION: us-east-2                                             # set this to your preferred AWS region, e.g. us-west-1
