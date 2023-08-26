@@ -1,0 +1,31 @@
+_id: req_6e9707ab7f524a63b9071de14551be74
+type: Request
+parentId: wrk_823c675af9e44e77ae82bf88dd1a3b32
+modified: 1693055577581
+created: 1693055577581
+url: "{{ _.base_url }}/auth/login"
+name: Login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+        "email": "washingtonserip@gmail.com",
+        "password": "secretmudar"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: Insomnia/2023.5.2
+authentication: {}
+metaSortKey: -1691534906185
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
