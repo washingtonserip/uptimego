@@ -1,5 +1,7 @@
 package io.uptimego.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.uptimego.enums.UserRole;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,6 +31,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Enumerated(EnumType.STRING)
