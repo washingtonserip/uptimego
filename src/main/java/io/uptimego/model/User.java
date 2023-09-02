@@ -37,9 +37,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "user")
     private Subscription subscription;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Channel> channels;
 
