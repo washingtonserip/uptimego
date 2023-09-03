@@ -1,5 +1,6 @@
 package io.uptimego.controller;
 
+import io.uptimego.model.User;
 import io.uptimego.security.dto.LoginRequest;
 import io.uptimego.security.dto.LoginResponse;
 import io.uptimego.security.dto.RegistrationRequest;
@@ -38,4 +39,9 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(registrationResponse);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser() {
+        User user = userService.getCurrentUser();
+        return ResponseEntity.ok(user);
+    }
 }

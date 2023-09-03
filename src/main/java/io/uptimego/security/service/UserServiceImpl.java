@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.convertToAuthenticatedUserDto(user);
     }
 
+    @Override
     public User getCurrentUser() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
