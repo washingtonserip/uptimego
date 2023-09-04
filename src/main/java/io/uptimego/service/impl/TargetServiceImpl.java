@@ -34,7 +34,8 @@ public class TargetServiceImpl implements TargetService {
 
     @Override
     public List<Target> findAll() {
-        return repository.findAll();
+        User user = userService.getCurrentUser();
+        return repository.findByUser(user);
     }
 
     @Override
@@ -44,11 +45,25 @@ public class TargetServiceImpl implements TargetService {
 
     @Override
     public Target update(Target target) {
-        return repository.save(target);
+        User currentUser = userService.getCurrentUser();
+        Optional<Target> optionalTarget = findById(target.getId());
+
+        if (optionalTarget.isPresent() && optionalTarget.get().getUser().equals(currentUser)) {
+            return repository.save(target);
+        } else {
+            throw new SecurityException("User not authorized to update this target");
+        }
     }
 
     @Override
     public void delete(Long id) {
-        repository.deleteById(id);
+        User currentUser = userService.getCurrentUser();
+        Optional<Target> optionalTarget = findById(id);
+
+        if (optionalTarget.isPresent() && optionalTarget.get().getUser().equals(currentUser)) {
+            repository.deleteById(id);
+        } else {
+            throw new SecurityException("User not authorized to delete this target");
+        }
     }
 }
