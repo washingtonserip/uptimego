@@ -1,17 +1,13 @@
 package io.uptimego.service;
 
 import io.uptimego.model.Pulse;
-import io.uptimego.repository.PulseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class PulseService {
-    @Autowired
-    private PulseRepository pulseRepository;
+import java.util.List;
 
-    public Pulse save(Pulse pulse) {
-        return pulseRepository.save(pulse);
-    }
+public interface PulseService {
+
+    Pulse save(Pulse pulse);
+
+    List<Pulse> findByCurrentUser();
 
 }
