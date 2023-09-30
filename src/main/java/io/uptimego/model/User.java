@@ -6,7 +6,7 @@ import io.uptimego.enums.UserRole;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.Set;
 
 @Getter

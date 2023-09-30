@@ -3,14 +3,9 @@ package io.uptimego.service;
 import io.uptimego.exceptions.UserNotFoundException;
 import io.uptimego.model.Target;
 import io.uptimego.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import javax.persistence.PreRemove;
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PreRemove;
+import jakarta.persistence.PreUpdate;
 
 @Component
 public class EntityChangesListener {
