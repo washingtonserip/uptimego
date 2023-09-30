@@ -1,11 +1,9 @@
 package io.uptimego.service.impl;
 
 import io.uptimego.model.Channel;
-import io.uptimego.model.Target;
 import io.uptimego.model.User;
 import io.uptimego.repository.ChannelRepository;
-import io.uptimego.repository.TargetRepository;
-import io.uptimego.security.service.UserServiceImpl;
+import io.uptimego.security.service.UserService;
 import io.uptimego.service.ChannelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,7 +18,7 @@ import java.util.Optional;
 public class ChannelServiceImpl implements ChannelService {
 
     private final ChannelRepository repository;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Override
     public Channel create(Channel channel) {
