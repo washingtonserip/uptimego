@@ -1,9 +1,9 @@
 package io.uptimego.model;
 
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.uptimego.enums.SubscriptionStatus;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.util.Date;
@@ -15,11 +15,7 @@ import java.util.Date;
 public class Subscription {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
     private Date startDate;
     private Date endDate;

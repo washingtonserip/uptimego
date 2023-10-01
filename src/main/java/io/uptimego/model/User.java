@@ -2,9 +2,9 @@ package io.uptimego.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.uptimego.enums.UserRole;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.util.Set;
@@ -19,11 +19,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
 
     private String name;

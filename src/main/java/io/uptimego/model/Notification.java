@@ -1,10 +1,10 @@
 package io.uptimego.model;
 
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.uptimego.enums.ChannelType;
 import io.uptimego.enums.NotificationStatus;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -17,11 +17,7 @@ import jakarta.validation.constraints.NotNull;
 public class Notification {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
 
     @ManyToOne

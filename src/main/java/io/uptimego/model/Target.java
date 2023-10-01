@@ -1,12 +1,12 @@
 package io.uptimego.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.uptimego.enums.TargetType;
 import io.uptimego.service.EntityChangesListener;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import jakarta.persistence.*;
@@ -19,11 +19,7 @@ import jakarta.persistence.*;
 public class Target {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
 
     @JsonIgnore

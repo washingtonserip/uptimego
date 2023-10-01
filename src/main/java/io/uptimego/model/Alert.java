@@ -1,11 +1,11 @@
 package io.uptimego.model;
 
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.uptimego.enums.AlertStatus;
 import io.uptimego.enums.AlertType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -18,11 +18,7 @@ import java.util.Set;
 public class Alert {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
 
     @ManyToOne

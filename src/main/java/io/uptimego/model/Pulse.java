@@ -1,10 +1,10 @@
 package io.uptimego.model;
 
+import io.hypersistence.utils.hibernate.id.Tsid;
 import io.uptimego.enums.PulseStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -16,11 +16,7 @@ import java.time.LocalDateTime;
 public class Pulse {
 
     @Id
-    @GeneratedValue(generator = "tsid")
-    @GenericGenerator(
-            name = "tsid",
-            strategy = "io.hypersistence.utils.hibernate.id.TsidGenerator"
-    )
+    @Tsid
     private Long id;
 
     @ManyToOne
