@@ -33,5 +33,6 @@ public class Target {
     private TargetType type;
 
     @Type(JsonType.class)
+    @Column(columnDefinition = "json")
     private TargetOptions options;
 }
