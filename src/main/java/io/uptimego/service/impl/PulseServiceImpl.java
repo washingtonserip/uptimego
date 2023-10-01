@@ -23,7 +23,7 @@ public class PulseServiceImpl implements PulseService {
 
     public List<Pulse> findByCurrentUser() {
         User user = userService.getCurrentUser();
-        return repository.findByUser(user);
+        return repository.findAllByUser(user);
     }
 
 }

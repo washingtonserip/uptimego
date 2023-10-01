@@ -20,6 +20,10 @@ public class Pulse {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "target_id")
     private Target target;
 
