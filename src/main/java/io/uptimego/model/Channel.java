@@ -28,5 +28,6 @@ public class Channel {
     private ChannelType type;
 
     @Type(JsonType.class)
+    @Column(columnDefinition = "json")
     private ChannelMetadata metadata;
 }
