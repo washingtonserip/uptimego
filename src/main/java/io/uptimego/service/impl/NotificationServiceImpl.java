@@ -20,6 +20,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<Notification> findByCurrentUser() {
         User user = userService.getCurrentUser();
-        return repository.findByUser(user);
+        return repository.findAllByUser(user);
     }
 }

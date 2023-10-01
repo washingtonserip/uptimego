@@ -21,6 +21,10 @@ public class Notification {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "alert_id")
     private Alert alert;
 

@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    List<Notification> findByUser(User user);
+    List<Notification> findAllByUser(User user);
 }
