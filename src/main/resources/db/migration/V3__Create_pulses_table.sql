@@ -1,5 +1,6 @@
 CREATE TABLE pulses (
     id BIGINT PRIMARY KEY,
+    user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
     target_id BIGINT REFERENCES targets(id) ON DELETE CASCADE,
     status VARCHAR(20),
     latency INT,
