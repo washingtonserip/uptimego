@@ -1,6 +1,7 @@
 package io.uptimego.model;
 
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.uptimego.enums.ChannelType;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,6 @@ public class Channel {
     @Enumerated(EnumType.STRING)
     private ChannelType type;
 
-    @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
+    @Type(JsonType.class)
     private ChannelMetadata metadata;
 }

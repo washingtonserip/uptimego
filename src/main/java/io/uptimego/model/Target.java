@@ -1,6 +1,7 @@
 package io.uptimego.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.uptimego.enums.TargetType;
 import io.uptimego.service.EntityChangesListener;
 import lombok.Getter;
@@ -35,6 +36,6 @@ public class Target {
     @Enumerated(EnumType.STRING)
     private TargetType type;
 
-    @Type(type = "io.hypersistence.utils.hibernate.type.json.JsonType")
+    @Type(JsonType.class)
     private TargetOptions options;
 }
