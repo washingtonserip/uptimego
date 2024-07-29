@@ -1,6 +1,8 @@
 # UptimeGo
 Website and API monitoring with real-time alerts.
 
+<img alt="screenshot.png" src="screenshot.png" width="400"/>
+
 ## Table of Contents
 - [Installation](#installation)
 - [Features](#features)
