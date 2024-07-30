@@ -151,18 +151,6 @@
             <artifactId>okhttp</artifactId>
             <version>4.11.0</version>
         </dependency>
-        <!-- Java Mail API -->
-        <dependency>
-            <groupId>jakarta.mail</groupId>
-            <artifactId>jakarta.mail-api</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-        <!-- JSch library -->
-        <dependency>
-            <groupId>com.jcraft</groupId>
-            <artifactId>jsch</artifactId>
-            <version>0.1.55</version>
-        </dependency>
         <!-- Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -216,7 +204,85 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.honton.chas</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>0.0.5</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
+            <plugin>
+                <groupId>org.honton.chas</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compliance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <acceptableLicenses>
+                        <license>
+                            <name>((The\s+)?Apache\s+(Software\s+)?License\s*(,\s*Version\s+)?2\.0)|(Apache-2\.0)</name>
+                            <url>(https?://www\.apache\.org/licenses/LICENSE-2\.0(\.txt)?)|(https?://opensource\.org/licenses/Apache-2\.0)</url>
+                        </license>
+                        <license>
+                            <name>((The\s+)?3-Clause\s+BSD\s+License)|(New\s+BSD\s+License)|(Modified\s+BSD\s+License)|(BSD-3-Clause)</name>
+                            <url>https://opensource\.org/licenses/BSD-3-Clause</url>
+                        </license>
+                        <license>
+                            <name>((The\s+)?2-Clause\s+BSD\s+License)|(Simplified\s+BSD\s+License)|(FreeBSD\s+License)|(BSD-2-Clause)</name>
+                            <url>https?://opensource\.org/licenses/BSD-2-Clause</url>
+                        </license>
+                        <license>
+                            <name>(GNU\s+Library\s+General\s+Public\s+License\s*,\s*version\s+2)|(LGPL-2\.0)</name>
+                            <url>https?://www\.gnu\.org/old-licenses/lgpl-2\.0(\.[a-z]{2})?\.html</url>
+                        </license>
+                        <license>
+                            <name>(GNU\s+Lesser\s+General\s+Public\s+License\s*,\s*version\s+2\.1)|(LGPL-2\.1)</name>
+                            <url>https?://www\.gnu\.org/old-licenses/lgpl-2\.1(\.[a-z]{2})?\.html</url>
+                        </license>
+                        <license>
+                            <name>(GNU\s+Lesser\s+(General\s+)?Public\s+License\s*(,\s*version\s+3)?)|(LGPL-3\.0)</name>
+                            <url>https?://www\.gnu\.org/licenses/lgpl-3\.0(\.[a-z]{2})?\.html</url>
+                        </license>
+                        <license>
+                            <name>((The\s+)?MIT\s+License)|(MIT)</name>
+                            <url>https?://opensource\.org/licenses/MIT</url>
+                        </license>
+                        <license>
+                            <name>(Mozilla\s+Public\s+License\s+2\.0)|(MPL-2\.0)</name>
+                            <url>https?://www\.mozilla\.org/([a-z]+-[A-Z]+/)?MPL/?</url>
+                        </license>
+                        <license>
+                            <name>(Common\s+Development\s+and\s+Distribution\s+License\s+1\.0)|(CDDL-1\.0)</name>
+                            <url>https?://opensource\.org/licenses/CDDL-1\.0</url>
+                        </license>
+                        <license>
+                            <name>(Eclipse\s+Public\s+License\s+v?1\.0)|(EPL-1\.0)</name>
+                            <url>https?://www\.eclipse\.org/legal/epl-v10\.html</url>
+                        </license>
+                        <license>
+                            <name>(Eclipse\s+Public\s+License\s+v?2\.0)|(EPL-2\.0)</name>
+                            <url>https?://www\.eclipse\.org/legal/epl-v20\.html</url>
+                        </license>
+                        <license>
+                            <name>(Eclipse\s+Distribution\s+License\s+v?1\.0)|(EDL-1\.0)</name>
+                            <url>https?://www\.eclipse\.org/org/documents/edl-v10\.php</url>
+                        </license>
+                        <license>
+                            <name>The MIT License (MIT)</name>
+                            <url>https://raw.githubusercontent.com/auth0/java-jwt/master/LICENSE</url>
+                        </license>
+                    </acceptableLicenses>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
